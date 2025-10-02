@@ -26,19 +26,15 @@ export default createRoute(async (c) => {
               <h2 class="text-xl font-semibold mb-2">{shop.name}</h2>
 
               <div class="space-y-2 text-sm text-gray-600">
-                {shop.area && (
-                  <p class="flex items-center gap-2">
-                    <span class="font-medium">📍</span>
-                    {shop.area.name}
-                  </p>
-                )}
+                <p class="flex items-center gap-2">
+                  <span class="font-medium">📍</span>
+                  {shop.area.name}
+                </p>
 
-                {shop.genre && (
-                  <p class="flex items-center gap-2">
-                    <span class="font-medium">🍽️</span>
-                    {shop.genre.name}
-                  </p>
-                )}
+                <p class="flex items-center gap-2">
+                  <span class="font-medium">🍽️</span>
+                  {shop.genre.name}
+                </p>
 
                 {shop.rateing && (
                   <p class="flex items-center gap-2">

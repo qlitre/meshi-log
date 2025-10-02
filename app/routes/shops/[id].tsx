@@ -13,7 +13,7 @@ export default createRoute(async (c) => {
 
   // この店舗の訪問記録を取得
   const { contents: allVisits } = await getVisits({ client })
-  const visits = allVisits.filter((visit) => visit.shop?.id === id)
+  const visits = allVisits.filter((visit) => visit.shop.id === id)
 
   return c.render(
     <div class="container mx-auto px-4 py-8">
@@ -37,25 +37,21 @@ export default createRoute(async (c) => {
             </div>
           </div>
 
-          {shop.area && (
-            <div class="flex items-center gap-3">
-              <span class="text-xl">🗺️</span>
-              <div>
-                <span class="font-medium">エリア: </span>
-                {shop.area.name}
-              </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xl">🗺️</span>
+            <div>
+              <span class="font-medium">エリア: </span>
+              {shop.area.name}
             </div>
-          )}
+          </div>
 
-          {shop.genre && (
-            <div class="flex items-center gap-3">
-              <span class="text-xl">🍽️</span>
-              <div>
-                <span class="font-medium">ジャンル: </span>
-                {shop.genre.name}
-              </div>
+          <div class="flex items-center gap-3">
+            <span class="text-xl">🍽️</span>
+            <div>
+              <span class="font-medium">ジャンル: </span>
+              {shop.genre.name}
             </div>
-          )}
+          </div>
 
           {shop.rateing && (
             <div class="flex items-center gap-3">
@@ -86,15 +82,11 @@ export default createRoute(async (c) => {
           <div class="space-y-4">
             {visits.map((visit) => (
               <div class="bg-white rounded-lg shadow p-6">
-                {visit.visit_date && (
-                  <p class="text-sm text-gray-600 mb-2">
-                    📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
-                  </p>
-                )}
+                <p class="text-sm text-gray-600 mb-2">
+                  📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
+                </p>
 
-                {visit.memo && (
-                  <div class="prose max-w-none" dangerouslySetInnerHTML={{ __html: visit.memo }} />
-                )}
+                <div class="prose max-w-none" dangerouslySetInnerHTML={{ __html: visit.memo }} />
               </div>
             ))}
           </div>
