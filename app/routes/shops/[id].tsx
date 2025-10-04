@@ -1,7 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
 import { jstDatetime } from '../../utils/jstDatetime'
-
+import { ArticleDetail } from '../../components/ArticleDetail'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -16,7 +16,7 @@ export default createRoute(async (c) => {
   // この店舗の訪問記録を取得
   const visits = await getVisits({ client, queries: { filters: `shop[equals]${id}` } })
   const visitsCount = visits.totalCount
-  
+
   return c.render(
     <div class="container mx-auto px-4 py-8">
       <title>{shop.name} - 飯ログ</title>
@@ -93,8 +93,7 @@ export default createRoute(async (c) => {
                 <p class="text-sm text-gray-600 mb-4">
                   📅 {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
                 </p>
-
-                <div class="prose max-w-none" dangerouslySetInnerHTML={{ __html: visit.memo }} />
+                <ArticleDetail content={visit.memo} />
               </div>
             ))}
           </div>

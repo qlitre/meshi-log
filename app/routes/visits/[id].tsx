@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisitDetail } from '../../libs/microcms'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
+import {ArticleDetail} from '../../components/ArticleDetail'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -73,7 +74,7 @@ export default createRoute(async (c) => {
         </div>
 
         {/* 本文 */}
-        <div class="article-content" dangerouslySetInnerHTML={{ __html: visit.memo }} />
+        <ArticleDetail content={visit.memo}/>
       </article>
 
       {/* 店舗情報 */}

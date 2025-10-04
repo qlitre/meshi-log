@@ -14,7 +14,18 @@ export default defineConfig({
     build(),
   ],
   ssr: {
-    external: ['microcms-js-sdk', '@modelcontextprotocol/sdk','dayjs'],
+    external: [
+      'microcms-js-sdk',
+      '@modelcontextprotocol/sdk',
+      'dayjs',
+      'microcms-rich-editor-handler',
+      'shiki',
+    ],
     noExternal: ['async-retry'],
+  },
+  build: {
+    rollupOptions: {
+      external: ['shiki'],
+    },
   },
 })
