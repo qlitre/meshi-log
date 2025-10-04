@@ -19,10 +19,11 @@ export default createRoute(async (c) => {
     <div class="container mx-auto px-4 py-8">
       <title>{shop.name} - 飯ログ</title>
 
-      {/* 戻るリンク */}
-      <a href="/" class="inline-block mb-6 text-blue-600 hover:underline">
-        ← お店一覧に戻る
-      </a>
+      {/* ナビゲーション */}
+      <nav class="mb-6 flex gap-4">
+        <a href="/" class="text-blue-600 hover:underline">← トップページ</a>
+        <a href="/shops" class="text-blue-600 hover:underline">お店一覧</a>
+      </nav>
 
       {/* 店舗情報 */}
       <div class="bg-white rounded-lg shadow-lg p-8 mb-8">

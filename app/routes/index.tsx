@@ -1,5 +1,5 @@
 import { createRoute } from 'honox/factory'
-import { getMicroCMSClient, getShops } from '../libs/microcms'
+import { getMicroCMSClient, getVisits } from '../libs/microcms'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
@@ -7,50 +7,59 @@ export default createRoute(async (c) => {
     apiKey: c.env.API_KEY,
   })
 
-  const { contents: shops } = await getShops({ client })
+  const { contents: visits, totalCount } = await getVisits({ client })
 
   return c.render(
     <div class="container mx-auto px-4 py-8">
-      <title>飯ログ - お店一覧</title>
-      <h1 class="text-3xl font-bold mb-6">お店一覧</h1>
+      <title>飯ログ - 訪問記録</title>
 
-      {shops.length === 0 ? (
-        <p class="text-gray-500">お店が登録されていません</p>
-      ) : (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {shops.map((shop) => (
-            <a
-              href={`/shops/${shop.id}`}
-              class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-gray-200"
-            >
-              <h2 class="text-xl font-semibold mb-2">{shop.name}</h2>
+      {/* ヘッダー */}
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">飯ログ</h1>
+        <nav class="flex gap-4">
+          <a href="/" class="text-blue-600 font-semibold">訪問記録</a>
+          <a href="/shops" class="text-gray-600 hover:text-blue-600">お店一覧</a>
+        </nav>
+      </header>
 
-              <div class="space-y-2 text-sm text-gray-600">
-                <p class="flex items-center gap-2">
-                  <span class="font-medium">📍</span>
-                  {shop.area.name}
-                </p>
+      {/* 訪問記録一覧 */}
+      <div class="space-y-6">
+        <h2 class="text-2xl font-bold">訪問記録 ({totalCount}件)</h2>
 
-                <p class="flex items-center gap-2">
-                  <span class="font-medium">🍽️</span>
-                  {shop.genre.name}
-                </p>
+        {totalCount === 0 ? (
+          <p class="text-gray-500">まだ訪問記録がありません</p>
+        ) : (
+          <div class="space-y-6">
+            {visits.map((visit) => (
+              <article class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <a href={`/shops/${visit.shop.id}`}>
+                  <h3 class="text-2xl font-bold mb-2 hover:text-blue-600">{visit.title} - {visit.shop.name}</h3>
+                </a>
 
-                {shop.rateing && (
-                  <p class="flex items-center gap-2">
-                    <span class="font-medium">⭐</span>
-                    {shop.rateing}
-                  </p>
-                )}
+                <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                  <time class="flex items-center gap-1">
+                    📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
+                  </time>
+                  <a href={`/shops/${visit.shop.id}`} class="flex items-center gap-1 hover:text-blue-600">
+                    🏪 {visit.shop.name}
+                  </a>
+                  <span class="flex items-center gap-1">
+                    📍 {visit.shop.area.name}
+                  </span>
+                  <span class="flex items-center gap-1">
+                    🍽️ {visit.shop.genre.name}
+                  </span>
+                </div>
 
-                {shop.memo && (
-                  <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>
-                )}
-              </div>
-            </a>
-          ))}
-        </div>
-      )}
+                <div
+                  class="prose max-w-none line-clamp-3 [&_img]:hidden"
+                  dangerouslySetInnerHTML={{ __html: visit.memo }}
+                />
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 })
