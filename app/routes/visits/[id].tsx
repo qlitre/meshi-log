@@ -51,7 +51,7 @@ export default createRoute(async (c) => {
       </nav>
 
       {/* 記事ヘッダー */}
-      <article class="bg-white rounded-lg shadow-lg p-8 mb-8">
+      <article class="article-detail mb-8">
         <h1 class="text-4xl font-bold mb-4">{visit.title} - {visit.shop.name}</h1>
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
           <time class="flex items-center gap-2">
@@ -73,11 +73,11 @@ export default createRoute(async (c) => {
         </div>
 
         {/* 本文 */}
-        <div class="prose max-w-none" dangerouslySetInnerHTML={{ __html: visit.memo }} />
+        <div class="article-content" dangerouslySetInnerHTML={{ __html: visit.memo }} />
       </article>
 
       {/* 店舗情報 */}
-      <div class="bg-gray-50 rounded-lg p-6">
+      <div class="bg-gray-50 rounded-lg p-6 max-w-[860px] mx-auto">
         <h2 class="text-2xl font-bold mb-4">店舗情報</h2>
         <div class="space-y-3">
           <div>

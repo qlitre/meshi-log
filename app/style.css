@@ -1,1 +1,99 @@
 @import 'tailwindcss' source('../app');
+
+/* --------------------------------------------------
+   Article page
+   -------------------------------------------------- */
+.article-detail {
+  background: #fff;
+  padding: 2.4rem 2rem 3rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  max-width: 860px;
+  margin-inline: auto;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3 {
+  font-weight: 700;
+  margin-top: 2em;
+  margin-bottom: 0.6em;
+  line-height: 1.3;
+}
+
+.article-content h1 {
+  font-size: 2rem;
+}
+
+.article-content h2 {
+  font-size: 1.5rem;
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+}
+
+.article-content p,
+.article-content li {
+  margin-bottom: 1rem;
+}
+
+/* Responsive & aesthetic images */
+.article-content img,
+.article-content figure img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  margin: 1.5rem auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Lists inside article */
+.article-content ul,
+.article-content ol {
+  padding-left: 2rem;
+}
+
+.article-content ul ul,
+.article-content ol ol,
+.article-content ul ol,
+.article-content ol ul {
+  padding-left: 2rem;
+}
+
+.article-content li {
+  position: relative;
+}
+
+/* Links in article content */
+.article-content a {
+  color: #0066cc;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.article-content a:hover {
+  color: #0052a3;
+  text-decoration-thickness: 2px;
+}
+
+/* Tables (if any) */
+.article-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+}
+
+.article-content th,
+.article-content td {
+  padding: 0.75rem 1rem;
+  border: 1px solid #e7e7e7;
+}
+
+.article-content th {
+  background: #fafafa;
+  text-align: left;
+}
