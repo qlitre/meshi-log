@@ -83,3 +83,24 @@ export const getVisitDetail = async ({
     queries,
   });
 };
+
+export const getMicroCMSSchema = async ({
+  serviceDomain,
+  apiKey,
+}: ClientConfig) => {
+  const ret = [];
+  const endPoints = ["genre", "area", "shop", "visits"];
+  for (const endPoint of endPoints) {
+    const response = await fetch(
+      `https://${serviceDomain}.microcms-management.io/api/v1/apis/${endPoint}`,
+      {
+        headers: {
+          "X-MICROCMS-API-KEY": apiKey,
+        },
+      }
+    );
+    const schema = await response.json();
+    ret.push({ endpoint: endPoint, schema });
+  }
+  return ret;
+};
