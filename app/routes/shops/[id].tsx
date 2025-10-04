@@ -12,8 +12,8 @@ export default createRoute(async (c) => {
   const shop = await getShopDetail({ client, contentId: id })
 
   // この店舗の訪問記録を取得
-  const visits = await getVisits({ client,queries:{filters:`shop[equals]${id}`} })
-  const visitsCount=visits.totalCount
+  const visits = await getVisits({ client, queries: { filters: `shop[equals]${id}` } })
+  const visitsCount = visits.totalCount
 
   return c.render(
     <div class="container mx-auto px-4 py-8">
@@ -21,8 +21,12 @@ export default createRoute(async (c) => {
 
       {/* ナビゲーション */}
       <nav class="mb-6 flex gap-4">
-        <a href="/" class="text-blue-600 hover:underline">← トップページ</a>
-        <a href="/shops" class="text-blue-600 hover:underline">お店一覧</a>
+        <a href="/" class="text-blue-600 hover:underline">
+          ← トップページ
+        </a>
+        <a href="/shops" class="text-blue-600 hover:underline">
+          お店一覧
+        </a>
       </nav>
 
       {/* 店舗情報 */}

@@ -8,13 +8,13 @@ export default defineConfig({
   plugins: [
     honox({
       devServer: { adapter },
-      client: { input: ['/app/client.ts', '/app/style.css'] }
+      client: { input: ['/app/client.ts', '/app/style.css'] },
     }),
     tailwindcss(),
-    build()
+    build(),
   ],
   ssr: {
     external: ['microcms-js-sdk', '@modelcontextprotocol/sdk'],
-    noExternal: ['async-retry']
-  }
+    noExternal: ['async-retry'],
+  },
 })

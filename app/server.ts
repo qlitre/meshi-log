@@ -1,11 +1,11 @@
-import { showRoutes } from "hono/dev";
-import { createApp } from "honox/server";
-import mcpApp from "./routes/mcp";
+import { showRoutes } from 'hono/dev'
+import { createApp } from 'honox/server'
+import mcpApp from './routes/mcp'
 
-const app = createApp();
+const app = createApp()
 
-app.route("/mcp", mcpApp);
+app.route('/mcp', mcpApp)
 
-showRoutes(app);
+showRoutes(app)
 
-export default app;
+export default app

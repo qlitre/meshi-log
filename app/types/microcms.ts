@@ -1,5 +1,10 @@
 // microCMS APIレスポンス型定義
-import type { MicroCMSContentId, MicroCMSDate, MicroCMSListResponse, MicroCMSImage } from 'microcms-js-sdk'
+import type {
+  MicroCMSContentId,
+  MicroCMSDate,
+  MicroCMSListResponse,
+  MicroCMSImage,
+} from 'microcms-js-sdk'
 
 // エリア
 export interface Area extends MicroCMSContentId, MicroCMSDate {

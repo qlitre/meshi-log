@@ -17,8 +17,12 @@ export default createRoute(async (c) => {
       <header class="mb-8">
         <h1 class="text-4xl font-bold mb-4">飯ログ</h1>
         <nav class="flex gap-4">
-          <a href="/" class="text-blue-600 font-semibold">訪問記録</a>
-          <a href="/shops" class="text-gray-600 hover:text-blue-600">お店一覧</a>
+          <a href="/" class="text-blue-600 font-semibold">
+            訪問記録
+          </a>
+          <a href="/shops" class="text-gray-600 hover:text-blue-600">
+            お店一覧
+          </a>
         </nav>
       </header>
 
@@ -33,22 +37,23 @@ export default createRoute(async (c) => {
             {visits.map((visit) => (
               <article class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
                 <a href={`/shops/${visit.shop.id}`}>
-                  <h3 class="text-2xl font-bold mb-2 hover:text-blue-600">{visit.title} - {visit.shop.name}</h3>
+                  <h3 class="text-2xl font-bold mb-2 hover:text-blue-600">
+                    {visit.title} - {visit.shop.name}
+                  </h3>
                 </a>
 
                 <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
                   <time class="flex items-center gap-1">
                     📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
                   </time>
-                  <a href={`/shops/${visit.shop.id}`} class="flex items-center gap-1 hover:text-blue-600">
+                  <a
+                    href={`/shops/${visit.shop.id}`}
+                    class="flex items-center gap-1 hover:text-blue-600"
+                  >
                     🏪 {visit.shop.name}
                   </a>
-                  <span class="flex items-center gap-1">
-                    📍 {visit.shop.area.name}
-                  </span>
-                  <span class="flex items-center gap-1">
-                    🍽️ {visit.shop.genre.name}
-                  </span>
+                  <span class="flex items-center gap-1">📍 {visit.shop.area.name}</span>
+                  <span class="flex items-center gap-1">🍽️ {visit.shop.genre.name}</span>
                 </div>
 
                 <div

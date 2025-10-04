@@ -81,10 +81,12 @@ app/
 ### Build Process
 
 The build is a two-step process (see `package.json`):
+
 1. **Client build**: `vite build --mode client` - Bundles client-side code
 2. **Server build**: `vite build` - Bundles server-side code
 
 Both builds are configured in `vite.config.ts`:
+
 - HonoX plugin handles the dual client/server compilation
 - Client entry points: `/app/client.ts` and `/app/style.css`
 - Output goes to `dist/` directory
@@ -132,6 +134,7 @@ export interface Visit extends MicroCMSContentId, MicroCMSDate {
 ```
 
 **microCMS API構成:**
+
 - `area`: エリアマスター
 - `genre`: ジャンルマスター
 - `shop`: 店舗情報（area, genreはrelation）
@@ -140,12 +143,13 @@ export interface Visit extends MicroCMSContentId, MicroCMSDate {
 ### Type Definitions
 
 Hono型の拡張は `app/global.d.ts` で行います:
+
 ```typescript
 declare module 'hono' {
   interface Env {
-    Variables: {}  // コンテキスト変数を追加
+    Variables: {} // コンテキスト変数を追加
     Bindings: {
-      MICROCMS_API_KEY: string  // 環境変数
+      MICROCMS_API_KEY: string // 環境変数
       MICROCMS_SERVICE_DOMAIN: string
     }
   }

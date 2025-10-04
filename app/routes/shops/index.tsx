@@ -15,7 +15,9 @@ export default createRoute(async (c) => {
 
       {/* ナビゲーション */}
       <nav class="mb-6">
-        <a href="/" class="text-blue-600 hover:underline">← 訪問記録一覧に戻る</a>
+        <a href="/" class="text-blue-600 hover:underline">
+          ← 訪問記録一覧に戻る
+        </a>
       </nav>
 
       <h1 class="text-3xl font-bold mb-6">お店一覧</h1>
@@ -49,9 +51,7 @@ export default createRoute(async (c) => {
                   </p>
                 )}
 
-                {shop.memo && (
-                  <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>
-                )}
+                {shop.memo && <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>}
               </div>
             </a>
           ))}

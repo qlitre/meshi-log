@@ -21,12 +21,15 @@ mcp__mesh-log-mcp__get_api_schema
 ## スキーマ構造
 
 ### genre (ジャンル)
+
 - `name` (text, 必須): ジャンル名
 
 ### area (エリア)
+
 - `name` (text, 必須): エリア名
 
 ### shop (店舗)
+
 - `name` (text, 必須): 店名
 - `address` (textArea, 必須): 住所
 - `area` (relation → area, 必須): エリア
@@ -35,6 +38,7 @@ mcp__mesh-log-mcp__get_api_schema
 - `rating` (number, オプショナル): 評価
 
 ### visits (訪問記録)
+
 - `title` (text, 必須): タイトル
 - `shop` (relation → shop, 必須): お店
 - `visit_date` (date, 必須): 訪問日
