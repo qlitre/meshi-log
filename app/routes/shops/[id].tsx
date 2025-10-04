@@ -12,8 +12,8 @@ export default createRoute(async (c) => {
   const shop = await getShopDetail({ client, contentId: id })
 
   // この店舗の訪問記録を取得
-  const { contents: allVisits } = await getVisits({ client })
-  const visits = allVisits.filter((visit) => visit.shop.id === id)
+  const visits = await getVisits({ client,queries:{filters:`shop[equals]${id}`} })
+  const visitsCount=visits.totalCount
 
   return c.render(
     <div class="container mx-auto px-4 py-8">
@@ -74,13 +74,13 @@ export default createRoute(async (c) => {
 
       {/* 訪問記録 */}
       <div>
-        <h2 class="text-2xl font-bold mb-4">訪問記録 ({visits.length}件)</h2>
+        <h2 class="text-2xl font-bold mb-4">訪問記録 ({visitsCount}件)</h2>
 
-        {visits.length === 0 ? (
+        {visitsCount === 0 ? (
           <p class="text-gray-500">まだ訪問記録がありません</p>
         ) : (
           <div class="space-y-4">
-            {visits.map((visit) => (
+            {visits.contents.map((visit) => (
               <div class="bg-white rounded-lg shadow p-6">
                 <p class="text-sm text-gray-600 mb-2">
                   📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
