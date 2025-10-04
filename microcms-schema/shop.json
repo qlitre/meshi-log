@@ -1,0 +1,46 @@
+{
+  "endpoint": "shop",
+  "schema": {
+    "apiFields": [
+      {
+        "fieldId": "name",
+        "name": "店名",
+        "kind": "text",
+        "required": true
+      },
+      {
+        "fieldId": "address",
+        "name": "住所",
+        "kind": "textArea",
+        "required": true
+      },
+      {
+        "fieldId": "area",
+        "name": "エリア",
+        "kind": "relation",
+        "required": true,
+        "referencedApiEndpoint": "area"
+      },
+      {
+        "fieldId": "genre",
+        "name": "ジャンル",
+        "kind": "relation",
+        "required": true,
+        "referencedApiEndpoint": "genre"
+      },
+      {
+        "fieldId": "memo",
+        "name": "メモ",
+        "kind": "textArea",
+        "required": true
+      },
+      {
+        "fieldId": "rating",
+        "name": "評価",
+        "kind": "number",
+        "required": false
+      }
+    ],
+    "customFields": []
+  }
+}

@@ -53,12 +53,12 @@ export default createRoute(async (c) => {
             </div>
           </div>
 
-          {shop.rateing && (
+          {shop.rating && (
             <div class="flex items-center gap-3">
               <span class="text-xl">⭐</span>
               <div>
                 <span class="font-medium">評価: </span>
-                {shop.rateing}
+                {shop.rating}
               </div>
             </div>
           )}
@@ -82,7 +82,8 @@ export default createRoute(async (c) => {
           <div class="space-y-4">
             {visits.contents.map((visit) => (
               <div class="bg-white rounded-lg shadow p-6">
-                <p class="text-sm text-gray-600 mb-2">
+                <h3 class="text-xl font-bold mb-2">{visit.title}</h3>
+                <p class="text-sm text-gray-600 mb-4">
                   📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
                 </p>
 

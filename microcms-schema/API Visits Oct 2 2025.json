@@ -1,1 +1,0 @@
-{"apiFields":[{"fieldId":"shop","name":"お店","kind":"relation","required":false},{"fieldId":"visit_date","name":"訪問日","kind":"date","required":false},{"fieldId":"memo","name":"メモ","kind":"richEditorV2","required":false}],"customFields":[]}

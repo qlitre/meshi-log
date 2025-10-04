@@ -1,0 +1,14 @@
+{
+  "endpoint": "area",
+  "schema": {
+    "apiFields": [
+      {
+        "fieldId": "name",
+        "name": "エリア名",
+        "kind": "text",
+        "required": true
+      }
+    ],
+    "customFields": []
+  }
+}

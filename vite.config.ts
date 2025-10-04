@@ -14,7 +14,7 @@ export default defineConfig({
     build()
   ],
   ssr: {
-    external: ['microcms-js-sdk'],
+    external: ['microcms-js-sdk', '@modelcontextprotocol/sdk'],
     noExternal: ['async-retry']
   }
 })

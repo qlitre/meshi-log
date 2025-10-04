@@ -1,0 +1,14 @@
+{
+  "endpoint": "genre",
+  "schema": {
+    "apiFields": [
+      {
+        "fieldId": "name",
+        "name": "ジャンル名",
+        "kind": "text",
+        "required": true
+      }
+    ],
+    "customFields": []
+  }
+}

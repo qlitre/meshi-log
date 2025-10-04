@@ -1,0 +1,34 @@
+{
+  "endpoint": "visits",
+  "schema": {
+    "apiFields": [
+      {
+        "fieldId": "title",
+        "name": "タイトル",
+        "kind": "text",
+        "required": true
+      },
+      {
+        "fieldId": "shop",
+        "name": "お店",
+        "kind": "relation",
+        "required": true,
+        "referencedApiEndpoint": "shop"
+      },
+      {
+        "fieldId": "visit_date",
+        "name": "訪問日",
+        "kind": "date",
+        "required": true,
+        "dateFormat": false
+      },
+      {
+        "fieldId": "memo",
+        "name": "メモ",
+        "kind": "richEditorV2",
+        "required": true
+      }
+    ],
+    "customFields": []
+  }
+}

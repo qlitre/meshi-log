@@ -18,11 +18,12 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   area: Area
   genre: Genre
   memo: string
-  rateing?: number
+  rating?: number
 }
 
 // 訪問記録
 export interface Visit extends MicroCMSContentId, MicroCMSDate {
+  title: string
   shop: Shop
   visit_date: string
   memo: string // richEditorV2
