@@ -1,5 +1,6 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
+import { jstDatetime } from '../../utils/jstDatetime'
 
 
 export default createRoute(async (c) => {
@@ -90,7 +91,7 @@ export default createRoute(async (c) => {
               <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-xl font-bold mb-2">{visit.title}</h3>
                 <p class="text-sm text-gray-600 mb-4">
-                  📅 {new Date(visit.visit_date).toLocaleDateString('ja-JP')}
+                  📅 {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
                 </p>
 
                 <div class="prose max-w-none" dangerouslySetInnerHTML={{ __html: visit.memo }} />

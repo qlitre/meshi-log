@@ -13,6 +13,7 @@
   "dependencies": {
     "@hono/mcp": "^0.1.4",
     "@modelcontextprotocol/sdk": "^1.19.1",
+    "dayjs": "^1.11.18",
     "hono": "^4.9.9",
     "honox": "^0.1.47",
     "microcms-js-sdk": "^3.2.0"

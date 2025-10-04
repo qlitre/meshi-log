@@ -1,6 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisitDetail } from '../../libs/microcms'
 import type { Meta } from '../../types/meta'
+import { jstDatetime } from '../../utils/jstDatetime'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -55,11 +56,7 @@ export default createRoute(async (c) => {
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
           <time class="flex items-center gap-2">
             <span class="text-xl">📅</span>
-            {new Date(visit.visit_date).toLocaleDateString('ja-JP', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
+            {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
           </time>
           <a href={`/shops/${visit.shop.id}`} class="flex items-center gap-2 hover:text-blue-600">
             <span class="text-xl">🏪</span>
