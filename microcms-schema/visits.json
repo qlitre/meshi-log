@@ -9,6 +9,12 @@
         "required": true
       },
       {
+        "fieldId": "thumbnail",
+        "name": "サムネイル",
+        "kind": "media",
+        "required": false
+      },
+      {
         "fieldId": "shop",
         "name": "お店",
         "kind": "relation",
