@@ -44,17 +44,12 @@ export default createRoute(async (c) => {
                 </a>
 
                 <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                  <time class="flex items-center gap-1">
-                    📅 {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
-                  </time>
-                  <a
-                    href={`/shops/${visit.shop.id}`}
-                    class="flex items-center gap-1 hover:text-blue-600"
-                  >
-                    🏪 {visit.shop.name}
+                  <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
+                  <a href={`/shops/${visit.shop.id}`} class="hover:text-blue-600">
+                    {visit.shop.name}
                   </a>
-                  <span class="flex items-center gap-1">📍 {visit.shop.area.name}</span>
-                  <span class="flex items-center gap-1">🍽️ {visit.shop.genre.name}</span>
+                  <span>{visit.shop.area.name}</span>
+                  <span>{visit.shop.genre.name}</span>
                 </div>
 
                 <div

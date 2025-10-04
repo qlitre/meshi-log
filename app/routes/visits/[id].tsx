@@ -55,22 +55,12 @@ export default createRoute(async (c) => {
       <article class="article-detail mb-8">
         <h1 class="text-4xl font-bold mb-4">{visit.title} - {visit.shop.name}</h1>
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
-          <time class="flex items-center gap-2">
-            <span class="text-xl">📅</span>
-            {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
-          </time>
-          <a href={`/shops/${visit.shop.id}`} class="flex items-center gap-2 hover:text-blue-600">
-            <span class="text-xl">🏪</span>
+          <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
+          <a href={`/shops/${visit.shop.id}`} class="hover:text-blue-600">
             {visit.shop.name}
           </a>
-          <span class="flex items-center gap-2">
-            <span class="text-xl">📍</span>
-            {visit.shop.area.name}
-          </span>
-          <span class="flex items-center gap-2">
-            <span class="text-xl">🍽️</span>
-            {visit.shop.genre.name}
-          </span>
+          <span>{visit.shop.area.name}</span>
+          <span>{visit.shop.genre.name}</span>
         </div>
 
         {/* 本文 */}
@@ -92,10 +82,7 @@ export default createRoute(async (c) => {
           {visit.shop.rating && (
             <div>
               <p class="font-medium text-gray-700">評価</p>
-              <p class="flex items-center gap-2">
-                <span>⭐</span>
-                {visit.shop.rating}
-              </p>
+              <p>{visit.shop.rating}</p>
             </div>
           )}
           <div class="pt-4">

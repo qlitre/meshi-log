@@ -36,37 +36,25 @@ export default createRoute(async (c) => {
         <h1 class="text-3xl font-bold mb-4">{shop.name}</h1>
 
         <div class="space-y-3 text-gray-700">
-          <div class="flex items-start gap-3">
-            <span class="text-xl">📍</span>
-            <div>
-              <p class="font-medium">住所</p>
-              <p>{shop.address}</p>
-            </div>
+          <div>
+            <p class="font-medium">住所</p>
+            <p>{shop.address}</p>
           </div>
 
-          <div class="flex items-center gap-3">
-            <span class="text-xl">🗺️</span>
-            <div>
-              <span class="font-medium">エリア: </span>
-              {shop.area.name}
-            </div>
+          <div>
+            <span class="font-medium">エリア: </span>
+            {shop.area.name}
           </div>
 
-          <div class="flex items-center gap-3">
-            <span class="text-xl">🍽️</span>
-            <div>
-              <span class="font-medium">ジャンル: </span>
-              {shop.genre.name}
-            </div>
+          <div>
+            <span class="font-medium">ジャンル: </span>
+            {shop.genre.name}
           </div>
 
           {shop.rating && (
-            <div class="flex items-center gap-3">
-              <span class="text-xl">⭐</span>
-              <div>
-                <span class="font-medium">評価: </span>
-                {shop.rating}
-              </div>
+            <div>
+              <span class="font-medium">評価: </span>
+              {shop.rating}
             </div>
           )}
 
@@ -91,7 +79,7 @@ export default createRoute(async (c) => {
               <div class="bg-white rounded-lg shadow p-6">
                 <h3 class="text-xl font-bold mb-2">{visit.title}</h3>
                 <p class="text-sm text-gray-600 mb-4">
-                  📅 {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
+                  {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
                 </p>
                 <ArticleDetail content={visit.memo} />
               </div>
