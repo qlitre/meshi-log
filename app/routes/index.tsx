@@ -7,7 +7,7 @@ export default createRoute(async (c) => {
     apiKey: c.env.API_KEY,
   })
 
-  const { contents: visits, totalCount } = await getVisits({ client })
+  const { contents: visits, totalCount } = await getVisits({ client,queries:{depth:2} })
 
   return c.render(
     <div class="container mx-auto px-4 py-8">
@@ -36,7 +36,7 @@ export default createRoute(async (c) => {
           <div class="space-y-6">
             {visits.map((visit) => (
               <article class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <a href={`/shops/${visit.shop.id}`}>
+                <a href={`/visits/${visit.id}`}>
                   <h3 class="text-2xl font-bold mb-2 hover:text-blue-600">
                     {visit.title} - {visit.shop.name}
                   </h3>
