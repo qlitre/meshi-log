@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { ArticleDetail } from '../../components/ArticleDetail'
+import { Container } from '../../components/Container'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -18,18 +19,8 @@ export default createRoute(async (c) => {
   const visitsCount = visits.totalCount
 
   return c.render(
-    <div class="container mx-auto px-4 py-8">
+    <Container>
       <title>{shop.name} - 飯ログ</title>
-
-      {/* ナビゲーション */}
-      <nav class="mb-6 flex gap-4">
-        <a href="/" class="text-blue-600 hover:underline">
-          ← トップページ
-        </a>
-        <a href="/shops" class="text-blue-600 hover:underline">
-          お店一覧
-        </a>
-      </nav>
 
       {/* 店舗情報 */}
       <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
@@ -80,6 +71,6 @@ export default createRoute(async (c) => {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   )
 })

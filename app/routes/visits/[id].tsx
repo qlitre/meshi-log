@@ -4,6 +4,7 @@ import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { ArticleDetail } from '../../components/ArticleDetail'
 import { ShareX } from '../../components/ShareX'
+import { Container } from '../../components/Container'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -34,23 +35,10 @@ export default createRoute(async (c) => {
   }
 
   return c.render(
-    <div class="container mx-auto px-4 py-8">
+    <Container>
       <title>
         {visit.title} - {visit.shop.name} - 飯ログ
       </title>
-
-      {/* ナビゲーション */}
-      <nav class="mb-6 flex gap-4">
-        <a href="/" class="text-blue-600 hover:underline">
-          ← トップページ
-        </a>
-        <a href="/shops" class="text-blue-600 hover:underline">
-          お店一覧
-        </a>
-        <a href={`/shops/${visit.shop.id}`} class="text-blue-600 hover:underline">
-          {visit.shop.name}
-        </a>
-      </nav>
 
       {/* 記事ヘッダー */}
       <article class="article-detail mb-8">
@@ -95,6 +83,6 @@ export default createRoute(async (c) => {
           </div>
         </div>
       </div>
-    </div>,{meta}
+    </Container>,{meta}
   )
 })

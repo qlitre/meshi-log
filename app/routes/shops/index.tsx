@@ -1,5 +1,6 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShops } from '../../libs/microcms'
+import { Container } from '../../components/Container'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
@@ -10,15 +11,8 @@ export default createRoute(async (c) => {
   const { contents: shops } = await getShops({ client })
 
   return c.render(
-    <div class="container mx-auto px-4 py-8">
+    <Container>
       <title>お店一覧 - 飯ログ</title>
-
-      {/* ナビゲーション */}
-      <nav class="mb-6">
-        <a href="/" class="text-blue-600 hover:underline">
-          ← 訪問記録一覧に戻る
-        </a>
-      </nav>
 
       <h1 class="text-3xl font-bold mb-6">お店一覧</h1>
 
@@ -50,6 +44,6 @@ export default createRoute(async (c) => {
           ))}
         </div>
       )}
-    </div>
+    </Container>
   )
 })
