@@ -1,6 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
+import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
@@ -10,10 +11,19 @@ export default createRoute(async (c) => {
 
   const { contents: shops } = await getShops({ client })
 
+  const url = new URL(c.req.url)
+  const canonicalUrl = `${url.protocol}//${url.host}/`
+  const meta: Meta = {
+    title: `お店一覧 - 飯ログ`,
+    description: 'お店一覧ページ',
+    keywords: '旨い店の一覧',
+    canonicalUrl: canonicalUrl,
+    ogpType: 'website' as const,
+    ogpUrl: canonicalUrl,
+  }
+
   return c.render(
     <Container>
-      <title>お店一覧 - 飯ログ</title>
-
       <h1 class="text-3xl font-bold mb-6">お店一覧</h1>
 
       {shops.length === 0 ? (
@@ -44,6 +54,7 @@ export default createRoute(async (c) => {
           ))}
         </div>
       )}
-    </Container>
+    </Container>,
+    { meta }
   )
 })

@@ -20,15 +20,14 @@ export default createRoute(async (c) => {
   const plainText = visit.memo.replace(/<[^>]*>/g, '').trim()
   const description = plainText.slice(0, 100)
 
-  // 現在のURLを取得
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
 
   const meta: Meta = {
-    title: `${visit.title} - ${visit.shop.name}`,
-    description,
+    title: `${visit.title} - ${visit.shop.name} - 飯ログ`,
+    description: description,
     keywords: visit.shop.name,
-    canonicalUrl,
+    canonicalUrl: canonicalUrl,
     ogpType: 'article' as const,
     ogpImage: visit.thumbnail?.url,
     ogpUrl: canonicalUrl,
@@ -36,10 +35,6 @@ export default createRoute(async (c) => {
 
   return c.render(
     <Container>
-      <title>
-        {visit.title} - {visit.shop.name} - 飯ログ
-      </title>
-
       {/* 記事ヘッダー */}
       <article class="article-detail mb-8">
         <h1 class="text-4xl font-bold mb-4">

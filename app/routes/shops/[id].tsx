@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { VisitListCard } from '../../components/VisitListCard'
+import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -17,10 +18,19 @@ export default createRoute(async (c) => {
   const visits = await getVisits({ client, queries: { filters: `shop[equals]${id}` } })
   const visitsCount = visits.totalCount
 
+  const url = new URL(c.req.url)
+  const canonicalUrl = `${url.protocol}//${url.host}/`
+  const meta: Meta = {
+    title: `${shop.name} - 飯ログ`,
+    description: shop.memo,
+    keywords: shop.name,
+    canonicalUrl: canonicalUrl,
+    ogpType: 'website' as const,
+    ogpUrl: canonicalUrl,
+  }
+
   return c.render(
     <Container>
-      <title>{shop.name} - 飯ログ</title>
-
       {/* 店舗情報 */}
       <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
         <h1 class="text-3xl font-bold mb-4">{shop.name}</h1>
@@ -64,6 +74,7 @@ export default createRoute(async (c) => {
           </div>
         )}
       </div>
-    </Container>
+    </Container>,
+    { meta }
   )
 })

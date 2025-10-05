@@ -2,12 +2,25 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisits } from '../libs/microcms'
 import { Container } from '../components/Container'
 import { VisitListCard } from '../components/VisitListCard'
+import type { Meta } from '../types/meta'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
     serviceDomain: c.env.SERVICE_DOMAIN,
     apiKey: c.env.API_KEY,
   })
+
+  const url = new URL(c.req.url)
+  const canonicalUrl = `${url.protocol}//${url.host}/`
+
+  const meta: Meta = {
+    title: `飯ログ`,
+    description: '主に行った飯屋を記録しているwebサイト',
+    keywords: '旨い店',
+    canonicalUrl: canonicalUrl,
+    ogpType: 'article' as const,
+    ogpUrl: canonicalUrl,
+  }
 
   const { contents: visits, totalCount } = await getVisits({ client, queries: { depth: 2 } })
 
@@ -29,6 +42,7 @@ export default createRoute(async (c) => {
           </div>
         )}
       </div>
-    </Container>
+    </Container>,
+    { meta }
   )
 })

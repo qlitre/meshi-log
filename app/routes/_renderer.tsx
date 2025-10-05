@@ -8,6 +8,10 @@ export default jsxRenderer(({ children, meta }) => {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{meta?.title}</title>
+        <link rel="canonical" href={meta?.canonicalUrl} />
+        <meta name="description" content={meta?.description} />
+        <meta name="keywords" content={meta?.keywords} />
         {/*<!-- OGP -->*/}
         <meta property="og:title" content={meta?.title} />
         <meta property="og:description" content={meta?.description} />
