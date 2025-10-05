@@ -85,12 +85,6 @@ export default createRoute(async (c) => {
             <p class="font-medium text-gray-700">住所</p>
             <p>{visit.shop.address}</p>
           </div>
-          {visit.shop.rating && (
-            <div>
-              <p class="font-medium text-gray-700">評価</p>
-              <p>{visit.shop.rating}</p>
-            </div>
-          )}
           <div class="pt-4">
             <a
               href={`/shops/${visit.shop.id}`}

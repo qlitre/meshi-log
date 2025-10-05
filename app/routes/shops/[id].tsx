@@ -51,13 +51,6 @@ export default createRoute(async (c) => {
             {shop.genre.name}
           </div>
 
-          {shop.rating && (
-            <div>
-              <span class="font-medium">評価: </span>
-              {shop.rating}
-            </div>
-          )}
-
           {shop.memo && (
             <div class="mt-6">
               <p class="font-medium mb-2">メモ</p>

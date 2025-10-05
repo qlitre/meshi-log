@@ -44,13 +44,6 @@ export default createRoute(async (c) => {
                   {shop.genre.name}
                 </p>
 
-                {shop.rating && (
-                  <p>
-                    <span class="font-medium">評価: </span>
-                    {shop.rating}
-                  </p>
-                )}
-
                 {shop.memo && <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>}
               </div>
             </a>
