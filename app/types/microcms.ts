@@ -22,8 +22,8 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   address: string
   area: Area
   genre: Genre
-  memo: string
-  rating?: number
+  memo: string // textArea (required)
+  rating?: number // number (optional)
 }
 
 // 訪問記録
