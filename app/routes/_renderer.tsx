@@ -12,22 +12,22 @@ export default jsxRenderer(({ children, meta }) => {
         <meta property="og:title" content={meta?.title} />
         <meta property="og:description" content={meta?.description} />
         <meta property="og:url" content={meta?.ogpUrl} />
-        <meta property="og:site_name" content='meshi-log' />
+        <meta property="og:site_name" content="meshi-log" />
         <meta property="og:image" content={meta?.ogpImage} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:type" content={meta?.ogpType} />
-        <meta property="article:author" content='https://twitter.com/kuri_tter' />
+        <meta property="article:author" content="https://twitter.com/kuri_tter" />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:creator" content='@kuri_tter'/>
+        <meta name="twitter:creator" content="@kuri_tter" />
         <link rel="icon" href="/favicon.ico" />
         <Link href="/app/style.css" rel="stylesheet" />
         <Script src="/app/client.ts" async />
       </head>
       <body>
-        <Header/>
+        <Header />
         {children}
-        </body>
+      </body>
     </html>
   )
 })

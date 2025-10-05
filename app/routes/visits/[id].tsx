@@ -14,7 +14,7 @@ export default createRoute(async (c) => {
     apiKey: c.env.API_KEY,
   })
 
-  const visit = await getVisitDetail({ client, contentId: id,queries:{depth:2} })
+  const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 
   // HTMLタグを除去してテキストのみ抽出
   const plainText = visit.memo.replace(/<[^>]*>/g, '').trim()
@@ -42,7 +42,9 @@ export default createRoute(async (c) => {
 
       {/* 記事ヘッダー */}
       <article class="article-detail mb-8">
-        <h1 class="text-4xl font-bold mb-4">{visit.title} - {visit.shop.name}</h1>
+        <h1 class="text-4xl font-bold mb-4">
+          {visit.title} - {visit.shop.name}
+        </h1>
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
           <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
           <a href={`/shops/${visit.shop.id}`} class="hover:text-blue-600">
@@ -53,7 +55,7 @@ export default createRoute(async (c) => {
         </div>
 
         {/* 本文 */}
-        <ArticleDetail content={visit.memo}/>
+        <ArticleDetail content={visit.memo} />
 
         {/* シェアボタン */}
         <div class="mt-8 pt-6 border-t">
@@ -83,6 +85,7 @@ export default createRoute(async (c) => {
           </div>
         </div>
       </div>
-    </Container>,{meta}
+    </Container>,
+    { meta }
   )
 })
