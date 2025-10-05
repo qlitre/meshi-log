@@ -1,5 +1,6 @@
 import { jstDatetime } from '../utils/jstDatetime'
 import type { Visit } from '../types/microcms'
+import { raw } from 'hono/html'
 
 type Props = {
   visit: Visit
@@ -23,10 +24,7 @@ export const VisitListCard = ({ visit }: Props) => {
         <span>{visit.shop.genre.name}</span>
       </div>
 
-      <div
-        class="prose max-w-none line-clamp-3 [&_img]:hidden"
-        dangerouslySetInnerHTML={{ __html: visit.memo }}
-      />
+      <div class="prose max-w-none line-clamp-3 [&_img]:hidden">{raw(visit.memo)}</div>
     </article>
   )
 }
