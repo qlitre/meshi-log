@@ -2,7 +2,8 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisitDetail } from '../../libs/microcms'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
-import {ArticleDetail} from '../../components/ArticleDetail'
+import { ArticleDetail } from '../../components/ArticleDetail'
+import { ShareX } from '../../components/ShareX'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -65,6 +66,11 @@ export default createRoute(async (c) => {
 
         {/* 本文 */}
         <ArticleDetail content={visit.memo}/>
+
+        {/* シェアボタン */}
+        <div class="mt-8 pt-6 border-t">
+          <ShareX url={canonicalUrl} title={`${visit.title} - ${visit.shop.name}`} />
+        </div>
       </article>
 
       {/* 店舗情報 */}
