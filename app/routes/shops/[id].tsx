@@ -1,8 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
-import { jstDatetime } from '../../utils/jstDatetime'
-import { ArticleDetail } from '../../components/ArticleDetail'
 import { Container } from '../../components/Container'
+import { VisitListCard } from '../../components/VisitListCard'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -60,13 +59,7 @@ export default createRoute(async (c) => {
         ) : (
           <div class="space-y-4">
             {visits.contents.map((visit) => (
-              <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-xl font-bold mb-2">{visit.title}</h3>
-                <p class="text-sm text-gray-600 mb-4">
-                  {jstDatetime(visit.visit_date, 'YYYY年M月D日')}
-                </p>
-                <ArticleDetail content={visit.memo} />
-              </div>
+              <VisitListCard visit={visit} />
             ))}
           </div>
         )}

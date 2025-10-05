@@ -1,7 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisits } from '../libs/microcms'
-import { jstDatetime } from '../utils/jstDatetime'
 import { Container } from '../components/Container'
+import { VisitListCard } from '../components/VisitListCard'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
@@ -9,11 +9,11 @@ export default createRoute(async (c) => {
     apiKey: c.env.API_KEY,
   })
 
-  const { contents: visits, totalCount } = await getVisits({ client,queries:{depth:2} })
+  const { contents: visits, totalCount } = await getVisits({ client, queries: { depth: 2 } })
 
   return c.render(
     <Container>
-      <title>飯ログ - 訪問記録</title>    
+      <title>飯ログ - 訪問記録</title>
 
       {/* 訪問記録一覧 */}
       <div class="space-y-6">
@@ -24,27 +24,7 @@ export default createRoute(async (c) => {
         ) : (
           <div class="space-y-6">
             {visits.map((visit) => (
-              <article class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                <a href={`/visits/${visit.id}`}>
-                  <h3 class="text-2xl font-bold mb-2 hover:text-blue-600">
-                    {visit.title} - {visit.shop.name}
-                  </h3>
-                </a>
-
-                <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                  <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
-                  <a href={`/shops/${visit.shop.id}`} class="hover:text-blue-600">
-                    {visit.shop.name}
-                  </a>
-                  <span>{visit.shop.area.name}</span>
-                  <span>{visit.shop.genre.name}</span>
-                </div>
-
-                <div
-                  class="prose max-w-none line-clamp-3 [&_img]:hidden"
-                  dangerouslySetInnerHTML={{ __html: visit.memo }}
-                />
-              </article>
+              <VisitListCard visit={visit} />
             ))}
           </div>
         )}
