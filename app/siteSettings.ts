@@ -1,3 +1,3 @@
-export const config={
-    siteurl:'https://meshi-log.info'
+export const config = {
+  siteurl: 'https://meshi-log.info',
 }
