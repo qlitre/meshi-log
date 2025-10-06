@@ -37,14 +37,11 @@ export default createRoute(async (c) => {
     <Container>
       {/* 記事ヘッダー */}
       <article class="article-detail mb-8">
-        <h1 class="text-4xl font-bold mb-4">
+        <h1 class="text-2xl font-bold mb-4">
           {visit.title} - {visit.shop.name}
         </h1>
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
           <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
-          <a href={`/shops/${visit.shop.id}`} class="hover:text-blue-600">
-            {visit.shop.name}
-          </a>
           <span>{visit.shop.area.name}</span>
           <span>{visit.shop.genre.name}</span>
         </div>
