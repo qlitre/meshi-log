@@ -4,6 +4,7 @@ import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
 import { Context } from 'hono'
+import { config } from '../siteSettings'
 import { HTTPException } from 'hono/http-exception'
 import { Hono } from 'hono'
 import type { Env } from 'hono'
@@ -46,6 +47,7 @@ export const getMcpServer = async (c: Context<Env>) => {
       const queries: MicroCMSQueries = {
         limit: limit,
         offset: offset,
+        fields: config.visitListFields,
         ...(q && { q: q }),
       }
       const result = await getVisits({ client, queries })
