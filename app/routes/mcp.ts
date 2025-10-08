@@ -1,5 +1,5 @@
 import type { MicroCMSQueries } from 'microcms-js-sdk'
-import { getMicroCMSSchema } from '../libs/microcms'
+import { getMicroCMSClient, getMicroCMSSchema, getVisits, getVisitDetail } from '../libs/microcms'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
@@ -13,7 +13,7 @@ const limit = 30
 export const getMcpServer = async (c: Context<Env>) => {
   const serviceDomain = c.env.SERVICE_DOMAIN
   const apiKey = c.env.API_KEY
-
+  const client = getMicroCMSClient({ serviceDomain: serviceDomain, apiKey: apiKey })
   const server = new McpServer({
     name: 'meshi-log MCP Server',
     version: '0.0.1',
@@ -33,6 +33,50 @@ export const getMcpServer = async (c: Context<Env>) => {
       ],
     }
   })
+
+  server.tool(
+    'get_visits',
+    'Get Visits with optional search',
+    {
+      page: z.number().min(1).default(1),
+      q: z.string().optional(),
+    },
+    async ({ page, q }) => {
+      const offset = limit * (page - 1)
+      const queries: MicroCMSQueries = {
+        limit: limit,
+        offset: offset,
+        ...(q && { q: q }),
+      }
+      const result = await getVisits({ client, queries })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+  server.tool(
+    'get_visit_detail',
+    'Get Visit Detail',
+    {
+      id: z.string().min(1),
+    },
+    async ({ id }) => {
+      const result = await getVisitDetail({ client, contentId: id })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
   return server
 }
 
