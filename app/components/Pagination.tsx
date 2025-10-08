@@ -67,7 +67,9 @@ export const Pagination = ({ totalCount, currentPage = 1, basePath, query = {} }
           </li>
         ))}
         {currentPage <= numPages - 4 && <span class="text-gray-400 mx-1">...</span>}
-        {currentPage <= numPages - 3 && <li class="list-none w-10 h-10">{getPaginationItem(numPages)}</li>}
+        {currentPage <= numPages - 3 && (
+          <li class="list-none w-10 h-10">{getPaginationItem(numPages)}</li>
+        )}
         {currentPage < numPages && (
           <li class="list-none w-20 h-10">
             <a
