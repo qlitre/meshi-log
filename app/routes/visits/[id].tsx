@@ -5,6 +5,7 @@ import { jstDatetime } from '../../utils/jstDatetime'
 import { ArticleDetail } from '../../components/ArticleDetail'
 import { ShareX } from '../../components/ShareX'
 import { Container } from '../../components/Container'
+import { LinkToTop } from '../../components/LinkToTop'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -79,11 +80,7 @@ export default createRoute(async (c) => {
       </div>
 
       {/* 戻るリンク */}
-      <div class="mt-8 text-center">
-        <a href="/" class="inline-block text-blue-600 hover:text-blue-800 hover:underline">
-          ← トップページに戻る
-        </a>
-      </div>
+      <LinkToTop />
     </Container>,
     { meta }
   )

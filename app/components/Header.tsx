@@ -20,6 +20,11 @@ export function Header() {
                   店舗一覧
                 </a>
               </li>
+              <li>
+                <a href="/about" class="text-gray-600 hover:text-gray-900">
+                  About
+                </a>
+              </li>
             </ul>
           </nav>
         </div>
