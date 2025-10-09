@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getAllShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { AllShopsMap } from '../../components/AllShopsMap'
+import { PageHeading } from '../../components/PageHeading'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
@@ -48,7 +49,7 @@ export default createRoute(async (c) => {
     <Container>
       <div class="space-y-6">
         <div class="flex items-center justify-between">
-          <h1 class="text-3xl font-bold">店舗マップ</h1>
+          <PageHeading>店舗マップ</PageHeading>
           <a href="/shops" class="text-blue-600 hover:text-blue-800 hover:underline">
             リスト表示に戻る →
           </a>
@@ -59,7 +60,7 @@ export default createRoute(async (c) => {
         {/* エリア別・ジャンル別の統計情報 */}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-bold mb-4">エリア別店舗数</h2>
+            <PageHeading className="mb-4">エリア別店舗数</PageHeading>
             <div class="space-y-2">
               {sortedAreaStats.map(([name, count]) => (
                 <div class="flex justify-between items-center">
@@ -71,7 +72,7 @@ export default createRoute(async (c) => {
           </div>
 
           <div class="bg-white rounded-lg shadow p-6">
-            <h2 class="text-xl font-bold mb-4">ジャンル別店舗数</h2>
+            <PageHeading className="mb-4">ジャンル別店舗数</PageHeading>
             <div class="space-y-2">
               {sortedGenreStats.map(([name, count]) => (
                 <div class="flex justify-between items-center">

@@ -3,6 +3,7 @@ import { getMicroCMSClient, getVisits } from '../libs/microcms'
 import { Container } from '../components/Container'
 import { VisitListCard } from '../components/VisitListCard'
 import { Pagination } from '../components/Pagination'
+import { PageHeading } from '../components/PageHeading'
 import type { Meta } from '../types/meta'
 import { config } from '../siteSettings'
 
@@ -45,7 +46,7 @@ export default createRoute(async (c) => {
     <Container>
       {/* 訪問記録一覧 */}
       <div class="space-y-6">
-        <h2 class="text-xl font-bold">訪問記録 ({totalCount}件)</h2>
+        <PageHeading>訪問記録</PageHeading>
         {totalCount === 0 ? (
           <p class="text-gray-500">まだ訪問記録がありません</p>
         ) : (

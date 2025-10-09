@@ -1,5 +1,6 @@
 import { createRoute } from 'honox/factory'
 import { Container } from '../../components/Container'
+import { PageHeading } from '../../components/PageHeading'
 import type { Meta } from '../../types/meta'
 import { LinkToTop } from '../../components/LinkToTop'
 
@@ -19,9 +20,7 @@ export default createRoute(async (c) => {
   return c.render(
     <Container>
       <div class="space-y-8">
-        <div>
-          <h2 class="text-xl font-bold mb-4">飯ログについて</h2>
-        </div>
+        <PageHeading className="mb-4">飯ログについて</PageHeading>
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="prose prose-lg max-w-none">
             <p class="text-gray-700 leading-relaxed mb-4">
@@ -33,9 +32,7 @@ export default createRoute(async (c) => {
           </div>
         </div>
 
-        <div>
-          <h2 class="text-xl font-bold mb-4">Feedについて</h2>
-        </div>
+        <PageHeading className="mb-4">Feedについて</PageHeading>
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="prose prose-lg max-w-none">
             <p class="text-gray-700 leading-relaxed mb-4">
@@ -54,9 +51,7 @@ export default createRoute(async (c) => {
           </div>
         </div>
 
-        <div>
-          <h2 class="text-xl font-bold mb-4">MCPについて</h2>
-        </div>
+        <PageHeading className="mb-4">MCPについて</PageHeading>
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="prose prose-lg max-w-none">
             <p class="text-gray-700 leading-relaxed mb-4">
@@ -78,9 +73,7 @@ export default createRoute(async (c) => {
           </div>
         </div>
 
-        <div>
-          <h2 class="text-xl font-bold mb-4">管理人について</h2>
-        </div>
+        <PageHeading className="mb-4">管理人について</PageHeading>
         <div class="bg-white rounded-lg shadow-md p-6">
           <div class="prose prose-lg max-w-none">
             <p class="text-gray-700 leading-relaxed mb-4">

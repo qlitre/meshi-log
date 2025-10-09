@@ -1,6 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
+import { PageHeading } from '../../components/PageHeading'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
@@ -25,7 +26,7 @@ export default createRoute(async (c) => {
   return c.render(
     <Container>
       <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold">お店一覧</h1>
+        <PageHeading>お店一覧</PageHeading>
         <a
           href="/shops/map"
           class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
