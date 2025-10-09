@@ -50,6 +50,7 @@ export const getShops = async ({ client, queries }: ClientWithQueries) => {
   })
 }
 
+// 全店舗取得
 export const getAllShops = async ({ client, queries }: ClientWithQueries) => {
   return await client.getAllContents<Shop>({
     endpoint: 'shop',
@@ -69,6 +70,14 @@ export const getShopDetail = async ({ client, contentId, queries }: ClientWithCo
 // 訪問記録一覧取得
 export const getVisits = async ({ client, queries }: ClientWithQueries) => {
   return await client.getList<Visit>({
+    endpoint: 'visits',
+    queries,
+  })
+}
+
+// 全訪問記録取得
+export const getAllVisits = async ({ client, queries }: ClientWithQueries) => {
+  return await client.getAllContents<Visit>({
     endpoint: 'visits',
     queries,
   })
