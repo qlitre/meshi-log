@@ -24,7 +24,15 @@ export default createRoute(async (c) => {
 
   return c.render(
     <Container>
-      <h1 class="text-3xl font-bold mb-6">お店一覧</h1>
+      <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">お店一覧</h1>
+        <a
+          href="/shops/map"
+          class="inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          地図で見る
+        </a>
+      </div>
 
       {shops.length === 0 ? (
         <p class="text-gray-500">お店が登録されていません</p>

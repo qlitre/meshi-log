@@ -20,6 +20,8 @@ export interface Genre extends MicroCMSContentId, MicroCMSDate {
 export interface Shop extends MicroCMSContentId, MicroCMSDate {
   name: string
   address: string
+  latitude: number
+  longitude: number
   area: Area
   genre: Genre
   memo: string // textArea (required)

@@ -50,6 +50,13 @@ export const getShops = async ({ client, queries }: ClientWithQueries) => {
   })
 }
 
+export const getAllShops = async ({ client, queries }: ClientWithQueries) => {
+  return await client.getAllContents<Shop>({
+    endpoint: 'shop',
+    queries,
+  })
+}
+
 // 店舗詳細取得
 export const getShopDetail = async ({ client, contentId, queries }: ClientWithContentId) => {
   return await client.getListDetail<Shop>({
