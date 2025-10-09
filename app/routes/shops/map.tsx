@@ -1,4 +1,3 @@
-// app/routes/shops/map.tsx
 import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getAllShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
@@ -16,7 +15,6 @@ export default createRoute(async (c) => {
     client,
     queries: {
       fields: 'id,name,address,latitude,longitude,area,genre',
-      limit: 1000, // 全店舗取得
     },
   })
 
