@@ -1,5 +1,5 @@
-// app/components/AllShopsMap.tsx
 import type { Shop } from '../types/microcms'
+import { raw } from 'hono/html'
 
 type Props = {
   shops: Shop[]
@@ -7,8 +7,8 @@ type Props = {
 
 export const AllShopsMap = ({ shops }: Props) => {
   // 座標を持つ店舗のみフィルタリング
-  const shopsWithCoords = shops.filter(shop => shop.latitude && shop.longitude)
-  
+  const shopsWithCoords = shops.filter((shop) => shop.latitude && shop.longitude)
+
   if (shopsWithCoords.length === 0) {
     return (
       <div class="bg-gray-100 rounded-lg p-8 text-center">
@@ -18,12 +18,14 @@ export const AllShopsMap = ({ shops }: Props) => {
   }
 
   // 全店舗の中心点を計算
-  const avgLat = shopsWithCoords.reduce((sum, shop) => sum + (shop.latitude || 0), 0) / shopsWithCoords.length
-  const avgLng = shopsWithCoords.reduce((sum, shop) => sum + (shop.longitude || 0), 0) / shopsWithCoords.length
+  const avgLat =
+    shopsWithCoords.reduce((sum, shop) => sum + (shop.latitude || 0), 0) / shopsWithCoords.length
+  const avgLng =
+    shopsWithCoords.reduce((sum, shop) => sum + (shop.longitude || 0), 0) / shopsWithCoords.length
 
   // 全店舗が収まる範囲を計算
-  const lats = shopsWithCoords.map(shop => shop.latitude || 0)
-  const lngs = shopsWithCoords.map(shop => shop.longitude || 0)
+  const lats = shopsWithCoords.map((shop) => shop.latitude || 0)
+  const lngs = shopsWithCoords.map((shop) => shop.longitude || 0)
   const minLat = Math.min(...lats)
   const maxLat = Math.max(...lats)
   const minLng = Math.min(...lngs)
@@ -36,7 +38,7 @@ export const AllShopsMap = ({ shops }: Props) => {
   // OpenStreetMap の embed URL を構築
   // 複数マーカーを表示するために、各店舗のマーカーをクエリパラメータに追加
   const markers = shopsWithCoords
-    .map(shop => `pin-s+ff0000(${shop.longitude},${shop.latitude})`)
+    .map((shop) => `pin-s+ff0000(${shop.longitude},${shop.latitude})`)
     .join(',')
 
   // Leaflet を使った独自マップ実装
@@ -45,15 +47,15 @@ export const AllShopsMap = ({ shops }: Props) => {
       <div class="w-full rounded-lg overflow-hidden shadow-md" style="height: 600px;">
         <div id="map" class="w-full h-full" data-shops={JSON.stringify(shopsWithCoords)} />
       </div>
-      
+
       <div class="text-right text-sm text-gray-600">
         <p>{shopsWithCoords.length} 店舗を表示中</p>
       </div>
-      
+
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-      <script dangerouslySetInnerHTML={{
-        __html: `
+      <script>
+        {raw(`
           (function() {
             const mapEl = document.getElementById('map');
             const shops = JSON.parse(mapEl.dataset.shops);
@@ -92,8 +94,8 @@ export const AllShopsMap = ({ shops }: Props) => {
               map.fitBounds(bounds, { padding: [50, 50] });
             }
           })();
-        `
-      }} />
+        `)}
+      </script>
     </div>
   )
 }
