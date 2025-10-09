@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getVisitDetail } from '../../libs/microcms'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
+import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
 import { ArticleDetail } from '../../components/ArticleDetail'
 import { ShareX } from '../../components/ShareX'
 import { Container } from '../../components/Container'
@@ -17,9 +18,7 @@ export default createRoute(async (c) => {
 
   const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 
-  // HTMLタグを除去してテキストのみ抽出
-  const plainText = visit.memo.replace(/<[^>]*>/g, '').trim()
-  const description = plainText.slice(0, 100)
+  const description = stripHtmlTagsAndTruncate(visit.memo, 100)
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
