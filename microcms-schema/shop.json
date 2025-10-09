@@ -15,6 +15,18 @@
         "required": true
       },
       {
+        "fieldId": "latitude",
+        "name": "緯度",
+        "kind": "number",
+        "required": true
+      },
+      {
+        "fieldId": "longitude",
+        "name": "経度",
+        "kind": "number",
+        "required": true
+      },
+      {
         "fieldId": "area",
         "name": "エリア",
         "kind": "relation",
