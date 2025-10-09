@@ -32,6 +32,20 @@ export default createRoute(async (c) => {
     ogpUrl: canonicalUrl,
   }
 
+  const areaShopCount: Record<string, number> = {}
+  for (const s of shops) {
+    if (!areaShopCount[s.area.name]) areaShopCount[s.area.name] = 0
+    areaShopCount[s.area.name]++
+  }
+
+  const genreShopCount: Record<string, number> = {}
+  for (const s of shops) {
+    if (!genreShopCount[s.genre.name]) genreShopCount[s.genre.name] = 0
+    genreShopCount[s.genre.name]++
+  }
+
+  const sortedAreaStats = Object.entries(areaShopCount).sort((a, b) => b[1] - a[1])
+  const sortedGenreStats = Object.entries(genreShopCount).sort((a, b) => b[1] - a[1])
   return c.render(
     <Container>
       <div class="space-y-6">
@@ -49,36 +63,24 @@ export default createRoute(async (c) => {
           <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-bold mb-4">エリア別店舗数</h2>
             <div class="space-y-2">
-              {Array.from(new Set(shops.map((s) => s.area.name)))
-                .map((area) => ({
-                  name: area,
-                  count: shops.filter((s) => s.area.name === area).length,
-                }))
-                .sort((a, b) => b.count - a.count)
-                .map(({ name, count }) => (
-                  <div class="flex justify-between items-center">
-                    <span>{name}</span>
-                    <span class="font-semibold">{count}店舗</span>
-                  </div>
-                ))}
+              {sortedAreaStats.map(([name, count]) => (
+                <div class="flex justify-between items-center">
+                  <span>{name}</span>
+                  <span class="font-semibold">{count}店舗</span>
+                </div>
+              ))}
             </div>
           </div>
 
           <div class="bg-white rounded-lg shadow p-6">
             <h2 class="text-xl font-bold mb-4">ジャンル別店舗数</h2>
             <div class="space-y-2">
-              {Array.from(new Set(shops.map((s) => s.genre.name)))
-                .map((genre) => ({
-                  name: genre,
-                  count: shops.filter((s) => s.genre.name === genre).length,
-                }))
-                .sort((a, b) => b.count - a.count)
-                .map(({ name, count }) => (
-                  <div class="flex justify-between items-center">
-                    <span>{name}</span>
-                    <span class="font-semibold">{count}店舗</span>
-                  </div>
-                ))}
+              {sortedGenreStats.map(([name, count]) => (
+                <div class="flex justify-between items-center">
+                  <span>{name}</span>
+                  <span class="font-semibold">{count}店舗</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
