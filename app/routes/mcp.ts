@@ -6,6 +6,7 @@ import {
   getVisitDetail,
   getAreas,
   getGenres,
+  getShops,
 } from '../libs/microcms'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
@@ -41,6 +42,44 @@ export const getMcpServer = async (c: Context<Env>) => {
       ],
     }
   })
+  server.tool(
+    'get_shops',
+    'Get Shops with optional filters (area, genre, recommended status) and search query. Returns paginated results with 30 items per page.',
+    {
+      page: z.number().min(1).default(1),
+      q: z.string().optional(),
+      area_id: z.string().optional(),
+      genre_id: z.string().optional(),
+      is_recomended: z.boolean().optional(),
+    },
+    async ({ page, q, area_id, genre_id, is_recomended }) => {
+      const offset = limit * (page - 1)
+      const queries: MicroCMSQueries = {
+        limit: limit,
+        offset: offset,
+      }
+      if (q) queries.q = q
+
+      let filterString = ''
+      const filterCondition = []
+      if (area_id) filterCondition.push(`area[equals]${area_id}`)
+      if (genre_id) filterCondition.push(`genre[equals]${genre_id}`)
+      if (is_recomended) filterCondition.push(`is_recommended[equals]true`)
+      if (filterCondition.length > 0) {
+        filterString = filterCondition.join('[and]')
+      }
+      if (filterString) queries.filters = filterString
+      const result = await getShops({ client, queries })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
 
   server.tool(
     'get_visits',
