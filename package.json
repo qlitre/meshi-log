@@ -12,7 +12,7 @@
   "private": true,
   "dependencies": {
     "@hono/mcp": "^0.1.4",
-    "@modelcontextprotocol/sdk": "^1.19.1",
+    "@modelcontextprotocol/sdk": "^1.20.0",
     "dayjs": "^1.11.18",
     "hono": "^4.9.10",
     "honox": "^0.1.49",
