@@ -108,7 +108,7 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
     }
   )
-    server.tool(
+  server.tool(
     'get_genres',
     'Get shop genres',
     {

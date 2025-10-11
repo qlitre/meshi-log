@@ -12,7 +12,7 @@ export default createRoute(async (c) => {
   })
 
   const { contents: shops } = await getShops({ client })
-　const url = new URL(c.req.url)
+  const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/`
   const meta: Meta = {
     title: `お店一覧 - 飯ログ`,

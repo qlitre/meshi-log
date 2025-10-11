@@ -1,3 +1,3 @@
 export type BaseProps = {
-  className?: string | undefined;
-};
+  className?: string | undefined
+}
