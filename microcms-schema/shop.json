@@ -47,6 +47,12 @@
         "required": true
       },
       {
+        "fieldId": "is_recommended",
+        "name": "おすすめフラグ",
+        "kind": "boolean",
+        "required": true
+      },
+      {
         "fieldId": "rating",
         "name": "評価",
         "kind": "number",

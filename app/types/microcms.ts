@@ -25,6 +25,7 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   area: Area
   genre: Genre
   memo: string // textArea (required)
+  is_recommended: boolean // boolean (required)
   rating?: number // number (optional)
 }
 
