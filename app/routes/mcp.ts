@@ -1,5 +1,12 @@
 import type { MicroCMSQueries } from 'microcms-js-sdk'
-import { getMicroCMSClient, getMicroCMSSchema, getVisits, getVisitDetail } from '../libs/microcms'
+import {
+  getMicroCMSClient,
+  getMicroCMSSchema,
+  getVisits,
+  getVisitDetail,
+  getAreas,
+  getGenres,
+} from '../libs/microcms'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
@@ -69,6 +76,50 @@ export const getMcpServer = async (c: Context<Env>) => {
     },
     async ({ id }) => {
       const result = await getVisitDetail({ client, contentId: id })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+  server.tool(
+    'get_areas',
+    'Get shop areas',
+    {
+      q: z.string().optional(),
+    },
+    async ({ q }) => {
+      const queries: MicroCMSQueries = {
+        limit: 100,
+        ...(q && { q: q }),
+      }
+      const result = await getAreas({ client, queries })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+    server.tool(
+    'get_genres',
+    'Get shop genres',
+    {
+      q: z.string().optional(),
+    },
+    async ({ q }) => {
+      const queries: MicroCMSQueries = {
+        limit: 100,
+        ...(q && { q: q }),
+      }
+      const result = await getGenres({ client, queries })
       return {
         content: [
           {
