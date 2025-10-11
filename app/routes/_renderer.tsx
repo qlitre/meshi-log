@@ -18,7 +18,7 @@ export default jsxRenderer(({ children, meta }) => {
         <meta property="og:url" content={meta?.ogpUrl} />
         <meta property="og:site_name" content="meshi-log" />
         <meta property="og:image" content={meta?.ogpImage} />
-        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:width" content="630" />
         <meta property="og:image:height" content="630" />
         <meta property="og:type" content={meta?.ogpType} />
         <meta property="article:author" content="https://twitter.com/kuri_tter" />
