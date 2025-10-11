@@ -24,6 +24,15 @@ export const ShopInformation = ({ shop }: Props) => {
           >
             Googleマップで開く
           </a>
+          <div class="mt-4">
+            <iframe
+              width="100%"
+              height="300"
+              style="border:0; border-radius: 0.5rem;"
+              loading="lazy"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(shop.address)}&output=embed`}
+            ></iframe>
+          </div>
         </div>
         <div class="pt-4">
           <a
