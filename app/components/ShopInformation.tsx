@@ -11,7 +11,6 @@ export const ShopInformation = ({ shop }: Props) => {
       <div class="space-y-3">
         <div>
           <p class="font-medium text-gray-700">店名</p>
-          <p class="text-lg">{shop.name}</p>
         </div>
         <div>
           <p class="font-medium text-gray-700">住所</p>

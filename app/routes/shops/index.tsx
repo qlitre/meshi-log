@@ -2,6 +2,7 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
+import { ShopListCard } from '../../components/ShopListCard'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
@@ -11,8 +12,7 @@ export default createRoute(async (c) => {
   })
 
   const { contents: shops } = await getShops({ client })
-
-  const url = new URL(c.req.url)
+　const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/`
   const meta: Meta = {
     title: `お店一覧 - 飯ログ`,
@@ -40,26 +40,7 @@ export default createRoute(async (c) => {
       ) : (
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {shops.map((shop) => (
-            <a
-              href={`/shops/${shop.id}`}
-              class="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow border border-gray-200"
-            >
-              <h2 class="text-xl font-semibold mb-2">{shop.name}</h2>
-
-              <div class="space-y-2 text-sm text-gray-600">
-                <p>
-                  <span class="font-medium">エリア: </span>
-                  {shop.area.name}
-                </p>
-
-                <p>
-                  <span class="font-medium">ジャンル: </span>
-                  {shop.genre.name}
-                </p>
-
-                {shop.memo && <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>}
-              </div>
-            </a>
+            <ShopListCard shop={shop} />
           ))}
         </div>
       )}
