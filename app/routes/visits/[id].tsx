@@ -7,6 +7,7 @@ import { ArticleDetail } from '../../components/ArticleDetail'
 import { ShareX } from '../../components/ShareX'
 import { Container } from '../../components/Container'
 import { LinkToTop } from '../../components/LinkToTop'
+import { ShopInformation } from '../../components/ShopInformation'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
@@ -56,27 +57,7 @@ export default createRoute(async (c) => {
       </article>
 
       {/* 店舗情報 */}
-      <div class="bg-gray-50 rounded-lg p-6 max-w-[860px] mx-auto">
-        <h2 class="text-2xl font-bold mb-4">店舗情報</h2>
-        <div class="space-y-3">
-          <div>
-            <p class="font-medium text-gray-700">店名</p>
-            <p class="text-lg">{visit.shop.name}</p>
-          </div>
-          <div>
-            <p class="font-medium text-gray-700">住所</p>
-            <p>{visit.shop.address}</p>
-          </div>
-          <div class="pt-4">
-            <a
-              href={`/shops/${visit.shop.id}`}
-              class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              この店舗の他の訪問記録を見る
-            </a>
-          </div>
-        </div>
-      </div>
+      <ShopInformation shop={visit.shop} />
 
       {/* 戻るリンク */}
       <LinkToTop />
