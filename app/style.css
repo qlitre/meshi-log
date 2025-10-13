@@ -117,9 +117,25 @@
   border-bottom: 2px solid #e7e7e7;
 }
 
+.about-content h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.75rem 0;
+}
+
 .about-content p {
-  margin-bottom: 1rem;
   line-height: 1.7;
+}
+
+.about-content ul {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.about-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.7;
+  list-style: disc;
 }
 
 .about-content a {
