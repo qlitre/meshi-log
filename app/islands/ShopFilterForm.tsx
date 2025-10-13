@@ -17,6 +17,7 @@ export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFi
   const [areaId, setAreaId] = useState(initialFilters.area || '')
   const [genreId, setGenreId] = useState(initialFilters.genre || '')
   const [isRecommended, setIsRecommended] = useState(initialFilters.isRecommended || false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const handleSubmit = (e: Event) => {
     e.preventDefault()
@@ -55,8 +56,23 @@ export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFi
   const hasFilters = query || areaId || genreId || isRecommended
 
   return (
-    <form onSubmit={handleSubmit} class="mb-6 p-4 bg-gray-50 rounded-lg">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="mb-6">
+      {/* トグルボタン（スマホのみ表示） */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        class="md:hidden w-full mb-2 px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-between"
+      >
+        <span>検索条件{hasFilters && '（設定中）'}</span>
+        <span>{isOpen ? '▲' : '▼'}</span>
+      </button>
+
+      {/* フォーム本体 */}
+      <form
+        onSubmit={handleSubmit}
+        class={`p-4 bg-gray-50 rounded-lg ${isOpen ? 'block' : 'hidden md:block'}`}
+      >
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
         {/* キーワード検索 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">キーワード</label>
@@ -136,6 +152,7 @@ export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFi
           </button>
         )}
       </div>
-    </form>
+      </form>
+    </div>
   )
 }
