@@ -61,7 +61,7 @@ export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFi
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        class="md:hidden w-full mb-2 px-4 py-2 bg-gray-100 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-200 transition-colors flex items-center justify-between"
+        class="md:hidden w-full mb-2 px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors flex items-center justify-between"
       >
         <span>検索条件{hasFilters && '（設定中）'}</span>
         <span>{isOpen ? '▲' : '▼'}</span>
