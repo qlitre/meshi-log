@@ -1,26 +1,24 @@
-import { jsxRenderer } from "hono/jsx-renderer";
+import { jsxRenderer } from 'hono/jsx-renderer'
+import { Container } from '../../components/Container'
+import { LinkToTop } from '../../components/LinkToTop'
 
 export default jsxRenderer(({ children, Layout, frontmatter }) => {
-  const { title, description } = frontmatter ?? {};
+  const { title, description } = frontmatter ?? {}
 
   const layoutProps = {
     description: description,
-    frontmatter: frontmatter
-  };
+    frontmatter: frontmatter,
+  }
 
   return (
     <Layout {...layoutProps}>
-      <div class="about-page">
-        <header class="page-header">
-          {title && <h1>{title}</h1>}
-        </header>
-        <div class="about-content">
-          {children}
+      <Container>
+        <div class="text-center py-2">
+          {title && <h1 class="text-4xl font-bold text-[#222] mb-2">{title}</h1>}
         </div>
-        <div class="back-to-top">
-          <a href="/">← トップページに戻る</a>
-        </div>
-      </div>
+        <div class="about-content">{children}</div>
+        <LinkToTop />
+      </Container>
     </Layout>
-  );
-});
+  )
+})
