@@ -41,7 +41,9 @@ export default createRoute(async (c) => {
               <p class="text-gray-500">「{keyword}」の検索結果が見つかりませんでした</p>
             ) : (
               <>
-                <p class="text-sm text-gray-600">「{keyword}」の検索結果: {visits.totalCount}件</p>
+                <p class="text-sm text-gray-600">
+                  「{keyword}」の検索結果: {visits.totalCount}件
+                </p>
                 <div class="space-y-6">
                   {visits.contents.map((visit) => (
                     <VisitListCard visit={visit} />
