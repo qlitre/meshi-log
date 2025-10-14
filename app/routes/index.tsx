@@ -22,7 +22,7 @@ export default createRoute(async (c) => {
     description: '主に行った飯屋を記録しているwebサイト',
     keywords: '旨い店',
     canonicalUrl: canonicalUrl,
-    ogpType: 'article' as const,
+    ogpType: 'website' as const,
     ogpUrl: canonicalUrl,
   }
   const page = Number(c.req.query('page') || 1)
