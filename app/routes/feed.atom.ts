@@ -9,7 +9,7 @@ export default createRoute(async (c) => {
     serviceDomain: c.env.SERVICE_DOMAIN,
     apiKey: c.env.API_KEY,
   })
-  const limit = 50
+  const limit = config.feedPerPage
   const r = await getVisits({
     client,
     queries: {

@@ -17,7 +17,7 @@ import { HTTPException } from 'hono/http-exception'
 import { Hono } from 'hono'
 import type { Env } from 'hono'
 
-const limit = 30
+const limit = config.serachPerPage
 
 export const getMcpServer = async (c: Context<Env>) => {
   const serviceDomain = c.env.SERVICE_DOMAIN

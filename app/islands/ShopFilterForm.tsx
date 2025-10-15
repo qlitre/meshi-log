@@ -12,7 +12,7 @@ type ShopFilterFormProps = {
   }
 }
 
-export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFilterFormProps) {
+export const ShopFilterForm = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
   const [query, setQuery] = useState(initialFilters.q || '')
   const [areaId, setAreaId] = useState(initialFilters.area || '')
   const [genreId, setGenreId] = useState(initialFilters.genre || '')

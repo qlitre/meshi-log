@@ -4,7 +4,7 @@ import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
 import { ShopListCard } from '../../components/ShopListCard'
 import type { Meta } from '../../types/meta'
-import ShopFilterForm from '../../islands/ShopFilterForm'
+import { ShopFilterForm } from '../../islands/ShopFilterForm'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({

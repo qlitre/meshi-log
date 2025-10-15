@@ -6,11 +6,11 @@ type Props = {
   redirectToSearchPage?: boolean
 }
 
-export default function SearchForm({
+export const SearchForm = ({
   initialQuery = '',
   placeholder = '検索...',
   redirectToSearchPage = false,
-}: Props) {
+}: Props) => {
   const [query, setQuery] = useState(initialQuery)
 
   const handleSubmit = (e: Event) => {

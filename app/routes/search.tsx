@@ -5,9 +5,10 @@ import { VisitListCard } from '../components/VisitListCard'
 import { PageHeading } from '../components/PageHeading'
 import { Container } from '../components/Container'
 import { getMicroCMSClient, getVisits } from '../libs/microcms'
-import SearchForm from '../islands/SearchForm'
+import { SearchForm } from '../islands/SearchForm'
+import { config } from '../siteSettings'
 
-const limit = 30
+const limit = config.serachPerPage
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
