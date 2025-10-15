@@ -5,6 +5,7 @@ import { PageHeading } from '../../components/PageHeading'
 import { ShopListCard } from '../../components/ShopListCard'
 import type { Meta } from '../../types/meta'
 import { ShopFilterForm } from '../../islands/ShopFilterForm'
+import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
@@ -17,18 +18,17 @@ export default createRoute(async (c) => {
   const areaId = c.req.query('area') || ''
   const genreId = c.req.query('genre') || ''
   const isRecommended = c.req.query('recommended') === '1'
-
-  // フィルタ用のクエリを構築
-  const filters: string[] = []
-  if (areaId) filters.push(`area[equals]${areaId}`)
-  if (genreId) filters.push(`genre[equals]${genreId}`)
-  if (isRecommended) filters.push('is_recommended[equals]true')
+  const filterString = buildShopFilterCondition({
+    area_id: areaId,
+    genre_id: genreId,
+    is_recommended: isRecommended,
+  })
 
   const { contents: shops } = await getShops({
     client,
     queries: {
       q: searchQuery || undefined,
-      filters: filters.length > 0 ? filters.join('[and]') : undefined,
+      filters: filterString.length > 0 ? filterString : undefined,
     },
   })
 

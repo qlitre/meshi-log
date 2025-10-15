@@ -16,6 +16,7 @@ import { config } from '../siteSettings'
 import { HTTPException } from 'hono/http-exception'
 import { Hono } from 'hono'
 import type { Env } from 'hono'
+import { buildShopFilterCondition } from '../utils/buildShopFilterCondition'
 
 const limit = config.serachPerPage
 
@@ -50,9 +51,9 @@ export const getMcpServer = async (c: Context<Env>) => {
       q: z.string().optional(),
       area_id: z.string().optional(),
       genre_id: z.string().optional(),
-      is_recomended: z.boolean().optional(),
+      is_recommended: z.boolean().optional(),
     },
-    async ({ page, q, area_id, genre_id, is_recomended }) => {
+    async ({ page, q, area_id, genre_id, is_recommended }) => {
       const offset = limit * (page - 1)
       const queries: MicroCMSQueries = {
         limit: limit,
@@ -60,15 +61,13 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
       if (q) queries.q = q
 
-      let filterString = ''
-      const filterCondition = []
-      if (area_id) filterCondition.push(`area[equals]${area_id}`)
-      if (genre_id) filterCondition.push(`genre[equals]${genre_id}`)
-      if (is_recomended) filterCondition.push(`is_recommended[equals]true`)
-      if (filterCondition.length > 0) {
-        filterString = filterCondition.join('[and]')
-      }
+      const filterString = buildShopFilterCondition({
+        area_id,
+        genre_id,
+        is_recommended: is_recommended,
+      })
       if (filterString) queries.filters = filterString
+
       const result = await getShops({ client, queries })
       return {
         content: [
