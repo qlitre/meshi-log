@@ -6,7 +6,7 @@ import { Pagination } from '../components/Pagination'
 import { PageHeading } from '../components/PageHeading'
 import type { Meta } from '../types/meta'
 import { config } from '../siteSettings'
-import SearchForm from '../islands/SearchForm'
+import { SearchForm } from '../islands/SearchForm'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
