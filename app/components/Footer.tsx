@@ -8,7 +8,7 @@ export const Footer = () => {
             <p class="text-gray-400 text-sm">訪問した飲食店の記録を管理するアプリケーション</p>
           </div>
           <nav>
-            <ul class="flex flex-col md:flex-row gap-4 text-center">
+            <ul class="flex gap-4 text-center">
               <li>
                 <a href="/" class="text-gray-300 hover:text-white transition-colors">
                   訪問記録
