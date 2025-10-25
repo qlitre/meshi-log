@@ -4,10 +4,7 @@ import { jstDatetime } from '../utils/jstDatetime'
 import { getMicroCMSClient, getAllVisits } from '../libs/microcms'
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
   const allVisits = await getAllVisits({ client: client, queries: { orders: '-visit_date' } })
   const urls = []
   for (const visit of allVisits) {

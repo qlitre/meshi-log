@@ -11,10 +11,7 @@ import { config } from '../siteSettings'
 const limit = config.serachPerPage
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
   const keyword = c.req.query('q') || ''
   const queries: MicroCMSQueries = {
     limit: limit,

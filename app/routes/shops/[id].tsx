@@ -7,10 +7,7 @@ import type { Meta } from '../../types/meta'
 export default createRoute(async (c) => {
   const id = c.req.param('id')
 
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
 
   const shop = await getShopDetail({ client, contentId: id })
 

@@ -23,7 +23,7 @@ const limit = config.serachPerPage
 export const getMcpServer = async (c: Context<Env>) => {
   const serviceDomain = c.env.SERVICE_DOMAIN
   const apiKey = c.env.API_KEY
-  const client = getMicroCMSClient({ serviceDomain: serviceDomain, apiKey: apiKey })
+  const client = getMicroCMSClient(c)
   const server = new McpServer({
     name: 'meshi-log MCP Server',
     version: '0.0.1',

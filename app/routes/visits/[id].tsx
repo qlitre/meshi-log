@@ -12,10 +12,7 @@ import { ShopInformation } from '../../components/ShopInformation'
 export default createRoute(async (c) => {
   const id = c.req.param('id')
 
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
 
   const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 

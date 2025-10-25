@@ -9,10 +9,7 @@ import { config } from '../siteSettings'
 import { SearchForm } from '../islands/SearchForm'
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/`

@@ -10,10 +10,7 @@ import { Pagination } from '../../components/Pagination'
 import { config } from '../../siteSettings'
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
   const page = Number(c.req.query('page') || 1)
   const limit = config.shopPerPage
   const offset = limit * (page - 1)

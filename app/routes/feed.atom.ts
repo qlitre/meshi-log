@@ -5,10 +5,7 @@ import { getMicroCMSClient, getVisits } from '../libs/microcms'
 import { stripHtmlTagsAndTruncate } from '../utils/stripHtmlTags'
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
   const limit = config.feedPerPage
   const r = await getVisits({
     client,

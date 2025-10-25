@@ -6,10 +6,7 @@ import { PageHeading } from '../../components/PageHeading'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
-  const client = getMicroCMSClient({
-    serviceDomain: c.env.SERVICE_DOMAIN,
-    apiKey: c.env.API_KEY,
-  })
+  const client = getMicroCMSClient(c)
 
   // 全店舗を取得（座標フィールドも含める）
   const shops = await getAllShops({
