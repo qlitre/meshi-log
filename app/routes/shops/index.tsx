@@ -6,12 +6,17 @@ import { ShopListCard } from '../../components/ShopListCard'
 import type { Meta } from '../../types/meta'
 import { ShopFilterForm } from '../../islands/ShopFilterForm'
 import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
+import { Pagination } from '../../components/Pagination'
+import { config } from '../../siteSettings'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient({
     serviceDomain: c.env.SERVICE_DOMAIN,
     apiKey: c.env.API_KEY,
   })
+  const page = Number(c.req.query('page') || 1)
+  const limit = config.shopPerPage
+  const offset = limit * (page - 1)
 
   // フィルタパラメータを取得
   const searchQuery = c.req.query('q') || ''
@@ -24,17 +29,19 @@ export default createRoute(async (c) => {
     is_recommended: isRecommended,
   })
 
-  const { contents: shops } = await getShops({
+  const shops = await getShops({
     client,
     queries: {
       q: searchQuery || undefined,
+      limit: limit,
+      offset: offset,
       filters: filterString.length > 0 ? filterString : undefined,
     },
   })
 
   // エリアとジャンルのマスターデータを取得
-  const { contents: areas } = await getAreas({ client })
-  const { contents: genres } = await getGenres({ client })
+  const areas = await getAreas({ client })
+  const genres = await getGenres({ client })
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/shops`
@@ -46,6 +53,12 @@ export default createRoute(async (c) => {
     ogpType: 'website' as const,
     ogpUrl: canonicalUrl,
   }
+  const queryParams: Record<string, string> = {}
+  url.searchParams.forEach((value, key) => {
+    if (key !== 'page') {
+      queryParams[key] = value
+    }
+  })
 
   return c.render(
     <Container>
@@ -60,8 +73,8 @@ export default createRoute(async (c) => {
       </div>
 
       <ShopFilterForm
-        areas={areas}
-        genres={genres}
+        areas={areas.contents}
+        genres={genres.contents}
         initialFilters={{
           q: searchQuery,
           area: areaId,
@@ -70,7 +83,7 @@ export default createRoute(async (c) => {
         }}
       />
 
-      {shops.length === 0 ? (
+      {shops.contents.length === 0 ? (
         <p class="text-gray-500">
           {searchQuery || areaId || genreId || isRecommended
             ? '検索条件に一致するお店が見つかりませんでした'
@@ -78,14 +91,20 @@ export default createRoute(async (c) => {
         </p>
       ) : (
         <>
-          <p class="text-sm text-gray-600 mb-4">{shops.length}件のお店が見つかりました</p>
+          <p class="text-sm text-gray-600 mb-4">{shops.totalCount}件のお店が見つかりました</p>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {shops.map((shop) => (
+            {shops.contents.map((shop) => (
               <ShopListCard shop={shop} />
             ))}
           </div>
         </>
       )}
+      <Pagination
+        totalCount={shops.totalCount}
+        currentPage={page}
+        basePath="/shops"
+        query={queryParams}
+      />
     </Container>,
     { meta }
   )
