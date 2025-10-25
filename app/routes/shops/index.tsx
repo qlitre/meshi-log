@@ -1,5 +1,5 @@
 import { createRoute } from 'honox/factory'
-import { getMicroCMSClient, getShops, getAreas, getGenres } from '../../libs/microcms'
+import { getMicroCMSClient, getShops, getAllAreas, getAllGenres } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
 import { ShopListCard } from '../../components/ShopListCard'
@@ -40,8 +40,8 @@ export default createRoute(async (c) => {
   })
 
   // エリアとジャンルのマスターデータを取得
-  const areas = await getAreas({ client })
-  const genres = await getGenres({ client })
+  const areas = await getAllAreas({ client: client, queries: { orders: 'name' } })
+  const genres = await getAllGenres({ client: client, queries: { orders: 'name' } })
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/shops`
@@ -73,8 +73,8 @@ export default createRoute(async (c) => {
       </div>
 
       <ShopFilterForm
-        areas={areas.contents}
-        genres={genres.contents}
+        areas={areas}
+        genres={genres}
         initialFilters={{
           q: searchQuery,
           area: areaId,

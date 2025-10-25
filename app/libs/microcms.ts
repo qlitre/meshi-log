@@ -34,9 +34,25 @@ export const getAreas = async ({ client, queries }: ClientWithQueries) => {
   })
 }
 
+// 全エリア取得
+export const getAllAreas = async ({ client, queries }: ClientWithQueries) => {
+  return await client.getAllContents<Area>({
+    endpoint: 'area',
+    queries,
+  })
+}
+
 // ジャンル一覧取得
 export const getGenres = async ({ client, queries }: ClientWithQueries) => {
   return await client.getList<Genre>({
+    endpoint: 'genre',
+    queries,
+  })
+}
+
+// 全ジャンル取得
+export const getAllGenres = async ({ client, queries }: ClientWithQueries) => {
+  return await client.getAllContents<Genre>({
     endpoint: 'genre',
     queries,
   })
