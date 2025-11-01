@@ -429,10 +429,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.25.4.tgz#0b17ec8a70b2385827d52314c1253160a0b9bacc"
   integrity sha512-nOT2vZNw6hJ+z43oP1SPea/G/6AbN6X+bGNhNuq8NtRHy4wsMhw765IKLNmnjek7GvjWBYQ8Q5VBoYTFg9y1UQ==
 
-"@hono/mcp@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.1.4.tgz#a6b327b639d6389ef761a051e8406345c90f0c74"
-  integrity sha512-OOMZCXaCcKw6MZoXJH1caO1FAPjJoTKRVstgzRVE8GJ/LMXvm/3OTynZYex0b5NYdMQRemd+FUjdCcYkH1pxMQ==
+"@hono/mcp@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.1.5.tgz#b75bec672d23d5323b39b88ee6a132f04ba814b8"
+  integrity sha512-q6Yurx9VUwVEpqnwVXtzIYaq4kgQgWWq9lYLM7NFS2W0sg1RzL+RdKh6jO4/dGyvBLKrahPd2v+NC6rr0XWBvQ==
 
 "@hono/node-server@^1.14.2":
   version "1.19.5"
