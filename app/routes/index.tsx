@@ -57,7 +57,13 @@ export default createRoute(async (c) => {
         )}
       </div>
 
-      <Pagination totalCount={totalCount} currentPage={page} basePath="/" query={queryParams} />
+      <Pagination
+        totalCount={totalCount}
+        limit={config.perPage}
+        currentPage={page}
+        basePath="/"
+        query={queryParams}
+      />
     </Container>,
     { meta }
   )

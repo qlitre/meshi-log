@@ -98,6 +98,7 @@ export default createRoute(async (c) => {
       )}
       <Pagination
         totalCount={shops.totalCount}
+        limit={config.shopPerPage}
         currentPage={page}
         basePath="/shops"
         query={queryParams}

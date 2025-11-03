@@ -1,13 +1,12 @@
-import { config } from '../siteSettings'
-
 type Props = {
   totalCount: number
+  limit: number
   currentPage: number
   basePath: string
   query?: Record<string, string>
 }
 
-export const Pagination = ({ totalCount, currentPage = 1, basePath, query = {} }: Props) => {
+export const Pagination = ({ totalCount, limit, currentPage = 1, basePath, query = {} }: Props) => {
   const getPath = (p: number) => {
     const params = new URLSearchParams(query)
     if (p > 1) {
@@ -38,7 +37,7 @@ export const Pagination = ({ totalCount, currentPage = 1, basePath, query = {} }
   }
 
   const pager: number[] = []
-  const numPages = Math.ceil(totalCount / config.perPage)
+  const numPages = Math.ceil(totalCount / limit)
   for (let i = 1; i < numPages + 1; i++) {
     if (i < currentPage - 2) continue
     if (i > currentPage + 2) continue
