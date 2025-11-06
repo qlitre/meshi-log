@@ -1,5 +1,10 @@
 import { createRoute } from 'honox/factory'
-import { getMicroCMSClient, getVisitDetail } from '../../libs/microcms'
+import {
+  getMicroCMSClient,
+  getVisitDetail,
+  getPrevVisits,
+  getNextVisits,
+} from '../../libs/microcms'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
@@ -11,13 +16,15 @@ import { ShopInformation } from '../../components/ShopInformation'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id')
-
   const client = getMicroCMSClient(c)
-
   const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 
   const description = stripHtmlTagsAndTruncate(visit.memo, 100)
-
+  const publishedAt = visit.publishedAt || ''
+  const nextVisits = await getNextVisits({ client, publishedAt })
+  const prevVisits = await getPrevVisits({ client, publishedAt })
+  const hasNext = nextVisits.totalCount > 0
+  const hasPrev = prevVisits.totalCount > 0
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
 
@@ -55,7 +62,40 @@ export default createRoute(async (c) => {
 
       {/* 店舗情報 */}
       <ShopInformation shop={visit.shop} />
-
+      <nav class="my-8 flex justify-between items-center border-t border-b py-4">
+        <div class="flex-1">
+          {hasNext ? (
+            <a
+              href={`/visits/${nextVisits.contents[0].id}`}
+              class="text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              <div class="text-sm text-gray-500">← 次の記事</div>
+              <div class="font-medium">{nextVisits.contents[0].title}</div>
+            </a>
+          ) : (
+            <div class="text-gray-400">
+              <div class="text-sm">← 次の記事</div>
+              <div class="font-medium">なし</div>
+            </div>
+          )}
+        </div>
+        <div class="flex-1 text-right">
+          {hasPrev ? (
+            <a
+              href={`/visits/${prevVisits.contents[0].id}`}
+              class="text-blue-600 hover:text-blue-800 hover:underline"
+            >
+              <div class="text-sm text-gray-500">前の記事 →</div>
+              <div class="font-medium">{prevVisits.contents[0].title}</div>
+            </a>
+          ) : (
+            <div class="text-gray-400">
+              <div class="text-sm">前の記事 →</div>
+              <div class="font-medium">なし</div>
+            </div>
+          )}
+        </div>
+      </nav>
       {/* 戻るリンク */}
       <LinkToTop />
     </Container>,

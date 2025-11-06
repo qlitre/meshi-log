@@ -20,6 +20,11 @@ type ClientWithContentId = {
   queries?: MicroCMSQueries
 }
 
+type ClientWithPublishedAt = {
+  client: MicroCMSClient
+  publishedAt: string
+}
+
 export const getMicroCMSClient = (c: Context) => {
   return createClient({
     serviceDomain: c.env.SERVICE_DOMAIN,
@@ -106,6 +111,20 @@ export const getVisitDetail = async ({ client, contentId, queries }: ClientWithC
     endpoint: 'visits',
     contentId,
     queries,
+  })
+}
+
+export const getPrevVisits = async ({ client, publishedAt }: ClientWithPublishedAt) => {
+  return await client.getList<Visit>({
+    endpoint: 'visits',
+    queries: { limit: 1, filters: `publishedAt[less_than]${publishedAt}` },
+  })
+}
+
+export const getNextVisits = async ({ client, publishedAt }: ClientWithPublishedAt) => {
+  return await client.getList<Visit>({
+    endpoint: 'visits',
+    queries: { limit: 1, filters: `publishedAt[greater_than]${publishedAt}` },
   })
 }
 
