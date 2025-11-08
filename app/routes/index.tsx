@@ -28,7 +28,7 @@ export default createRoute(async (c) => {
 
   const visitsResponse = await getVisits({
     client,
-    queries: { limit: limit, offset: offset, depth: 2 },
+    queries: { limit: limit, offset: offset, depth: 2, orders: '-publishedAt' },
   })
   const totalCount = visitsResponse.totalCount
   const visits = visitsResponse.contents

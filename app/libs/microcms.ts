@@ -117,7 +117,7 @@ export const getVisitDetail = async ({ client, contentId, queries }: ClientWithC
 export const getPrevVisits = async ({ client, publishedAt }: ClientWithPublishedAt) => {
   return await client.getList<Visit>({
     endpoint: 'visits',
-    queries: { limit: 1, filters: `publishedAt[less_than]${publishedAt}` },
+    queries: { limit: 1, filters: `publishedAt[less_than]${publishedAt}`, orders: '-publishedAt' },
   })
 }
 
