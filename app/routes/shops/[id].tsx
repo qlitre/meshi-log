@@ -5,7 +5,7 @@ import { VisitListCard } from '../../components/VisitListCard'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
-  const id = c.req.param('id')
+  const id = c.req.param('id')||''
 
   const client = getMicroCMSClient(c)
 
