@@ -2,17 +2,21 @@ import { createRoute } from 'honox/factory'
 import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { VisitListCard } from '../../components/VisitListCard'
+import { config } from '../../siteSettings'
+import { Pagination } from '../../components/Pagination'
 import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
-  const id = c.req.param('id')||''
-
+  const id = c.req.param('id') || ''
   const client = getMicroCMSClient(c)
-
   const shop = await getShopDetail({ client, contentId: id })
-
-  // この店舗の訪問記録を取得
-  const visits = await getVisits({ client, queries: { filters: `shop[equals]${id}` } })
+  const page = Number(c.req.query('page') || 1)
+  const limit = config.visitWithShopPerPage
+  const offset = limit * (page - 1)
+  const visits = await getVisits({
+    client,
+    queries: { limit: limit, offset: offset, filters: `shop[equals]${id}` },
+  })
   const visitsCount = visits.totalCount
 
   const url = new URL(c.req.url)
@@ -71,6 +75,12 @@ export default createRoute(async (c) => {
           </div>
         )}
       </div>
+      <Pagination
+        totalCount={visitsCount}
+        limit={config.visitWithShopPerPage}
+        currentPage={page}
+        basePath={`/shops/${id}`}
+      ></Pagination>
     </Container>,
     { meta }
   )
