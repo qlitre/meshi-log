@@ -15,7 +15,7 @@ import { LinkToTop } from '../../components/LinkToTop'
 import { ShopInformation } from '../../components/ShopInformation'
 
 export default createRoute(async (c) => {
-  const id = c.req.param('id')||''
+  const id = c.req.param('id') || ''
   const client = getMicroCMSClient(c)
   const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 
