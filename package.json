@@ -15,7 +15,7 @@
     "@modelcontextprotocol/sdk": "^1.22.0",
     "dayjs": "^1.11.19",
     "hono": "^4.10.5",
-    "honox": "^0.1.51",
+    "honox": "^0.1.52",
     "microcms-js-sdk": "^3.2.0"
   },
   "devDependencies": {
