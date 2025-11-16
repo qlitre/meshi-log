@@ -13,6 +13,7 @@ import { ShareX } from '../../components/ShareX'
 import { Container } from '../../components/Container'
 import { LinkToTop } from '../../components/LinkToTop'
 import { ShopInformation } from '../../components/ShopInformation'
+import { AdjacentPosts } from '../../components/AdjacentPosts'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
@@ -23,8 +24,6 @@ export default createRoute(async (c) => {
   const publishedAt = visit.publishedAt || ''
   const nextVisits = await getNextVisits({ client, publishedAt })
   const prevVisits = await getPrevVisits({ client, publishedAt })
-  const hasNext = nextVisits.totalCount > 0
-  const hasPrev = prevVisits.totalCount > 0
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
 
@@ -62,40 +61,7 @@ export default createRoute(async (c) => {
 
       {/* 店舗情報 */}
       <ShopInformation shop={visit.shop} />
-      <nav class="my-8 flex flex-col md:flex-row md:justify-between items-stretch gap-4 border-t border-b py-4">
-        <div class="flex-1 px-2">
-          {hasNext ? (
-            <a
-              href={`/visits/${nextVisits.contents[0].id}`}
-              class="text-blue-600 hover:text-blue-800 hover:underline"
-            >
-              <div class="text-sm text-gray-500">← 次の記事</div>
-              <div class="font-medium">{nextVisits.contents[0].title}</div>
-            </a>
-          ) : (
-            <div class="text-gray-400">
-              <div class="text-sm">← 次の記事</div>
-              <div class="font-medium">なし</div>
-            </div>
-          )}
-        </div>
-        <div class="flex-1 px-2 md:text-right">
-          {hasPrev ? (
-            <a
-              href={`/visits/${prevVisits.contents[0].id}`}
-              class="text-blue-600 hover:text-blue-800 hover:underline"
-            >
-              <div class="text-sm text-gray-500">前の記事 →</div>
-              <div class="font-medium">{prevVisits.contents[0].title}</div>
-            </a>
-          ) : (
-            <div class="text-gray-400">
-              <div class="text-sm">前の記事 →</div>
-              <div class="font-medium">なし</div>
-            </div>
-          )}
-        </div>
-      </nav>
+      <AdjacentPosts nextVisits={nextVisits.contents} prevVisits={prevVisits.contents} />
       {/* 戻るリンク */}
       <LinkToTop />
     </Container>,
