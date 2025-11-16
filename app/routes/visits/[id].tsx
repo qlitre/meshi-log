@@ -62,8 +62,8 @@ export default createRoute(async (c) => {
 
       {/* 店舗情報 */}
       <ShopInformation shop={visit.shop} />
-      <nav class="my-8 flex justify-between items-center border-t border-b py-4">
-        <div class="flex-1">
+      <nav class="my-8 flex flex-col md:flex-row md:justify-between items-stretch gap-4 border-t border-b py-4">
+        <div class="flex-1 px-2">
           {hasNext ? (
             <a
               href={`/visits/${nextVisits.contents[0].id}`}
@@ -79,7 +79,7 @@ export default createRoute(async (c) => {
             </div>
           )}
         </div>
-        <div class="flex-1 text-right">
+        <div class="flex-1 px-2 md:text-right">
           {hasPrev ? (
             <a
               href={`/visits/${prevVisits.contents[0].id}`}
