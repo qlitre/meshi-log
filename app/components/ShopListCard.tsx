@@ -18,15 +18,19 @@ export const ShopListCard = ({ shop }: Props) => {
 
       <div class="space-y-2 text-sm text-gray-600">
         <p>
-          <span class="font-medium">エリア: </span>
-          {shop.area.name}
-        </p>
-
-        <p>
           <span class="font-medium">ジャンル: </span>
           {shop.genre.name}
         </p>
-
+        <p>
+          <span class="font-medium">エリア: </span>
+          {shop.area.name}
+        </p>
+        {shop.nearest_station && (
+          <p>
+            <span class="font-medium">最寄駅: </span>
+            {shop.nearest_station}
+          </p>
+        )}
         {shop.memo && <p class="mt-3 text-gray-700 line-clamp-2">{shop.memo}</p>}
       </div>
     </a>
