@@ -24,10 +24,10 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   longitude: number
   area: Area
   genre: Genre
-  nearest_station?: string // 最寄駅 (optional)
   memo: string // textArea (required)
   is_recommended: boolean // boolean (required)
   rating?: number // number (optional)
+  nearest_station?: string // 最寄駅 (optional)
 }
 
 // 訪問記録
