@@ -3,6 +3,12 @@
   "schema": {
     "apiFields": [
       {
+        "fieldId": "code",
+        "name": "市区町村コード",
+        "kind": "text",
+        "required": true
+      },
+      {
         "fieldId": "name",
         "name": "エリア名",
         "kind": "text",

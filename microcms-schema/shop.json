@@ -57,6 +57,12 @@
         "name": "評価",
         "kind": "number",
         "required": false
+      },
+      {
+        "fieldId": "nearest_station",
+        "name": "最寄駅",
+        "kind": "text",
+        "required": false
       }
     ],
     "customFields": []
