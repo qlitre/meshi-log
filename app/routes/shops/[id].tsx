@@ -38,8 +38,8 @@ export default createRoute(async (c) => {
 
         <div class="space-y-3 text-gray-700">
           <div>
-            <p class="font-medium">住所</p>
-            <p>{shop.address}</p>
+            <span class="font-medium">ジャンル: </span>
+            {shop.genre.name}
           </div>
 
           <div>
@@ -47,9 +47,16 @@ export default createRoute(async (c) => {
             {shop.area.name}
           </div>
 
+          {shop.nearest_station && (
+            <div>
+              <span class="font-medium">最寄駅: </span>
+              {shop.nearest_station}
+            </div>
+          )}
+
           <div>
-            <span class="font-medium">ジャンル: </span>
-            {shop.genre.name}
+            <p class="font-medium">住所</p>
+            <p>{shop.address}</p>
           </div>
 
           {shop.memo && (
