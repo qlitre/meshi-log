@@ -34,6 +34,20 @@ export const ShopInformation = ({ shop }: Props) => {
             ></iframe>
           </div>
         </div>
+        {shop.nearest_station && (
+          <div>
+            <p class="font-medium text-gray-700">最寄駅</p>
+            <p>{shop.nearest_station}</p>
+          </div>
+        )}
+        <div>
+          <p class="font-medium text-gray-700">エリア</p>
+          <p>{shop.area.name}</p>
+        </div>
+        <div>
+          <p class="font-medium text-gray-700">ジャンル</p>
+          <p>{shop.genre.name}</p>
+        </div>
         <div class="pt-4">
           <a
             href={`/shops/${shop.id}`}
