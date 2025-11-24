@@ -8,6 +8,7 @@ import type {
 
 // エリア
 export interface Area extends MicroCMSContentId, MicroCMSDate {
+  code: string
   name: string
 }
 

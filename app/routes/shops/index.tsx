@@ -37,7 +37,7 @@ export default createRoute(async (c) => {
   })
 
   // エリアとジャンルのマスターデータを取得
-  const areas = await getAllAreas({ client: client, queries: { orders: 'name' } })
+  const areas = await getAllAreas({ client: client, queries: { orders: 'code' } })
   const genres = await getAllGenres({ client: client, queries: { orders: 'name' } })
 
   const url = new URL(c.req.url)
