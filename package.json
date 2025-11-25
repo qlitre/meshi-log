@@ -11,12 +11,14 @@
   },
   "private": true,
   "dependencies": {
-    "@hono/mcp": "^0.1.5",
+    "@hono/mcp": "^0.2.0",
     "@modelcontextprotocol/sdk": "^1.22.0",
     "dayjs": "^1.11.19",
     "hono": "^4.10.6",
+    "hono-rate-limiter": "^0.4.2",
     "honox": "^0.1.52",
-    "microcms-js-sdk": "^3.2.0"
+    "microcms-js-sdk": "^3.2.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20251120.0",

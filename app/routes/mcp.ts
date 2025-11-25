@@ -29,42 +29,61 @@ export const getMcpServer = async (c: Context<Env>) => {
     version: '0.0.1',
   })
 
-  server.tool('get_api_schema', 'Get microCMS API Schema', {}, async () => {
-    const result = await getMicroCMSSchema({
-      serviceDomain: serviceDomain,
-      apiKey: apiKey,
-    })
-    return {
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
+  server.registerTool(
+    'get_api_schema',
+    { title: 'Get Api Schema', description: 'get microcms api schema', inputSchema: {} },
+    async () => {
+      const result = await getMicroCMSSchema({
+        serviceDomain: serviceDomain,
+        apiKey: apiKey,
+      })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
     }
-  })
-  server.tool(
+  )
+  server.registerTool(
     'get_shops',
-    'Get Shops with optional filters (area, genre, recommended status) and search query. Returns paginated results with 30 items per page.',
     {
-      page: z.number().min(1).default(1),
-      q: z.string().optional(),
-      area_id: z.string().optional(),
-      genre_id: z.string().optional(),
-      is_recommended: z.boolean().optional(),
+      title: 'Get Shops',
+      description:
+        'Get Shops with optional filters (area, genre, recommended status) and search query. Returns paginated results with 30 items per page.',
+      inputSchema: {
+        page: z.number().min(1).default(1),
+        q: z.string().optional(),
+        area_id: z.string().optional(),
+        genre_id: z.string().optional(),
+        is_recommended: z.boolean().optional(),
+      },
     },
-    async ({ page, q, area_id, genre_id, is_recommended }) => {
+    async (
+      params:
+        | {
+            page?: number
+            q?: string
+            area_id?: string
+            genre_id?: string
+            is_recommended?: boolean
+          }
+        | undefined
+    ) => {
+      const page = params?.page ?? 1
       const offset = limit * (page - 1)
       const queries: MicroCMSQueries = {
         limit: limit,
         offset: offset,
       }
-      if (q) queries.q = q
+      if (params?.q) queries.q = params.q
 
       const filterString = buildShopFilterCondition({
-        area_id,
-        genre_id,
-        is_recommended: is_recommended,
+        area_id: params?.area_id,
+        genre_id: params?.genre_id,
+        is_recommended: params?.is_recommended,
       })
       if (filterString) queries.filters = filterString
 
@@ -80,20 +99,24 @@ export const getMcpServer = async (c: Context<Env>) => {
     }
   )
 
-  server.tool(
+  server.registerTool(
     'get_visits',
-    'Get Visits with optional search',
     {
-      page: z.number().min(1).default(1),
-      q: z.string().optional(),
+      title: 'Get Visits',
+      description: 'Get Visits with optional search',
+      inputSchema: {
+        page: z.number().min(1).default(1),
+        q: z.string().optional(),
+      },
     },
-    async ({ page, q }) => {
+    async (params: { page?: number; q?: string } | undefined) => {
+      const page = params?.page ?? 1
       const offset = limit * (page - 1)
       const queries: MicroCMSQueries = {
         limit: limit,
         offset: offset,
         fields: config.visitListFields,
-        ...(q && { q: q }),
+        ...(params?.q && { q: params.q }),
       }
       const result = await getVisits({ client, queries })
       return {
@@ -106,14 +129,20 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
     }
   )
-  server.tool(
+  server.registerTool(
     'get_visit_detail',
-    'Get Visit Detail',
     {
-      id: z.string().min(1),
+      title: 'Get Visit Detail',
+      description: 'Get Visit Detail',
+      inputSchema: {
+        id: z.string().min(1),
+      },
     },
-    async ({ id }) => {
-      const result = await getVisitDetail({ client, contentId: id })
+    async (params: { id: string } | undefined) => {
+      if (!params?.id) {
+        throw new Error('id is required')
+      }
+      const result = await getVisitDetail({ client, contentId: params.id })
       return {
         content: [
           {
@@ -124,16 +153,19 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
     }
   )
-  server.tool(
+  server.registerTool(
     'get_areas',
-    'Get shop areas',
     {
-      q: z.string().optional(),
+      title: 'Get Areas',
+      description: 'Get shop areas',
+      inputSchema: {
+        q: z.string().optional(),
+      },
     },
-    async ({ q }) => {
+    async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
-        ...(q && { q: q }),
+        ...(params?.q && { q: params.q }),
       }
       const result = await getAreas({ client, queries })
       return {
@@ -146,16 +178,19 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
     }
   )
-  server.tool(
+  server.registerTool(
     'get_genres',
-    'Get shop genres',
     {
-      q: z.string().optional(),
+      title: 'Get Genres',
+      description: 'Get shop genres',
+      inputSchema: {
+        q: z.string().optional(),
+      },
     },
-    async ({ q }) => {
+    async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
-        ...(q && { q: q }),
+        ...(params?.q && { q: params.q }),
       }
       const result = await getGenres({ client, queries })
       return {

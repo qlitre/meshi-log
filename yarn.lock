@@ -444,10 +444,12 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.25.4.tgz#0b17ec8a70b2385827d52314c1253160a0b9bacc"
   integrity sha512-nOT2vZNw6hJ+z43oP1SPea/G/6AbN6X+bGNhNuq8NtRHy4wsMhw765IKLNmnjek7GvjWBYQ8Q5VBoYTFg9y1UQ==
 
-"@hono/mcp@^0.1.5":
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.1.5.tgz#b75bec672d23d5323b39b88ee6a132f04ba814b8"
-  integrity sha512-q6Yurx9VUwVEpqnwVXtzIYaq4kgQgWWq9lYLM7NFS2W0sg1RzL+RdKh6jO4/dGyvBLKrahPd2v+NC6rr0XWBvQ==
+"@hono/mcp@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.2.0.tgz#30c3c1a088b952c6d9c00b089af9b45eee87e1bb"
+  integrity sha512-kKZklY+yApZce6zzHzQPrEOhon4O7ANstUCDWstvGF3+B/Qn0j9mWUyps2XZhA/PzKoFGUBuAu1SwTFc7JRX9A==
+  dependencies:
+    pkce-challenge "^5.0.0"
 
 "@hono/node-server@^1.14.2":
   version "1.19.5"
@@ -2005,6 +2007,11 @@ hast-util-whitespace@^3.0.0:
   integrity sha512-88JUN06ipLwsnv+dVn+OIYOvAuvBMy/Qoi6O7mQHxdPXpjy+Cd6xRkWwux7DKO+4sYILtLBRIKgsdpS2gQc7qw==
   dependencies:
     "@types/hast" "^3.0.0"
+
+hono-rate-limiter@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/hono-rate-limiter/-/hono-rate-limiter-0.4.2.tgz#2dc957f784a2ae2c94a9f93c687eb175f622305b"
+  integrity sha512-AAtFqgADyrmbDijcRTT/HJfwqfvhalya2Zo+MgfdrMPas3zSMD8SU03cv+ZsYwRU1swv7zgVt0shwN059yzhjw==
 
 hono@^4.10.6:
   version "4.10.6"
