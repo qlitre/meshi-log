@@ -5,7 +5,7 @@ import { VisitListCard } from '../components/VisitListCard'
 import { PageHeading } from '../components/PageHeading'
 import { Container } from '../components/Container'
 import { getMicroCMSClient, getVisits } from '../libs/microcms'
-import { SearchForm } from '../islands/SearchForm'
+import { SearchForm } from '../components/SearchForm'
 import { config } from '../siteSettings'
 
 const limit = config.serachPerPage
@@ -32,7 +32,7 @@ export default createRoute(async (c) => {
     <Container>
       <div class="space-y-6">
         <PageHeading>訪問記録検索</PageHeading>
-        <SearchForm initialQuery={keyword} placeholder="訪問記録を検索..." />
+        <SearchForm initialQuery={keyword} />
         {keyword ? (
           <>
             {visits.totalCount === 0 ? (
