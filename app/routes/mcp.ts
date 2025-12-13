@@ -116,8 +116,8 @@ export const getMcpServer = async (c: Context<Env>) => {
         limit: limit,
         offset: offset,
         fields: config.visitListFields,
-        ...(params?.q && { q: params.q }),
       }
+      if (params?.q) queries.q = params.q
       const result = await getVisits({ client, queries })
       return {
         content: [
@@ -165,8 +165,8 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
-        ...(params?.q && { q: params.q }),
       }
+      if (params?.q) queries.q = params.q
       const result = await getAreas({ client, queries })
       return {
         content: [
@@ -190,8 +190,8 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
-        ...(params?.q && { q: params.q }),
       }
+      if (params?.q) queries.q = params.q
       const result = await getGenres({ client, queries })
       return {
         content: [
