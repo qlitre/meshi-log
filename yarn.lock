@@ -2019,10 +2019,10 @@ hono-rate-limiter@^0.4.2:
   resolved "https://registry.yarnpkg.com/hono-rate-limiter/-/hono-rate-limiter-0.4.2.tgz#2dc957f784a2ae2c94a9f93c687eb175f622305b"
   integrity sha512-AAtFqgADyrmbDijcRTT/HJfwqfvhalya2Zo+MgfdrMPas3zSMD8SU03cv+ZsYwRU1swv7zgVt0shwN059yzhjw==
 
-hono@^4.11.0:
-  version "4.11.0"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.11.0.tgz#02407c682775695eb051a6fda86059a5a0deea4a"
-  integrity sha512-Jg8uZzN2ul8/qlyid5FO8O624F3AK0wKtkgoeEON1qBum1rM1itYBxoMKu/1SPJC7F1+xlIZsJMmc4HHhJ1AWg==
+hono@^4.11.3:
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.11.3.tgz#4ddd985d50944b527feea930c6d0a6e80fdebc66"
+  integrity sha512-PmQi306+M/ct/m5s66Hrg+adPnkD5jiO6IjA7WhWw0gSBSo1EcRegwuI1deZ+wd5pzCGynCcn2DprnE4/yEV4w==
 
 honox@^0.1.52:
   version "0.1.52"
