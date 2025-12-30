@@ -98,6 +98,20 @@
   text-align: left;
 }
 
+.article-content blockquote {
+  margin: 24px 0;
+  padding-left: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-left: 2px solid;
+  border-color: #718096;
+  color: #718096;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
 /* --------------------------------------------------
    About page
    -------------------------------------------------- */
