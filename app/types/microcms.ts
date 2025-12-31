@@ -34,7 +34,7 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
 // 訪問記録
 export interface Visit extends MicroCMSContentId, MicroCMSDate {
   title: string
-  thumbnail?: MicroCMSImage
+  thumbnail: MicroCMSImage
   shop: Shop
   visit_date: string
   memo: string // richEditorV2
