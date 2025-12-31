@@ -10,13 +10,13 @@ export const VisitListCard = ({ visit }: Props) => {
   return (
     <article class="bg-white rounded-lg shadow-lg p-4 md:p-6 hover:shadow-xl transition-shadow">
       <a href={`/visits/${visit.id}`} class="flex flex-col md:flex-row gap-4 md:gap-6">
-        <div class="flex-shrink-0">
+        <div class="flex-shrink-0 w-full md:w-48">
           <img
             src={visit.thumbnail.url}
             alt={visit.title}
             width={visit.thumbnail.width}
             height={visit.thumbnail.height}
-            class="w-full md:w-48 h-48 md:h-32 object-cover rounded-lg"
+            class="w-full aspect-[4/3] object-cover rounded-lg"
           />
         </div>
         <div class="flex-1 min-w-0">
