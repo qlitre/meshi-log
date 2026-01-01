@@ -20,7 +20,7 @@
     "microcms-js-sdk": "^3.2.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251205.0",
+    "@cloudflare/workers-types": "^4.20251231.0",
     "@hono/vite-build": "^1.8.0",
     "@hono/vite-dev-server": "^0.23.0",
     "@mdx-js/rollup": "^3.1.1",
