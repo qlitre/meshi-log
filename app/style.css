@@ -55,6 +55,14 @@
   padding-left: 2rem;
 }
 
+.article-content ul {
+  list-style-type: disc;
+}
+
+.article-content ol {
+  list-style-type: decimal;
+}
+
 .article-content ul ul,
 .article-content ol ol,
 .article-content ul ol,
@@ -111,6 +119,24 @@
     margin-top: 0;
   }
 }
+
+.article-content ul,
+.article-content ol {
+  padding-left: 28px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.article-content li {
+  line-height: 1.8;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.article-content li > p + p {
+  margin-top: 8px;
+}
+
 
 /* --------------------------------------------------
    About page
