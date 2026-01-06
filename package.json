@@ -16,7 +16,7 @@
     "dayjs": "^1.11.19",
     "hono": "^4.11.3",
     "hono-rate-limiter": "^0.4.2",
-    "honox": "^0.1.52",
+    "honox": "^0.1.53",
     "microcms-js-sdk": "^3.2.0"
   },
   "devDependencies": {
