@@ -21,6 +21,11 @@ export function Header() {
                 </a>
               </li>
               <li>
+                <a href="/popular" class="text-gray-600 hover:text-gray-900">
+                  人気記事
+                </a>
+              </li>
+              <li>
                 <a href="/about" class="text-gray-600 hover:text-gray-900">
                   About
                 </a>

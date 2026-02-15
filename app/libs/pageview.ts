@@ -1,11 +1,35 @@
 import type { Visit } from '../types/microcms'
 
+export type PopularPage = {
+  page_path: string
+  content_id: string
+  page_type: string
+  title: string
+  thumbnail_url: string
+  shop_name: string
+  total_count: number
+}
+
 type PageViewParams = {
   db: D1Database
   pagePath: string
   contentId: string
   pageType: string
   visit: Visit
+}
+
+export const getPopularPages = async (db: D1Database, limit = 10): Promise<PopularPage[]> => {
+  const result = await db
+    .prepare(
+      `SELECT page_path, content_id, page_type, title, thumbnail_url, shop_name, total_count
+       FROM popular_pages
+       WHERE page_type = 'visit'
+       ORDER BY total_count DESC
+       LIMIT ?`
+    )
+    .bind(limit)
+    .all<PopularPage>()
+  return result.results
 }
 
 export const recordPageView = async ({
