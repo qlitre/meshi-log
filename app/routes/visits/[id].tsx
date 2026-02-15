@@ -5,6 +5,7 @@ import {
   getPrevVisits,
   getNextVisits,
 } from '../../libs/microcms'
+import { recordPageView } from '../../libs/pageview'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
@@ -26,6 +27,17 @@ export default createRoute(async (c) => {
   const prevVisits = await getPrevVisits({ client, publishedAt })
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
+
+  // ページビュー記録（レスポンスをブロックしない）
+  c.executionCtx.waitUntil(
+    recordPageView({
+      db: c.env.DB,
+      pagePath: `/visits/${id}`,
+      contentId: id,
+      pageType: 'visit',
+      visit,
+    })
+  )
 
   const meta: Meta = {
     title: `${visit.title} - ${visit.shop.name} - 飯ログ`,

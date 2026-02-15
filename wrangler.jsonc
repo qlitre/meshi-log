@@ -1,12 +1,20 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "meshi-log",
-  "main": "./dist/index.js",
-  "compatibility_date": "2025-10-02",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
-  "assets": {
-    "directory": "./dist"
-  }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "meshi-log",
+	"main": "./dist/index.js",
+	"compatibility_date": "2025-10-02",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"assets": {
+		"directory": "./dist"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "meshi-log-analytics",
+			"database_id": "f4bfc72d-62ab-45cd-9a6b-d5b14c347568",
+			"remote": true
+		}
+	]
 }
