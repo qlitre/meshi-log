@@ -20,6 +20,11 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
+                <a href="/popular" class="text-gray-300 hover:text-white transition-colors">
+                  人気記事
+                </a>
+              </li>
+              <li>
                 <a href="/about" class="text-gray-300 hover:text-white transition-colors">
                   About
                 </a>

@@ -11,6 +11,7 @@ declare module 'hono' {
     Bindings: {
       SERVICE_DOMAIN: string
       API_KEY: string
+      DB: D1Database
     }
   }
   interface ContextRenderer {
