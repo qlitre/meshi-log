@@ -8,6 +8,7 @@ import {
   getGenres,
   getShops,
 } from '../libs/microcms'
+import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
@@ -193,6 +194,25 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
       if (params?.q) queries.q = params.q
       const result = await getGenres({ client, queries })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+  server.registerTool(
+    'get_popular_visits',
+    {
+      title: 'Get Popular Visits',
+      description: 'Get Popular Visits',
+      inputSchema: {},
+    },
+    async () => {
+      const result = await getPopularPages(c.env.DB)
       return {
         content: [
           {
