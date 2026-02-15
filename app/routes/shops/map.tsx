@@ -12,7 +12,7 @@ export default createRoute(async (c) => {
   const shops = await getAllShops({
     client,
     queries: {
-      fields: 'id,name,address,latitude,longitude,area,genre',
+      fields: 'id,name,address,latitude,longitude,area,genre,is_recommended',
     },
   })
 

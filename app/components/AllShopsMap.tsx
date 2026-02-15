@@ -68,14 +68,36 @@ export const AllShopsMap = ({ shops }: Props) => {
               attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
             
+            // おすすめ店舗用のカスタムアイコン
+            const defaultIcon = L.icon({
+              iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+              iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+              shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
+            const recommendedIcon = L.icon({
+              iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+              iconRetinaUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+              shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
             // 各店舗にマーカーを追加
             shops.forEach(shop => {
-              const marker = L.marker([shop.latitude, shop.longitude]).addTo(map);
+              const icon = shop.is_recommended ? recommendedIcon : defaultIcon;
+              const marker = L.marker([shop.latitude, shop.longitude], { icon }).addTo(map);
               marker.bindPopup(\`
                 <div style="min-width: 200px;">
                   <h3 style="font-weight: bold; margin-bottom: 8px;">
                     <a href="/shops/\${shop.id}" style="color: #2563eb; text-decoration: none;">
-                      \${shop.name}
+                      \${shop.is_recommended ? '⭐ ' : ''}\${shop.name}
                     </a>
                   </h3>
                   <p style="font-size: 12px; color: #666;">
