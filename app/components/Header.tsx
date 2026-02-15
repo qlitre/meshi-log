@@ -1,6 +1,8 @@
+import MobileMenu from '../islands/MobileMenu'
+
 export function Header() {
   return (
-    <header class="bg-white shadow">
+    <header class="bg-white shadow relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div class="flex items-center justify-between">
           <h1 class="text-xl sm:text-2xl font-bold text-gray-900 shrink-0">
@@ -8,8 +10,9 @@ export function Header() {
               飯ログ
             </a>
           </h1>
-          <nav>
-            <ul class="flex gap-2 sm:gap-6 text-sm sm:text-base">
+          {/* Desktop menu */}
+          <nav class="hidden md:block">
+            <ul class="flex gap-6">
               <li>
                 <a href="/" class="text-gray-600 hover:text-gray-900 whitespace-nowrap">
                   訪問記録
@@ -32,6 +35,8 @@ export function Header() {
               </li>
             </ul>
           </nav>
+          {/* Mobile hamburger menu */}
+          <MobileMenu />
         </div>
       </div>
     </header>
