@@ -33,6 +33,11 @@ export function Header() {
                   About
                 </a>
               </li>
+              <li>
+                <a href="/feed.atom" class="text-gray-600 hover:text-gray-900 whitespace-nowrap">
+                  Feed
+                </a>
+              </li>
             </ul>
           </nav>
           {/* Mobile hamburger menu */}

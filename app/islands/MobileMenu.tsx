@@ -5,6 +5,7 @@ const menuItems = [
   { href: '/shops', label: '店舗一覧' },
   { href: '/popular', label: '人気記事' },
   { href: '/about', label: 'About' },
+  { href: '/feed.atom', label: 'Feed' },
 ]
 
 export default function MobileMenu() {
