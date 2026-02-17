@@ -1,10 +1,10 @@
 import { createRoute } from 'honox/factory'
-import { getPopularPages } from '../libs/pageview'
-import { Container } from '../components/Container'
-import { PopularArticleCard } from '../components/PopularArticleCard'
-import { PageHeading } from '../components/PageHeading'
-import { LinkToTop } from '../components/LinkToTop'
-import type { Meta } from '../types/meta'
+import { getPopularPages } from '../../libs/pageview'
+import { Container } from '../../components/Container'
+import { PopularArticleCard } from '../../components/PopularArticleCard'
+import { PageHeading } from '../../components/PageHeading'
+import { LinkToTop } from '../../components/LinkToTop'
+import type { Meta } from '../../types/meta'
 
 export default createRoute(async (c) => {
   const url = new URL(c.req.url)
@@ -19,7 +19,7 @@ export default createRoute(async (c) => {
     ogpUrl: canonicalUrl,
   }
 
-  const popularPages = await getPopularPages(c.env.DB, 20)
+  const popularPages = await getPopularPages(c.env.DB, 30)
 
   return c.render(
     <Container>
@@ -28,7 +28,7 @@ export default createRoute(async (c) => {
         {popularPages.length === 0 ? (
           <p class="text-gray-500">まだデータがありません</p>
         ) : (
-          <div class="space-y-6">
+          <div class="bg-white rounded-lg shadow-sm overflow-hidden">
             {popularPages.map((article, index) => (
               <PopularArticleCard article={article} rank={index + 1} />
             ))}
