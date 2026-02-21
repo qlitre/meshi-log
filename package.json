@@ -14,10 +14,11 @@
     "@hono/mcp": "^0.2.3",
     "@modelcontextprotocol/sdk": "^1.25.3",
     "dayjs": "^1.11.19",
-    "hono": "^4.11.9",
+    "hono": "^4.12.0",
     "hono-rate-limiter": "^0.5.3",
     "honox": "^0.1.54",
-    "microcms-js-sdk": "^3.2.0"
+    "microcms-js-sdk": "^3.2.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260131.0",
@@ -25,6 +26,7 @@
     "@hono/vite-dev-server": "^0.24.1",
     "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/vite": "^4.1.18",
+    "knip": "^5.84.1",
     "prettier": "^3.8.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",

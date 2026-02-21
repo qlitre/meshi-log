@@ -1,9 +1,9 @@
 /**
- * HTMLタグを除去してプレーンテキストを抽出する
+ * HTMLタグを除去してプレーンテキストを抽出する（内部関数）
  * @param html - HTML文字列
  * @returns HTMLタグを除去したテキスト
  */
-export const stripHtmlTags = (html: string): string => {
+const stripHtmlTags = (html: string): string => {
   return html.replace(/<[^>]*>/g, '').trim()
 }
 

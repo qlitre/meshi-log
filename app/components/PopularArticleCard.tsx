@@ -11,9 +11,7 @@ export const PopularArticleCard = ({ article, rank }: Props) => {
       href={article.page_path}
       class="flex items-center gap-4 px-4 py-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
     >
-      <span class="flex-shrink-0 w-8 text-center text-lg font-bold text-gray-400">
-        {rank}
-      </span>
+      <span class="flex-shrink-0 w-8 text-center text-lg font-bold text-gray-400">{rank}</span>
       <div class="flex-1 min-w-0">
         <h2 class="text-base font-semibold text-gray-800 truncate">
           {article.shop_name}

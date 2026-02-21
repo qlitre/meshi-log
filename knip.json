@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "app/server.ts",
+    "app/client.ts",
+    "app/routes/**/*.{ts,tsx,mdx}",
+    "app/islands/**/*.{ts,tsx}"
+  ],
+  "project": ["app/**/*.{ts,tsx,mdx}"],
+  "ignoreDependencies": ["tailwindcss"]
+}

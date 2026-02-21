@@ -1,10 +1,5 @@
 // microCMS APIレスポンス型定義
-import type {
-  MicroCMSContentId,
-  MicroCMSDate,
-  MicroCMSListResponse,
-  MicroCMSImage,
-} from 'microcms-js-sdk'
+import type { MicroCMSContentId, MicroCMSDate, MicroCMSImage } from 'microcms-js-sdk'
 
 // エリア
 export interface Area extends MicroCMSContentId, MicroCMSDate {
@@ -39,6 +34,3 @@ export interface Visit extends MicroCMSContentId, MicroCMSDate {
   visit_date: string
   memo: string // richEditorV2
 }
-
-// リスト形式APIのレスポンス型をエクスポート
-export type { MicroCMSListResponse }
