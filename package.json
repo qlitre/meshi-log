@@ -7,7 +7,8 @@
     "preview": "wrangler dev",
     "deploy": "yarn run build && wrangler deploy",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\""
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "prepare": "husky"
   },
   "private": true,
   "dependencies": {
@@ -26,12 +27,22 @@
     "@hono/vite-dev-server": "^0.24.1",
     "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/vite": "^4.1.18",
+    "husky": "^9.1.7",
     "knip": "^5.84.1",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^5.2.0",
     "tailwindcss": "^4.1.18",
     "vite": "^7.2.6",
     "wrangler": "^4.61.1"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,css,md}": [
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "yarn knip --include files"
+    ]
   }
 }
