@@ -1,5 +1,6 @@
 import type { Shop } from '../types/microcms'
 import { Badge } from './Badge'
+import { getShopGenreString } from '../utils/getShopGenreString'
 
 type Props = {
   shop: Shop
@@ -19,7 +20,7 @@ export const ShopListCard = ({ shop }: Props) => {
       <div class="space-y-2 text-sm text-gray-600">
         <p>
           <span class="font-medium">ジャンル: </span>
-          {shop.genre.name}
+          {getShopGenreString(shop._genre)}
         </p>
         <p>
           <span class="font-medium">エリア: </span>
