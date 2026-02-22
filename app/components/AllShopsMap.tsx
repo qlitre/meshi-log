@@ -1,6 +1,6 @@
 import type { Shop } from '../types/microcms'
 import { raw } from 'hono/html'
-import { getGenreString } from '../utils/getGenreString'
+import { getShopGenreString } from '../utils/getShopGenreString'
 
 type Props = {
   shops: Shop[]
@@ -12,7 +12,7 @@ export const AllShopsMap = ({ shops }: Props) => {
     .filter((shop) => shop.latitude && shop.longitude)
     .map((shop) => ({
       ...shop,
-      genreString: getGenreString(shop._genre),
+      genreString: getShopGenreString(shop._genre),
     }))
 
   if (shopsWithCoords.length === 0) {
