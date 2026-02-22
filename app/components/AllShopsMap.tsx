@@ -1,13 +1,19 @@
 import type { Shop } from '../types/microcms'
 import { raw } from 'hono/html'
+import { getGenreString } from '../utils/getGenreString'
 
 type Props = {
   shops: Shop[]
 }
 
 export const AllShopsMap = ({ shops }: Props) => {
-  // 座標を持つ店舗のみフィルタリング
-  const shopsWithCoords = shops.filter((shop) => shop.latitude && shop.longitude)
+  // 座標を持つ店舗のみフィルタリング + ジャンル文字列を事前に生成
+  const shopsWithCoords = shops
+    .filter((shop) => shop.latitude && shop.longitude)
+    .map((shop) => ({
+      ...shop,
+      genreString: getGenreString(shop._genre),
+    }))
 
   if (shopsWithCoords.length === 0) {
     return (
@@ -101,7 +107,7 @@ export const AllShopsMap = ({ shops }: Props) => {
                     </a>
                   </h3>
                   <p style="font-size: 12px; color: #666;">
-                    \${shop.area.name} - \${shop.genre.name}
+                    \${shop.area.name} - \${shop.genreString}
                   </p>
                   <p style="font-size: 12px; margin-top: 4px;">
                     \${shop.address}

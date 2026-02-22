@@ -5,6 +5,7 @@ import { VisitListCard } from '../../components/VisitListCard'
 import { config } from '../../siteSettings'
 import { Pagination } from '../../components/Pagination'
 import type { Meta } from '../../types/meta'
+import { getShopGenreString } from '../../utils/getShopGenreString'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
@@ -15,7 +16,7 @@ export default createRoute(async (c) => {
   const offset = limit * (page - 1)
   const visits = await getVisits({
     client,
-    queries: { limit: limit, offset: offset, filters: `shop[equals]${id}` },
+    queries: { limit: limit, depth: 2, offset: offset, filters: `shop[equals]${id}` },
   })
   const visitsCount = visits.totalCount
 
@@ -39,7 +40,7 @@ export default createRoute(async (c) => {
         <div class="space-y-3 text-gray-700">
           <div>
             <span class="font-medium">ジャンル: </span>
-            {shop.genre.name}
+            {getShopGenreString(shop._genre)}
           </div>
 
           <div>

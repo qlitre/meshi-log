@@ -19,7 +19,8 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   latitude: number
   longitude: number
   area: Area
-  genre: Genre
+  genre: Genre[]
+  _genre: Genre[]
   memo: string // textArea (required)
   is_recommended: boolean // boolean (required)
   rating?: number // number (optional)
