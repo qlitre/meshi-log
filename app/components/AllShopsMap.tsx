@@ -12,7 +12,7 @@ export const AllShopsMap = ({ shops }: Props) => {
     .filter((shop) => shop.latitude && shop.longitude)
     .map((shop) => ({
       ...shop,
-      genreString: getShopGenreString(shop._genre),
+      genreString: getShopGenreString(shop.genre),
     }))
 
   if (shopsWithCoords.length === 0) {

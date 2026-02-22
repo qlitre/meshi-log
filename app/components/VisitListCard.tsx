@@ -28,7 +28,7 @@ export const VisitListCard = ({ visit }: Props) => {
           <div class="flex flex-wrap items-center gap-2 md:gap-4 text-sm text-gray-600 mb-3 md:mb-4">
             <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
             <span>{visit.shop.area.name}</span>
-            <span>{getShopGenreString(visit.shop._genre)}</span>
+            <span>{getShopGenreString(visit.shop.genre)}</span>
           </div>
 
           <p class="line-clamp-3 text-sm md:text-base text-gray-700">

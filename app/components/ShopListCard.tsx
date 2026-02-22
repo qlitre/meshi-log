@@ -20,7 +20,7 @@ export const ShopListCard = ({ shop }: Props) => {
       <div class="space-y-2 text-sm text-gray-600">
         <p>
           <span class="font-medium">ジャンル: </span>
-          {getShopGenreString(shop._genre)}
+          {getShopGenreString(shop.genre)}
         </p>
         <p>
           <span class="font-medium">エリア: </span>

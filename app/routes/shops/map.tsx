@@ -12,7 +12,7 @@ export default createRoute(async (c) => {
   const shops = await getAllShops({
     client,
     queries: {
-      fields: 'id,name,address,latitude,longitude,area,_genre,is_recommended',
+      fields: 'id,name,address,latitude,longitude,area,genre,is_recommended',
     },
   })
 
@@ -36,7 +36,7 @@ export default createRoute(async (c) => {
 
   const genreShopCount: Record<string, number> = {}
   for (const s of shops) {
-    for (const genre of s._genre) {
+    for (const genre of s.genre) {
       if (!genreShopCount[genre.name]) genreShopCount[genre.name] = 0
       genreShopCount[genre.name]++
     }

@@ -40,7 +40,7 @@ export default createRoute(async (c) => {
         <div class="space-y-3 text-gray-700">
           <div>
             <span class="font-medium">ジャンル: </span>
-            {getShopGenreString(shop._genre)}
+            {getShopGenreString(shop.genre)}
           </div>
 
           <div>

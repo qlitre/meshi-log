@@ -11,7 +11,7 @@ export const buildShopFilterCondition = (params: ShopFilterParams): string => {
     filterCondition.push(`area[equals]${params.area_id}`)
   }
   if (params.genre_id) {
-    filterCondition.push(`_genre[contains]${params.genre_id}`)
+    filterCondition.push(`genre[contains]${params.genre_id}`)
   }
   if (params.is_recommended) {
     filterCondition.push(`is_recommended[equals]true`)
