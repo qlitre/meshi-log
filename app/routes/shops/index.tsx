@@ -1,5 +1,11 @@
 import { createRoute } from 'honox/factory'
-import { getMicroCMSClient, getShops, getAllAreas, getAllGenres } from '../../libs/microcms'
+import {
+  getMicroCMSClient,
+  getShops,
+  getAllAreas,
+  getAllGenres,
+  getAllShops,
+} from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
 import { ShopListCard } from '../../components/ShopListCard'
@@ -36,9 +42,41 @@ export default createRoute(async (c) => {
     },
   })
 
-  // エリアとジャンルのマスターデータを取得
-  const areas = await getAllAreas({ client: client, queries: { orders: 'code' } })
-  const genres = await getAllGenres({ client: client, queries: { orders: 'name' } })
+  const allShops = await getAllShops({
+    client,
+    queries: {
+      depth: 1,
+      fields: 'id,area,genre',
+    },
+  })
+
+  const areaMap = new Map<string, { id: string; name: string; count: number }>()
+  const genreMap = new Map<string, { id: string; name: string; count: number }>()
+
+  for (const s of allShops) {
+    for (const genre of s.genre) {
+      const genreId = genre.id
+      const genreName = genre.name
+      const existing = genreMap.get(genreId)
+      if (existing) {
+        existing.count++
+      } else {
+        genreMap.set(genre.id, { id: genreId, name: genreName, count: 1 })
+      }
+    }
+    const areaId = s.area.id
+    const areaName = s.area.name
+    const existing = areaMap.get(areaId)
+    if (existing) {
+      existing.count++
+    } else {
+      areaMap.set(areaId, { id: areaId, name: areaName, count: 1 })
+    }
+  }
+
+  // 配列に変換してソート
+  const areasWithCount = Array.from(areaMap.values()).sort((a, b) => a.id.localeCompare(b.id))
+  const genresWithCount = Array.from(genreMap.values()).sort((a, b) => a.id.localeCompare(b.id))
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/shops`
@@ -70,8 +108,8 @@ export default createRoute(async (c) => {
       </div>
 
       <ShopFilterForm
-        areas={areas}
-        genres={genres}
+        areas={areasWithCount}
+        genres={genresWithCount}
         initialFilters={{
           q: searchQuery,
           area: areaId,

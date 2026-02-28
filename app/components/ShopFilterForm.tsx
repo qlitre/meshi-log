@@ -1,8 +1,18 @@
-import type { Area, Genre } from '../types/microcms'
+type AreaWithCount = {
+  id: string
+  name: string
+  count: number
+}
+
+type GenreWithCount = {
+  id: string
+  name: string
+  count: number
+}
 
 type ShopFilterFormProps = {
-  areas: Area[]
-  genres: Genre[]
+  areas: AreaWithCount[]
+  genres: GenreWithCount[]
   initialFilters: {
     q?: string
     area?: string
@@ -68,7 +78,7 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
             <option value="">すべて</option>
             {areas.map((area) => (
               <option key={area.id} value={area.id} selected={area.id === initialFilters.area}>
-                {area.name}
+                {area.name}({area.count})
               </option>
             ))}
           </select>
@@ -84,7 +94,7 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
             <option value="">すべて</option>
             {genres.map((genre) => (
               <option key={genre.id} value={genre.id} selected={genre.id === initialFilters.genre}>
-                {genre.name}
+                {genre.name}({genre.count})
               </option>
             ))}
           </select>
