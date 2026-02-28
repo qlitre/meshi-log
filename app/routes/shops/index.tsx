@@ -2,8 +2,6 @@ import { createRoute } from 'honox/factory'
 import {
   getMicroCMSClient,
   getShops,
-  getAllAreas,
-  getAllGenres,
   getAllShops,
 } from '../../libs/microcms'
 import { Container } from '../../components/Container'
