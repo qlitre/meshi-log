@@ -22,7 +22,7 @@ export interface Shop extends MicroCMSContentId, MicroCMSDate {
   genre: Genre[]
   memo: string // textArea (required)
   is_recommended: boolean // boolean (required)
-  rating?: number // number (optional)
+  rating: number // number (optional)
   nearest_station?: string // 最寄駅 (optional)
 }
 

@@ -23,20 +23,18 @@ export const ShopListItem = ({ shop }: Props) => {
           {/* メタ情報: エリア、ジャンル、最寄駅 */}
           <div class="flex flex-wrap items-center gap-2 text-xs text-gray-600">
             <span>{shop.area.name}</span>
-            <span class="text-gray-400">•</span>
-            <span>{getShopGenreString(shop.genre)}</span>
             {shop.nearest_station && (
               <>
                 <span class="text-gray-400">•</span>
                 <span>{shop.nearest_station}</span>
               </>
             )}
+            <span class="text-gray-400">•</span>
+            <span>{getShopGenreString(shop.genre)}</span>
           </div>
 
-          {/* メモ（存在する場合） */}
-          {shop.memo && (
-            <p class="mt-1 text-xs text-gray-600 line-clamp-1">{shop.memo}</p>
-          )}
+          {/* メモ */}
+          <p class="mt-2 text-md text-gray-600 line-clamp-1">{shop.memo}</p>
         </div>
       </div>
     </a>
