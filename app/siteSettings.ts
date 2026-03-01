@@ -1,8 +1,8 @@
 export const config = {
   siteTitle: '飯ログ',
   siteurl: 'https://meshi-log.info',
-  perPage: 10,
-  shopPerPage: 12,
+  perPage: 20,
+  shopPerPage: 30,
   visitWithShopPerPage: 5,
   serachPerPage: 30,
   feedPerPage: 50,

@@ -55,7 +55,7 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
 
   return (
     <form method="get" action="/shops" class="p-4 bg-gray-50 rounded-lg">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+      <div class="space-y-4 mb-4">
         {/* キーワード検索 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">キーワード</label>
@@ -70,34 +70,64 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
 
         {/* エリア選択 */}
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">エリア</label>
-          <select
-            name="area"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">すべて</option>
+          <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
+          <div class="space-y-2 max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
+            <label class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+              <input
+                type="radio"
+                name="area"
+                value=""
+                checked={!initialFilters.area}
+                class="mr-2"
+              />
+              <span class="text-sm">すべて</span>
+            </label>
             {areas.map((area) => (
-              <option key={area.id} value={area.id} selected={area.id === initialFilters.area}>
-                {area.name}({area.count})
-              </option>
+              <label key={area.id} class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+                <input
+                  type="radio"
+                  name="area"
+                  value={area.id}
+                  checked={area.id === initialFilters.area}
+                  class="mr-2"
+                />
+                <span class="text-sm">
+                  {area.name} ({area.count})
+                </span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* ジャンル選択 */}
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
-          <select
-            name="genre"
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">すべて</option>
+          <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
+          <div class="space-y-2 max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
+            <label class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+              <input
+                type="radio"
+                name="genre"
+                value=""
+                checked={!initialFilters.genre}
+                class="mr-2"
+              />
+              <span class="text-sm">すべて</span>
+            </label>
             {genres.map((genre) => (
-              <option key={genre.id} value={genre.id} selected={genre.id === initialFilters.genre}>
-                {genre.name}({genre.count})
-              </option>
+              <label key={genre.id} class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+                <input
+                  type="radio"
+                  name="genre"
+                  value={genre.id}
+                  checked={genre.id === initialFilters.genre}
+                  class="mr-2"
+                />
+                <span class="text-sm">
+                  {genre.name} ({genre.count})
+                </span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* おすすめフラグ */}
@@ -117,17 +147,17 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
       </div>
 
       {/* ボタン */}
-      <div class="flex gap-2">
+      <div class="flex flex-col gap-2">
         <button
           type="submit"
-          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
+          class="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
         >
           検索
         </button>
         {hasFilters && (
           <a
             href="/shops"
-            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center"
+            class="w-full text-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center"
           >
             クリア
           </a>
