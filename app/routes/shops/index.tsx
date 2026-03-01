@@ -6,7 +6,7 @@ import {
 } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
-import { ShopListCard } from '../../components/ShopListCard'
+import { ShopListItem } from '../../components/ShopListItem'
 import type { Meta } from '../../types/meta'
 import { ShopFilterForm } from '../../components/ShopFilterForm'
 import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
@@ -105,40 +105,51 @@ export default createRoute(async (c) => {
         </a>
       </div>
 
-      <ShopFilterForm
-        areas={areasWithCount}
-        genres={genresWithCount}
-        initialFilters={{
-          q: searchQuery,
-          area: areaId,
-          genre: genreId,
-          isRecommended,
-        }}
-      />
+      {/* 2カラムレイアウト */}
+      <div class="flex flex-col md:flex-row gap-6">
+        {/* 左サイドバー（検索フォーム） */}
+        <aside class="md:w-80 flex-shrink-0">
+          <ShopFilterForm
+            areas={areasWithCount}
+            genres={genresWithCount}
+            initialFilters={{
+              q: searchQuery,
+              area: areaId,
+              genre: genreId,
+              isRecommended,
+            }}
+          />
+        </aside>
 
-      {shops.contents.length === 0 ? (
-        <p class="text-gray-500">
-          {searchQuery || areaId || genreId || isRecommended
-            ? '検索条件に一致するお店が見つかりませんでした'
-            : 'お店が登録されていません'}
-        </p>
-      ) : (
-        <>
-          <p class="text-sm text-gray-600 mb-4">{shops.totalCount}件のお店が見つかりました</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {shops.contents.map((shop) => (
-              <ShopListCard shop={shop} />
-            ))}
-          </div>
-        </>
-      )}
-      <Pagination
-        totalCount={shops.totalCount}
-        limit={config.shopPerPage}
-        currentPage={page}
-        basePath="/shops"
-        query={queryParams}
-      />
+        {/* 右メインエリア（リスト） */}
+        <main class="flex-1 min-w-0">
+          {shops.contents.length === 0 ? (
+            <p class="text-gray-500">
+              {searchQuery || areaId || genreId || isRecommended
+                ? '検索条件に一致するお店が見つかりませんでした'
+                : 'お店が登録されていません'}
+            </p>
+          ) : (
+            <>
+              <p class="text-sm text-gray-600 mb-4">
+                {shops.totalCount}件のお店が見つかりました
+              </p>
+              <div class="space-y-4">
+                {shops.contents.map((shop) => (
+                  <ShopListItem shop={shop} key={shop.id} />
+                ))}
+              </div>
+            </>
+          )}
+          <Pagination
+            totalCount={shops.totalCount}
+            limit={config.shopPerPage}
+            currentPage={page}
+            basePath="/shops"
+            query={queryParams}
+          />
+        </main>
+      </div>
     </Container>,
     { meta }
   )
