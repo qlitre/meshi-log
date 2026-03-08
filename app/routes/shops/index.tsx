@@ -1,9 +1,5 @@
 import { createRoute } from 'honox/factory'
-import {
-  getMicroCMSClient,
-  getShops,
-  getAllShops,
-} from '../../libs/microcms'
+import { getMicroCMSClient, getShops, getAllShops } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
 import { ShopListItem } from '../../components/ShopListItem'
@@ -131,9 +127,7 @@ export default createRoute(async (c) => {
             </p>
           ) : (
             <>
-              <p class="text-sm text-gray-600 mb-4">
-                {shops.totalCount}件のお店が見つかりました
-              </p>
+              <p class="text-sm text-gray-600 mb-4">{shops.totalCount}件のお店が見つかりました</p>
               <div class="space-y-4">
                 {shops.contents.map((shop) => (
                   <ShopListItem shop={shop} key={shop.id} />

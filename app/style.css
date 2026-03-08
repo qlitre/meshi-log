@@ -137,6 +137,17 @@
   margin-top: 8px;
 }
 
+.article-content p code {
+  padding: 0 4px;
+  border-radius: 4px;
+  margin: 0 4px;
+  background-color: #edf2f7;
+  color: #1a202c;
+  font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New';
+  font-size: 0.875rem;
+  display: inline-block;
+}
+
 /* --------------------------------------------------
    About page
    -------------------------------------------------- */

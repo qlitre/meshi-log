@@ -83,7 +83,10 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
               <span class="text-sm">すべて</span>
             </label>
             {areas.map((area) => (
-              <label key={area.id} class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+              <label
+                key={area.id}
+                class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded"
+              >
                 <input
                   type="radio"
                   name="area"
@@ -114,7 +117,10 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
               <span class="text-sm">すべて</span>
             </label>
             {genres.map((genre) => (
-              <label key={genre.id} class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
+              <label
+                key={genre.id}
+                class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded"
+              >
                 <input
                   type="radio"
                   name="genre"
