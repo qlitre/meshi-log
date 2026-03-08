@@ -15,6 +15,7 @@ import { Container } from '../../components/Container'
 import { LinkToTop } from '../../components/LinkToTop'
 import { ShopInformation } from '../../components/ShopInformation'
 import { AdjacentPosts } from '../../components/AdjacentPosts'
+import { getShopGenreString } from '../../utils/getShopGenreString'
 
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
@@ -59,7 +60,7 @@ export default createRoute(async (c) => {
         <div class="flex items-center gap-4 text-gray-600 mb-6 pb-6 border-b">
           <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
           <span>{visit.shop.area.name}</span>
-          <span>{visit.shop.genre.name}</span>
+          <span>{getShopGenreString(visit.shop.genre)}</span>
         </div>
 
         {/* 本文 */}
