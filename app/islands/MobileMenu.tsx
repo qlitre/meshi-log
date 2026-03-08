@@ -13,16 +13,16 @@ export default function MobileMenu() {
 
   return (
     <div class="md:hidden">
+      {/* FAB hamburger button - fixed bottom right */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        class="relative z-50 p-2 text-gray-600 hover:text-gray-900 focus:outline-none"
-        aria-label="メニューを開く"
+        class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-orange-500 text-white shadow-lg hover:bg-orange-600 active:bg-orange-700 focus:outline-none flex items-center justify-center"
+        aria-label={isOpen ? 'メニューを閉じる' : 'メニューを開く'}
         aria-expanded={isOpen}
       >
         {isOpen ? (
-          // Close icon (X)
-          <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -31,8 +31,7 @@ export default function MobileMenu() {
             />
           </svg>
         ) : (
-          // Hamburger icon
-          <svg class="w-6 h-6 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -43,15 +42,17 @@ export default function MobileMenu() {
         )}
       </button>
 
-      {isOpen && <div class="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />}
       {isOpen && (
-        <nav class="absolute top-full left-0 right-0 bg-white shadow-lg border-t border-gray-100 z-50">
-          <ul class="py-2">
+        <div class="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />
+      )}
+      {isOpen && (
+        <nav class="fixed inset-0 z-45 flex items-center justify-center bg-white/95">
+          <ul class="flex flex-col items-center gap-2">
             {menuItems.map((item) => (
               <li>
                 <a
                   href={item.href}
-                  class="block px-6 py-3 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                  class="block text-center text-xl py-4 px-8 text-gray-700 hover:text-gray-900 active:bg-gray-100 rounded-lg"
                 >
                   {item.label}
                 </a>
