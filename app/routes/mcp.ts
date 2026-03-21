@@ -249,12 +249,19 @@ export const getMcpServer = async (c: Context<Env>) => {
       description: '飯屋検索',
       inputSchema: {
         q: z.string().optional(),
+        area_id: z.string().optional(),
+        genre_id: z.string().optional(),
       },
       _meta: { ui: { resourceUri } },
     },
-    async (params: { q?: string } | undefined) => {
+    async (params: { q?: string; area_id?: string; genre_id?: string } | undefined) => {
       const queries: MicroCMSQueries = { limit, offset: 0 }
       if (params?.q) queries.q = params.q
+      const filterString = buildShopFilterCondition({
+        area_id: params?.area_id,
+        genre_id: params?.genre_id,
+      })
+      if (filterString) queries.filters = filterString
       const result = await getShops({ client, queries })
       return {
         content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
