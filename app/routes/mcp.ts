@@ -11,6 +11,12 @@ import {
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import {
+  registerAppTool,
+  registerAppResource,
+  RESOURCE_MIME_TYPE,
+} from '@modelcontextprotocol/ext-apps/server'
+import html from '../../dist-mcp-app/index.html?raw'
 import { z } from 'zod'
 import { Context } from 'hono'
 import { config } from '../siteSettings'
@@ -220,6 +226,38 @@ export const getMcpServer = async (c: Context<Env>) => {
             text: JSON.stringify(result, null, 2),
           },
         ],
+      }
+    }
+  )
+  const resourceUri = 'ui://meshi-log/shop-search'
+  registerAppResource(
+    server,
+    resourceUri,
+    resourceUri,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => {
+      return {
+        contents: [{ uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
+      }
+    }
+  )
+  registerAppTool(
+    server,
+    'search_shops',
+    {
+      title: 'Search Shops',
+      description: '飯屋検索',
+      inputSchema: {
+        q: z.string().optional(),
+      },
+      _meta: { ui: { resourceUri } },
+    },
+    async (params: { q?: string } | undefined) => {
+      const queries: MicroCMSQueries = { limit, offset: 0 }
+      if (params?.q) queries.q = params.q
+      const result = await getShops({ client, queries })
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
       }
     }
   )
