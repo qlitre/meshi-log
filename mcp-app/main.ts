@@ -7,6 +7,7 @@ const searchInput = document.getElementById('search-input') as HTMLInputElement
 const areaSelect = document.querySelector<HTMLSelectElement>('#area-select')!
 const genreSelect = document.querySelector<HTMLSelectElement>('#genre-select')!
 
+const recommendedCheck = document.getElementById('recommended-check') as HTMLInputElement
 const searchBtn = document.getElementById('search-btn')!
 const resultsEl = document.getElementById('results')!
 const countEl = document.getElementById('count')!
@@ -24,6 +25,7 @@ searchBtn.addEventListener('click', async () => {
   const q = searchInput.value.trim()
   const area_id = areaSelect.value
   const genre_id = genreSelect.value
+  const is_recommended = recommendedCheck.checked
   resultsEl.textContent = '検索中…'
   const result = await app.callServerTool({
     name: 'search_shops',
@@ -31,6 +33,7 @@ searchBtn.addEventListener('click', async () => {
       ...(q && { q }),
       ...(area_id && { area_id }),
       ...(genre_id && { genre_id }),
+      ...(is_recommended && { is_recommended }),
     },
   })
   const text = result.content?.find((c) => c.type === 'text')?.text

@@ -172,6 +172,7 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
+        orders: 'id',
       }
       if (params?.q) queries.q = params.q
       const result = await getAreas({ client, queries })
@@ -197,6 +198,7 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
+        orders: 'name',
       }
       if (params?.q) queries.q = params.q
       const result = await getGenres({ client, queries })
@@ -246,20 +248,27 @@ export const getMcpServer = async (c: Context<Env>) => {
     'search_shops',
     {
       title: 'Search Shops',
-      description: '飯屋検索',
+      description:
+        '飯屋をインタラクティブに検索するUIを表示します。パラメータなしで即座に呼び出してください。ユーザーがUI上で検索条件を指定します。',
       inputSchema: {
         q: z.string().optional(),
         area_id: z.string().optional(),
         genre_id: z.string().optional(),
+        is_recommended: z.boolean().optional(),
       },
       _meta: { ui: { resourceUri } },
     },
-    async (params: { q?: string; area_id?: string; genre_id?: string } | undefined) => {
+    async (
+      params:
+        | { q?: string; area_id?: string; genre_id?: string; is_recommended?: boolean }
+        | undefined
+    ) => {
       const queries: MicroCMSQueries = { limit, offset: 0 }
       if (params?.q) queries.q = params.q
       const filterString = buildShopFilterCondition({
         area_id: params?.area_id,
         genre_id: params?.genre_id,
+        is_recommended: params?.is_recommended,
       })
       if (filterString) queries.filters = filterString
       const result = await getShops({ client, queries })
