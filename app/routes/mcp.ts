@@ -7,6 +7,7 @@ import {
   getAreas,
   getGenres,
   getShops,
+  getShopDetail,
 } from '../libs/microcms'
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
@@ -126,6 +127,37 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
       if (params?.q) queries.q = params.q
       const result = await getVisits({ client, queries })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+  server.registerTool(
+    'get_recent_visit_detail_by_shop',
+    {
+      title: 'Get Visits By Shop',
+      description: 'Get the latest visit for a specific shop',
+      inputSchema: {
+        shop_id: z.string().min(1),
+      },
+    },
+    async (params: { shop_id: string }) => {
+      const queries: MicroCMSQueries = {
+        limit: 1,
+        fields: 'id,title,thumbnail,memo,visit_date,publishedAt',
+        filters: `shop[equals]${params.shop_id}`,
+        orders: '-visit_date',
+      }
+      const visits = await getVisits({ client, queries })
+      if (visits.contents.length === 0) {
+        return { content: [{ type: 'text', text: JSON.stringify({ contents: [] }, null, 2) }] }
+      }
+      const result = await getVisitDetail({ client, contentId: visits.contents[0].id })
       return {
         content: [
           {
