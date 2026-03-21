@@ -25,6 +25,7 @@ export default defineConfig({
     external: [
       'microcms-js-sdk',
       '@modelcontextprotocol/sdk',
+      '@modelcontextprotocol/ext-apps',
       'dayjs',
       'microcms-rich-editor-handler',
       'shiki',

@@ -7,10 +7,17 @@ import {
   getAreas,
   getGenres,
   getShops,
+  getShopDetail,
 } from '../libs/microcms'
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
+import {
+  registerAppTool,
+  registerAppResource,
+  RESOURCE_MIME_TYPE,
+} from '@modelcontextprotocol/ext-apps/server'
+import html from '../../dist-mcp-app/index.html?raw'
 import { z } from 'zod'
 import { Context } from 'hono'
 import { config } from '../siteSettings'
@@ -131,6 +138,37 @@ export const getMcpServer = async (c: Context<Env>) => {
     }
   )
   server.registerTool(
+    'get_recent_visit_detail_by_shop',
+    {
+      title: 'Get Visits By Shop',
+      description: 'Get the latest visit for a specific shop',
+      inputSchema: {
+        shop_id: z.string().min(1),
+      },
+    },
+    async (params: { shop_id: string }) => {
+      const queries: MicroCMSQueries = {
+        limit: 1,
+        fields: 'id,title,thumbnail,memo,visit_date,publishedAt',
+        filters: `shop[equals]${params.shop_id}`,
+        orders: '-visit_date',
+      }
+      const visits = await getVisits({ client, queries })
+      if (visits.contents.length === 0) {
+        return { content: [{ type: 'text', text: JSON.stringify({ contents: [] }, null, 2) }] }
+      }
+      const result = await getVisitDetail({ client, contentId: visits.contents[0].id })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
+  server.registerTool(
     'get_visit_detail',
     {
       title: 'Get Visit Detail',
@@ -166,6 +204,7 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
+        orders: 'code',
       }
       if (params?.q) queries.q = params.q
       const result = await getAreas({ client, queries })
@@ -191,6 +230,7 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
+        orders: 'name',
       }
       if (params?.q) queries.q = params.q
       const result = await getGenres({ client, queries })
@@ -220,6 +260,52 @@ export const getMcpServer = async (c: Context<Env>) => {
             text: JSON.stringify(result, null, 2),
           },
         ],
+      }
+    }
+  )
+  const resourceUri = 'ui://meshi-log/shop-search'
+  registerAppResource(
+    server,
+    resourceUri,
+    resourceUri,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => {
+      return {
+        contents: [{ uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
+      }
+    }
+  )
+  registerAppTool(
+    server,
+    'search_shops',
+    {
+      title: 'Search Shops',
+      description:
+        '飯屋をインタラクティブに検索するUIを表示します。パラメータなしで即座に呼び出してください。ユーザーがUI上で検索条件を指定します。',
+      inputSchema: {
+        q: z.string().optional(),
+        area_id: z.string().optional(),
+        genre_id: z.string().optional(),
+        is_recommended: z.boolean().optional(),
+      },
+      _meta: { ui: { resourceUri } },
+    },
+    async (
+      params:
+        | { q?: string; area_id?: string; genre_id?: string; is_recommended?: boolean }
+        | undefined
+    ) => {
+      const queries: MicroCMSQueries = { limit, offset: 0 }
+      if (params?.q) queries.q = params.q
+      const filterString = buildShopFilterCondition({
+        area_id: params?.area_id,
+        genre_id: params?.genre_id,
+        is_recommended: params?.is_recommended,
+      })
+      if (filterString) queries.filters = filterString
+      const result = await getShops({ client, queries })
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
       }
     }
   )
