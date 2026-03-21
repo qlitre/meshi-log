@@ -47,11 +47,11 @@ function renderShops(data: { totalCount: number; contents: any[] }) {
     .map((shop) => {
       const genres = shop.genre?.map((g: any) => g.name).join(', ') ?? ''
       const area = shop.area?.name ?? ''
-      const badge = shop.is_recommended ? ' ⭐おすすめ' : ''
-      return `<div style="padding:8px;border-bottom:1px solid #eee">
-        <strong>${shop.name}</strong>${badge}<br/>
-        <small>${area} / ${genres}</small><br/>
-        <span>${shop.memo ?? ''}</span>
+      const badge = shop.is_recommended ? '<span class="shop-badge">おすすめ</span>' : ''
+      return `<div class="shop-card">
+        <div><span class="shop-name">${shop.name}</span>${badge}</div>
+        <div class="shop-meta">${area} / ${genres}</div>
+        ${shop.memo ? `<div class="shop-memo">${shop.memo}</div>` : ''}
       </div>`
     })
     .join('')

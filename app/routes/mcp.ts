@@ -172,7 +172,7 @@ export const getMcpServer = async (c: Context<Env>) => {
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
         limit: 100,
-        orders: 'id',
+        orders: 'code',
       }
       if (params?.q) queries.q = params.q
       const result = await getAreas({ client, queries })
