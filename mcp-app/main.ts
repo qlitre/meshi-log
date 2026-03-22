@@ -3,6 +3,7 @@
 
 import { App } from '@modelcontextprotocol/ext-apps'
 import type { Visit, ShopListResponse, AreaListResponse, GenreListResponse } from './types'
+import { renderShopCard, renderVisitDetail, renderEmptyVisit } from './html'
 
 const searchInput = document.getElementById('search-input') as HTMLInputElement
 const areaSelect = document.querySelector<HTMLSelectElement>('#area-select')!
@@ -66,21 +67,9 @@ async function loadVisit(btn: HTMLElement, shopId: string) {
   const visit: Visit | null = text ? JSON.parse(text) : null
 
   if (visit && visit.id) {
-    const date = visit.visit_date ? new Date(visit.visit_date).toLocaleDateString('ja-JP') : ''
-    const memo = visit.memo
-      ? visit.memo.replace(/<[^>]*>/g, '').slice(0, 150) +
-        (visit.memo.replace(/<[^>]*>/g, '').length > 150 ? '…' : '')
-      : ''
-    const url = `https://meshi-log.info/visits/${visit.id}`
-    detail.innerHTML = `
-      <div class="visit-card">
-        <div class="visit-title">${visit.title ?? '訪問記録'}</div>
-        ${date ? `<div class="visit-date">${date}</div>` : ''}
-        ${memo ? `<div class="visit-memo">${memo}</div>` : ''}
-        <a class="visit-link" href="#" onclick="openLink('${url}'); return false;">飯ログで詳細を見る →</a>
-      </div>`
+    detail.innerHTML = renderVisitDetail(visit)
   } else {
-    detail.innerHTML = '<div class="detail-empty">訪問記録はまだありません</div>'
+    detail.innerHTML = renderEmptyVisit()
   }
 
   detail.dataset.loaded = '1'
@@ -99,20 +88,7 @@ async function openLink(url: string) {
 // 結果描画
 function renderShops(data: ShopListResponse) {
   countEl.textContent = `${data.totalCount}件`
-  resultsEl.innerHTML = data.contents
-    .map((shop) => {
-      const genres = shop.genre?.map((g) => g.name).join(', ') ?? ''
-      const area = shop.area?.name ?? ''
-      const badge = shop.is_recommended ? '<span class="shop-badge">おすすめ</span>' : ''
-      return `<div class="shop-card">
-        <div><span class="shop-name">${shop.name}</span>${badge}</div>
-        <div class="shop-meta">${area} / ${genres}</div>
-        ${shop.memo ? `<div class="shop-memo">${shop.memo}</div>` : ''}
-        <button class="visit-btn" onclick="loadVisit(this, '${shop.id}')">最新の訪問を見る</button>
-        <div class="shop-detail"></div>
-      </div>`
-    })
-    .join('')
+  resultsEl.innerHTML = data.contents.map((shop) => renderShopCard(shop)).join('')
 }
 
 // ホストに接続後、エリア・ジャンルを取得
