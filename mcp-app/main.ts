@@ -2,6 +2,7 @@
 /// <reference lib="dom.iterable" />
 
 import { App } from '@modelcontextprotocol/ext-apps'
+import type { Visit, ShopListResponse, AreaListResponse, GenreListResponse } from './types'
 
 const searchInput = document.getElementById('search-input') as HTMLInputElement
 const areaSelect = document.querySelector<HTMLSelectElement>('#area-select')!
@@ -62,17 +63,13 @@ async function loadVisit(btn: HTMLElement, shopId: string) {
     arguments: { shop_id: shopId },
   })
   const text = result.content?.find((c) => c.type === 'text')?.text
-  const visit = text ? JSON.parse(text) : null
+  const visit: Visit | null = text ? JSON.parse(text) : null
 
   if (visit && visit.id) {
-    const date = visit.visit_date
-      ? new Date(visit.visit_date).toLocaleDateString('ja-JP')
-      : ''
-    const thumb = visit.thumbnail?.url
-      ? `<img class="visit-thumb" src="${visit.thumbnail.url}?w=400&h=280&fit=crop" alt="" />`
-      : ''
+    const date = visit.visit_date ? new Date(visit.visit_date).toLocaleDateString('ja-JP') : ''
     const memo = visit.memo
-      ? visit.memo.replace(/<[^>]*>/g, '').slice(0, 150) + (visit.memo.replace(/<[^>]*>/g, '').length > 150 ? '…' : '')
+      ? visit.memo.replace(/<[^>]*>/g, '').slice(0, 150) +
+        (visit.memo.replace(/<[^>]*>/g, '').length > 150 ? '…' : '')
       : ''
     const url = `https://meshi-log.info/visits/${visit.id}`
     detail.innerHTML = `
@@ -100,11 +97,11 @@ async function openLink(url: string) {
 ;(window as any).openLink = openLink
 
 // 結果描画
-function renderShops(data: { totalCount: number; contents: any[] }) {
+function renderShops(data: ShopListResponse) {
   countEl.textContent = `${data.totalCount}件`
   resultsEl.innerHTML = data.contents
     .map((shop) => {
-      const genres = shop.genre?.map((g: any) => g.name).join(', ') ?? ''
+      const genres = shop.genre?.map((g) => g.name).join(', ') ?? ''
       const area = shop.area?.name ?? ''
       const badge = shop.is_recommended ? '<span class="shop-badge">おすすめ</span>' : ''
       return `<div class="shop-card">
@@ -127,7 +124,9 @@ async function init() {
     app.callServerTool({ name: 'get_genres', arguments: {} }),
   ])
 
-  const areasData = JSON.parse(areas.content?.find((c) => c.type === 'text')?.text ?? '{}')
+  const areasData: AreaListResponse = JSON.parse(
+    areas.content?.find((c) => c.type === 'text')?.text ?? '{"contents":[]}'
+  )
   for (const area of areasData.contents ?? []) {
     const opt = document.createElement('option')
     opt.value = area.id
@@ -135,7 +134,9 @@ async function init() {
     areaSelect.appendChild(opt)
   }
 
-  const genresData = JSON.parse(genres.content?.find((c) => c.type === 'text')?.text ?? '{}')
+  const genresData: GenreListResponse = JSON.parse(
+    genres.content?.find((c) => c.type === 'text')?.text ?? '{"contents":[]}'
+  )
   for (const genre of genresData.contents ?? []) {
     const opt = document.createElement('option')
     opt.value = genre.id

@@ -295,7 +295,8 @@ export const getMcpServer = async (c: Context<Env>) => {
         | { q?: string; area_id?: string; genre_id?: string; is_recommended?: boolean }
         | undefined
     ) => {
-      const queries: MicroCMSQueries = { limit, offset: 0 }
+      const hasFilter = params?.q || params?.area_id || params?.genre_id || params?.is_recommended
+      const queries: MicroCMSQueries = { limit: hasFilter ? limit : 5, offset: 0 }
       if (params?.q) queries.q = params.q
       const filterString = buildShopFilterCondition({
         area_id: params?.area_id,
