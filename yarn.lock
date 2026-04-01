@@ -446,12 +446,7 @@
   dependencies:
     pkce-challenge "^5.0.0"
 
-"@hono/node-server@^1.14.2", "@hono/node-server@^1.19.9":
-  version "1.19.9"
-  resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.19.9.tgz#8f37119b1acf283fd3f6035f3d1356fdb97a09ac"
-  integrity sha512-vHL6w3ecZsky+8P5MD+eFfaGTyCeOHUIFYMGpQGbrBTSmNNoxv0if69rEZ5giu36weC5saFuznL411gRX7bJDw==
-
-"@hono/node-server@^1.19.11":
+"@hono/node-server@^1.19.11", "@hono/node-server@^1.19.9":
   version "1.19.11"
   resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.19.11.tgz#dc419f0826dd2504e9fc86ad289d5636a0444e2f"
   integrity sha512-dr8/3zEaB+p0D2n/IUrlPF1HZm586qgJNXK1a9fhg/PzdtkK7Ksd5l312tJX2yBuALqDYBlG20QEbayqPyxn+g==
@@ -460,14 +455,6 @@
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/@hono/vite-build/-/vite-build-1.9.2.tgz#8dc6066c0bd8488b204039ce1123d55ebc925f63"
   integrity sha512-7/qan3lgeA8mMv7jtx5KX0wrAdMteNqI87JcZjS1CUN9hhIsaqOvySXcT3lZLyhYidywl+s88ZX84I0knefItA==
-
-"@hono/vite-dev-server@^0.24.1":
-  version "0.24.1"
-  resolved "https://registry.yarnpkg.com/@hono/vite-dev-server/-/vite-dev-server-0.24.1.tgz#41c4e28eb58b1bdb85bea03c1b3f7f34183f7733"
-  integrity sha512-1ga1v9awRuYgs/C2/nhnOiAUeB3zPI/rEbfXkow7kOSHa8AYxxveDSpVsMZneE3ojwgkXQl2G68S+xj2WqxWPw==
-  dependencies:
-    "@hono/node-server" "^1.14.2"
-    minimatch "^9.0.3"
 
 "@hono/vite-dev-server@^0.25.1":
   version "0.25.1"
