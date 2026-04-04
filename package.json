@@ -25,7 +25,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260228.1",
     "@hono/vite-build": "^1.9.2",
-    "@hono/vite-dev-server": "^0.24.1",
+    "@hono/vite-dev-server": "^0.25.1",
     "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/vite": "^4.1.18",
     "knip": "^5.85.0",
