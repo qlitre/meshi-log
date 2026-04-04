@@ -461,10 +461,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.27.3.tgz#0eaf705c941a218a43dba8e09f1df1d6cd2f1f17"
   integrity sha512-4uJGhsxuptu3OcpVAzli+/gWusVGwZZHTlS63hh++ehExkVT8SgiEf7/uC/PclrPPkLhZqGgCTjd0VWLo6xMqA==
 
-"@hono/mcp@^0.2.4":
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.2.4.tgz#59064480cacc4068f7caeb18164589932278e672"
-  integrity sha512-BKH1qNTbrdqVeGHB32zIDNgTKdWUvlNoojM86oiKwwWtD+FQoNJbx2f3NnPvwua0+ujJed8IuEfgRKCNZ+2RNw==
+"@hono/mcp@^0.2.5":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@hono/mcp/-/mcp-0.2.5.tgz#148e5373c939a764aeb07367dc57857dc01758c3"
+  integrity sha512-JsaJes7VlNvUrUQ9j2b9C13xjFLvyKQY515aWtsdJ9cwhBmWz5od2yUCbDu7cX38GeADmlLmpu4BKNNAV6G27w==
   dependencies:
     pkce-challenge "^5.0.0"
 
