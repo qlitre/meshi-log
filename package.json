@@ -19,7 +19,7 @@
     "hono": "^4.12.9",
     "hono-rate-limiter": "^0.5.3",
     "honox": "^0.1.55",
-    "microcms-js-sdk": "^3.2.0",
+    "microcms-js-sdk": "^3.3.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
