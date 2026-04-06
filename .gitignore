@@ -1,6 +1,5 @@
 # prod
 dist/
-dist-mcp-app/
 
 # dev
 .hono/

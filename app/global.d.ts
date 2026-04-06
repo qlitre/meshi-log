@@ -1,8 +1,3 @@
-declare module '*.html' {
-  const content: string
-  export default content
-}
-
 import type {} from 'hono'
 import type { Meta } from './types/meta'
 

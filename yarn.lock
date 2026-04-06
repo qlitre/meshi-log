@@ -586,11 +586,6 @@
     source-map "^0.7.0"
     vfile "^6.0.0"
 
-"@modelcontextprotocol/ext-apps@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@modelcontextprotocol/ext-apps/-/ext-apps-1.2.2.tgz#7fbd20ed21a00a58b0121f682d320a8fa018b831"
-  integrity sha512-qMnhIKb8tyPesl+kZU76Xz9Bi9putCO+LcgvBJ00fDdIniiLZsnQbAeTKoq+sTiYH1rba2Fvj8NPAFxij+gyxw==
-
 "@modelcontextprotocol/sdk@^1.29.0":
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/@modelcontextprotocol/sdk/-/sdk-1.29.0.tgz#79786d8b525e269de850ac82b1f1f757f3915f44"
@@ -3695,13 +3690,6 @@ vfile@^6.0.0:
   dependencies:
     "@types/unist" "^3.0.0"
     vfile-message "^4.0.0"
-
-vite-plugin-singlefile@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/vite-plugin-singlefile/-/vite-plugin-singlefile-2.3.2.tgz#e0ff9e146fa3a63fecd53eade9ed33bd08d20da0"
-  integrity sha512-b8SxCi/gG7K298oJDcKOuZeU6gf6wIcCJAaEqUmmZXdjfuONlkyNyWZC3tEbN6QockRCNUd3it9eGTtpHGoYmg==
-  dependencies:
-    micromatch "^4.0.8"
 
 vite@^8.0.3:
   version "8.0.3"

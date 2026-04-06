@@ -10,6 +10,5 @@
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["mcp-app"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

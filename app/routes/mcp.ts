@@ -12,12 +12,6 @@ import {
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
-import {
-  registerAppTool,
-  registerAppResource,
-  RESOURCE_MIME_TYPE,
-} from '@modelcontextprotocol/ext-apps/server'
-import html from '../../dist-mcp-app/index.html?raw'
 import { z } from 'zod'
 import { Context } from 'hono'
 import { config } from '../siteSettings'
@@ -260,53 +254,6 @@ export const getMcpServer = async (c: Context<Env>) => {
             text: JSON.stringify(result, null, 2),
           },
         ],
-      }
-    }
-  )
-  const resourceUri = 'ui://meshi-log/shop-search'
-  registerAppResource(
-    server,
-    resourceUri,
-    resourceUri,
-    { mimeType: RESOURCE_MIME_TYPE },
-    async () => {
-      return {
-        contents: [{ uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html }],
-      }
-    }
-  )
-  registerAppTool(
-    server,
-    'search_shops',
-    {
-      title: 'Search Shops',
-      description:
-        '飯屋をインタラクティブに検索するUIを表示します。パラメータなしで即座に呼び出してください。ユーザーがUI上で検索条件を指定します。',
-      inputSchema: {
-        q: z.string().optional(),
-        area_id: z.string().optional(),
-        genre_id: z.string().optional(),
-        is_recommended: z.boolean().optional(),
-      },
-      _meta: { ui: { resourceUri } },
-    },
-    async (
-      params:
-        | { q?: string; area_id?: string; genre_id?: string; is_recommended?: boolean }
-        | undefined
-    ) => {
-      const hasFilter = params?.q || params?.area_id || params?.genre_id || params?.is_recommended
-      const queries: MicroCMSQueries = { limit: hasFilter ? limit : 5, offset: 0 }
-      if (params?.q) queries.q = params.q
-      const filterString = buildShopFilterCondition({
-        area_id: params?.area_id,
-        genre_id: params?.genre_id,
-        is_recommended: params?.is_recommended,
-      })
-      if (filterString) queries.filters = filterString
-      const result = await getShops({ client, queries })
-      return {
-        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
       }
     }
   )
