@@ -42,9 +42,7 @@ export default function MobileMenu() {
         )}
       </button>
 
-      {isOpen && (
-        <div class="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />
-      )}
+      {isOpen && <div class="fixed inset-0 z-40 bg-black/20" onClick={() => setIsOpen(false)} />}
       {isOpen && (
         <nav class="fixed inset-0 z-45 flex items-center justify-center bg-white/95">
           <ul class="flex flex-col items-center gap-2">
