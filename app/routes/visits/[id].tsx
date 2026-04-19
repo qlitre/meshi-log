@@ -20,7 +20,7 @@ import { ShopInformation } from '../../components/ShopInformation'
 import { AdjacentPosts } from '../../components/AdjacentPosts'
 import { CommentList } from '../../components/CommentList'
 import { getShopGenreString } from '../../utils/getShopGenreString'
-import CommentForm from '../../islands/CommentForm'
+import { CommentForm } from '../../islands/CommentForm'
 import { Alert } from '../../islands/Alert'
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
 

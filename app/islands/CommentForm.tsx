@@ -7,7 +7,7 @@ type Props = {
   error?: string
 }
 
-export default function CommentForm({ author, visitId, siteKey, error }: Props) {
+export const CommentForm = ({ author, visitId, siteKey, error }: Props) => {
   const [authorError, setAuthorError] = useState('')
   const [contentError, setContentError] = useState('')
   const turnstileRef = useRef<HTMLDivElement>(null)

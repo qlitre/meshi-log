@@ -8,7 +8,9 @@ export type Comment = {
 
 export const getCommentsByVisitId = async (db: D1Database, visitId: string): Promise<Comment[]> => {
   const result = await db
-    .prepare('SELECT id, visit_id, author, content, created_at FROM comments WHERE visit_id = ? ORDER BY created_at ASC')
+    .prepare(
+      'SELECT id, visit_id, author, content, created_at FROM comments WHERE visit_id = ? ORDER BY created_at ASC'
+    )
     .bind(visitId)
     .all<Comment>()
   return result.results
