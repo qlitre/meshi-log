@@ -12,8 +12,8 @@
 	"d1_databases": [
 		{
 			"binding": "DB",
-			"database_name": "meshi-log-analytics",
-			"database_id": "f4bfc72d-62ab-45cd-9a6b-d5b14c347568",
+			"database_name": "meshi-log-db",
+			"database_id": "0dd6b9b2-c2c3-4b61-a769-9fc99086a112",
 			"remote": true
 		}
 	]
