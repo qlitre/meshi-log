@@ -1,12 +1,13 @@
 import { useState, useEffect, useRef } from 'hono/jsx'
 
 type Props = {
+  author: string
   visitId: string
   siteKey: string
   error?: string
 }
 
-export default function CommentForm({ visitId, siteKey, error }: Props) {
+export default function CommentForm({ author, visitId, siteKey, error }: Props) {
   const [authorError, setAuthorError] = useState('')
   const [contentError, setContentError] = useState('')
   const turnstileRef = useRef<HTMLDivElement>(null)
@@ -48,9 +49,7 @@ export default function CommentForm({ visitId, siteKey, error }: Props) {
   return (
     <div class="mt-8 max-w-[860px] mx-auto">
       <h2 class="text-xl font-bold mb-4">コメントを投稿</h2>
-      {error && (
-        <div class="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>
-      )}
+      {error && <div class="mb-4 p-3 bg-red-50 text-red-700 rounded-lg text-sm">{error}</div>}
       <form method="post" onSubmit={handleSubmit} class="space-y-4">
         <input type="hidden" name="visitId" value={visitId} />
         <div>
@@ -59,6 +58,7 @@ export default function CommentForm({ visitId, siteKey, error }: Props) {
           </label>
           <input
             type="text"
+            value={author}
             id="author"
             name="author"
             maxLength={50}
@@ -79,12 +79,7 @@ export default function CommentForm({ visitId, siteKey, error }: Props) {
           />
           {contentError && <p class="mt-1 text-sm text-red-600">{contentError}</p>}
         </div>
-        <div
-          ref={turnstileRef}
-          class="cf-turnstile"
-          data-sitekey={siteKey}
-          data-theme="light"
-        />
+        <div ref={turnstileRef} class="cf-turnstile" data-sitekey={siteKey} data-theme="light" />
         <button
           type="submit"
           class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"

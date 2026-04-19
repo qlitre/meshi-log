@@ -21,14 +21,17 @@ import { AdjacentPosts } from '../../components/AdjacentPosts'
 import { CommentList } from '../../components/CommentList'
 import { getShopGenreString } from '../../utils/getShopGenreString'
 import CommentForm from '../../islands/CommentForm'
+import { getCookie, setCookie } from 'hono/cookie'
+
+const authorCookieKey = 'meshi-log-author'
 
 // POST: コメント投稿
 export const POST = createRoute(async (c) => {
   const id = c.req.param('id') || ''
   const formData = await c.req.formData()
-  const author = (formData.get('author') as string || '').trim()
-  const content = (formData.get('content') as string || '').trim()
-  const turnstileToken = formData.get('cf-turnstile-response') as string || ''
+  const author = ((formData.get('author') as string) || '').trim()
+  const content = ((formData.get('content') as string) || '').trim()
+  const turnstileToken = (formData.get('cf-turnstile-response') as string) || ''
 
   // Turnstile検証
   const isValid = await verifyTurnstile(turnstileToken, c.env.TURNSTILE_SECRET_KEY)
@@ -53,6 +56,14 @@ export const POST = createRoute(async (c) => {
       content,
     })
   )
+  // author名をブラウザに保存
+  setCookie(c, authorCookieKey, author, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365, // 1年
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax',
+  })
 
   return c.redirect(`/visits/${id}`, 303)
 })
@@ -72,6 +83,8 @@ export default createRoute(async (c) => {
   ])
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
+  // 前回の名前を取得
+  const author = getCookie(c, authorCookieKey) || ''
 
   // エラーメッセージ
   const errorParam = c.req.query('error')
@@ -130,7 +143,12 @@ export default createRoute(async (c) => {
 
       {/* コメント */}
       <CommentList comments={comments} />
-      <CommentForm visitId={id} siteKey={c.env.TURNSTILE_SITE_KEY} error={errorMessage} />
+      <CommentForm
+        author={author}
+        visitId={id}
+        siteKey={c.env.TURNSTILE_SITE_KEY}
+        error={errorMessage}
+      />
 
       <AdjacentPosts nextVisits={nextVisits.contents} prevVisits={prevVisits.contents} />
       {/* 戻るリンク */}
