@@ -28,12 +28,13 @@ export default defineConfig({
       'dayjs',
       'microcms-rich-editor-handler',
       'shiki',
+      'mimetext',
     ],
     noExternal: ['async-retry'],
   },
   build: {
     rollupOptions: {
-      external: ['shiki'],
+      external: ['shiki', 'cloudflare:email'],
     },
   },
 })

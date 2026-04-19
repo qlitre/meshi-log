@@ -14,6 +14,8 @@ declare module 'hono' {
       DB: D1Database
       TURNSTILE_SITE_KEY: string
       TURNSTILE_SECRET_KEY: string
+      EMAIL: SendEmail
+      NOTIFICATION_EMAIL: string
     }
   }
   interface ContextRenderer {

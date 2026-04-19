@@ -8,6 +8,7 @@ import {
 import { recordPageView } from '../../libs/pageview'
 import { getCommentsByVisitId, createComment } from '../../libs/comment'
 import { verifyTurnstile } from '../../libs/turnstile'
+import { notifyNewComment } from '../../libs/notification'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
@@ -41,6 +42,18 @@ export const POST = createRoute(async (c) => {
   }
 
   await createComment(c.env.DB, { visitId: id, author, content })
+
+  // メール通知（レスポンスをブロックしない）
+  c.executionCtx.waitUntil(
+    notifyNewComment({
+      email: c.env.EMAIL,
+      notificationEmail: c.env.NOTIFICATION_EMAIL,
+      visitId: id,
+      author,
+      content,
+    })
+  )
+
   return c.redirect(`/visits/${id}`, 303)
 })
 
