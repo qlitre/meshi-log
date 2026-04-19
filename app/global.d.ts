@@ -12,6 +12,8 @@ declare module 'hono' {
       SERVICE_DOMAIN: string
       API_KEY: string
       DB: D1Database
+      TURNSTILE_SITE_KEY: string
+      TURNSTILE_SECRET_KEY: string
     }
   }
   interface ContextRenderer {
