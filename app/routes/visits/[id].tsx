@@ -6,6 +6,8 @@ import {
   getNextVisits,
 } from '../../libs/microcms'
 import { recordPageView } from '../../libs/pageview'
+import { getCommentsByVisitId, createComment } from '../../libs/comment'
+import { verifyTurnstile } from '../../libs/turnstile'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
@@ -15,8 +17,34 @@ import { Container } from '../../components/Container'
 import { LinkToTop } from '../../components/LinkToTop'
 import { ShopInformation } from '../../components/ShopInformation'
 import { AdjacentPosts } from '../../components/AdjacentPosts'
+import { CommentList } from '../../components/CommentList'
 import { getShopGenreString } from '../../utils/getShopGenreString'
+import CommentForm from '../../islands/CommentForm'
 
+// POST: コメント投稿
+export const POST = createRoute(async (c) => {
+  const id = c.req.param('id') || ''
+  const formData = await c.req.formData()
+  const author = (formData.get('author') as string || '').trim()
+  const content = (formData.get('content') as string || '').trim()
+  const turnstileToken = formData.get('cf-turnstile-response') as string || ''
+
+  // Turnstile検証
+  const isValid = await verifyTurnstile(turnstileToken, c.env.TURNSTILE_SECRET_KEY)
+  if (!isValid) {
+    return c.redirect(`/visits/${id}?error=turnstile`, 303)
+  }
+
+  // バリデーション
+  if (!author || !content || author.length > 50 || content.length > 1000) {
+    return c.redirect(`/visits/${id}?error=validation`, 303)
+  }
+
+  await createComment(c.env.DB, { visitId: id, author, content })
+  return c.redirect(`/visits/${id}`, 303)
+})
+
+// GET: 訪問詳細表示
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
   const client = getMicroCMSClient(c)
@@ -24,10 +52,22 @@ export default createRoute(async (c) => {
 
   const description = stripHtmlTagsAndTruncate(visit.memo, 100)
   const publishedAt = visit.publishedAt || ''
-  const nextVisits = await getNextVisits({ client, publishedAt })
-  const prevVisits = await getPrevVisits({ client, publishedAt })
+  const [nextVisits, prevVisits, comments] = await Promise.all([
+    getNextVisits({ client, publishedAt }),
+    getPrevVisits({ client, publishedAt }),
+    getCommentsByVisitId(c.env.DB, id),
+  ])
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
+
+  // エラーメッセージ
+  const errorParam = c.req.query('error')
+  let errorMessage = ''
+  if (errorParam === 'turnstile') {
+    errorMessage = '認証に失敗しました。もう一度お試しください。'
+  } else if (errorParam === 'validation') {
+    errorMessage = '名前とコメントを正しく入力してください。'
+  }
 
   // ページビュー記録（レスポンスをブロックしない）
   c.executionCtx.waitUntil(
@@ -74,6 +114,11 @@ export default createRoute(async (c) => {
 
       {/* 店舗情報 */}
       <ShopInformation shop={visit.shop} />
+
+      {/* コメント */}
+      <CommentList comments={comments} />
+      <CommentForm visitId={id} siteKey={c.env.TURNSTILE_SITE_KEY} error={errorMessage} />
+
       <AdjacentPosts nextVisits={nextVisits.contents} prevVisits={prevVisits.contents} />
       {/* 戻るリンク */}
       <LinkToTop />

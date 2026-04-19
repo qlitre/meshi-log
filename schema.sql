@@ -26,3 +26,13 @@ CREATE TABLE popular_pages (
 
 CREATE INDEX idx_popular_pages_total ON popular_pages(total_count DESC);
 CREATE INDEX idx_popular_pages_type ON popular_pages(page_type, total_count DESC);
+
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    visit_id TEXT NOT NULL,
+    author TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE INDEX idx_comments_visit_id ON comments(visit_id, created_at);
