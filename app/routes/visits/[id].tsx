@@ -21,9 +21,11 @@ import { AdjacentPosts } from '../../components/AdjacentPosts'
 import { CommentList } from '../../components/CommentList'
 import { getShopGenreString } from '../../utils/getShopGenreString'
 import CommentForm from '../../islands/CommentForm'
-import { getCookie, setCookie } from 'hono/cookie'
+import { Alert } from '../../islands/Alert'
+import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
 
 const authorCookieKey = 'meshi-log-author'
+const successAlertCookieKey = 'success-alert-cookie-key'
 
 // POST: コメント投稿
 export const POST = createRoute(async (c) => {
@@ -64,7 +66,13 @@ export const POST = createRoute(async (c) => {
     secure: true,
     sameSite: 'Lax',
   })
-
+  setCookie(c, successAlertCookieKey, 'コメントの追加に成功しました', {
+    path: '/',
+    maxAge: 10,
+    httpOnly: true,
+    secure: true,
+    sameSite: 'Lax',
+  })
   return c.redirect(`/visits/${id}`, 303)
 })
 
@@ -85,6 +93,8 @@ export default createRoute(async (c) => {
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
   // 前回の名前を取得
   const author = getCookie(c, authorCookieKey) || ''
+  const successMessage = getCookie(c, successAlertCookieKey)
+  if (successMessage) deleteCookie(c, successAlertCookieKey, { path: '/' })
 
   // エラーメッセージ
   const errorParam = c.req.query('error')
@@ -118,6 +128,7 @@ export default createRoute(async (c) => {
 
   return c.render(
     <Container>
+      {successMessage && <Alert message={successMessage} type="success" />}
       {/* 記事ヘッダー */}
       <article class="article-detail mb-8">
         <h1 class="text-2xl font-bold mb-4">
