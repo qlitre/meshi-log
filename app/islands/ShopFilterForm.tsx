@@ -33,11 +33,11 @@ type ChipProps = {
 }
 
 const LoadingOverlay = () => (
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
-    <div class="flex flex-col items-center gap-3 p-6 bg-white rounded-xl shadow-xl">
-      <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-sm font-medium text-gray-700">検索中...</p>
-    </div>
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+    aria-label="読み込み中"
+  >
+    <div class="h-12 w-12 animate-spin rounded-full border-4 border-orange-200 border-t-orange-500"></div>
   </div>
 )
 
