@@ -1,3 +1,5 @@
+import { useState } from 'hono/jsx'
+
 type AreaWithCount = {
   id: string
   name: string
@@ -30,20 +32,14 @@ type ChipProps = {
   onClick?: (e: Event) => void
 }
 
-const submitClosestForm = (e: Event) => {
-  ;(e.target as HTMLElement).closest('form')?.submit()
-}
-
-const clearGenresAndSubmit = (e: Event) => {
-  const form = (e.target as HTMLElement).closest('form')
-  if (!form) return
-  form
-    .querySelectorAll<HTMLInputElement>('input[type="checkbox"][name="genre"]')
-    .forEach((el) => {
-      el.checked = false
-    })
-  form.submit()
-}
+const LoadingOverlay = () => (
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[2px]">
+    <div class="flex flex-col items-center gap-3 p-6 bg-white rounded-xl shadow-xl">
+      <div class="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-sm font-medium text-gray-700">検索中...</p>
+    </div>
+  </div>
+)
 
 const ChipRadio = ({ name, value, checked, label, count, onClick }: ChipProps) => (
   <label class="cursor-pointer">
@@ -80,104 +76,125 @@ const ChipCheckbox = ({ name, value, checked, label, count, onClick }: ChipProps
 )
 
 const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const submitClosestForm = (e: Event) => {
+    setIsLoading(true) // ローディング開始
+    ;(e.target as HTMLElement).closest('form')?.submit()
+  }
+
+  const clearGenresAndSubmit = (e: Event) => {
+    const form = (e.target as HTMLElement).closest('form')
+    if (!form) return
+    setIsLoading(true) // ローディング開始
+    form
+      .querySelectorAll<HTMLInputElement>('input[type="checkbox"][name="genre"]')
+      .forEach((el) => {
+        el.checked = false
+      })
+    form.submit()
+  }
   const hasFilters =
     initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
 
   return (
-    <form method="get" action="/shops">
-      <div class="space-y-4 mb-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">キーワード</label>
-          <input
-            type="text"
-            name="q"
-            value={initialFilters.q || ''}
-            placeholder="店名で検索..."
-            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
-          <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
-            <ChipRadio
-              name="area"
-              value=""
-              checked={!initialFilters.area}
-              label="すべて"
-              onClick={submitClosestForm}
-            />
-            {areas.map((area) => (
-              <ChipRadio
-                key={area.id}
-                name="area"
-                value={area.id}
-                checked={area.id === initialFilters.area}
-                label={area.name}
-                count={area.count}
-                onClick={submitClosestForm}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
-          <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
-            <ChipRadio
-              name="genre"
-              value=""
-              checked={!initialFilters.genre || initialFilters.genre.length === 0}
-              label="すべて"
-              onClick={clearGenresAndSubmit}
-            />
-            {genres.map((genre) => (
-              <ChipCheckbox
-                key={genre.id}
-                name="genre"
-                value={genre.id}
-                checked={initialFilters.genre?.includes(genre.id) || false}
-                label={genre.name}
-                count={genre.count}
-                onClick={submitClosestForm}
-              />
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">その他</label>
-          <label class="flex items-center h-10 px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer">
+    <>
+      {isLoading && <LoadingOverlay />}
+      <form method="get" action="/shops">
+        <div class="space-y-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">キーワード</label>
             <input
-              type="checkbox"
-              name="recommended"
-              value="1"
-              checked={initialFilters.isRecommended}
-              class="mr-2"
-              onChange={submitClosestForm}
+              type="text"
+              name="q"
+              value={initialFilters.q || ''}
+              placeholder="店名で検索..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            <span class="text-sm">おすすめのみ</span>
-          </label>
-        </div>
-      </div>
+          </div>
 
-      <div class="flex flex-col gap-2">
-        <button
-          type="submit"
-          class="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
-        >
-          検索
-        </button>
-        {hasFilters && (
-          <a
-            href="/shops"
-            class="w-full text-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center"
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
+            <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+              <ChipRadio
+                name="area"
+                value=""
+                checked={!initialFilters.area}
+                label="すべて"
+                onClick={submitClosestForm}
+              />
+              {areas.map((area) => (
+                <ChipRadio
+                  key={area.id}
+                  name="area"
+                  value={area.id}
+                  checked={area.id === initialFilters.area}
+                  label={area.name}
+                  count={area.count}
+                  onClick={submitClosestForm}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
+            <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+              <ChipRadio
+                name="genre"
+                value=""
+                checked={!initialFilters.genre || initialFilters.genre.length === 0}
+                label="すべて"
+                onClick={clearGenresAndSubmit}
+              />
+              {genres.map((genre) => (
+                <ChipCheckbox
+                  key={genre.id}
+                  name="genre"
+                  value={genre.id}
+                  checked={initialFilters.genre?.includes(genre.id) || false}
+                  label={genre.name}
+                  count={genre.count}
+                  onClick={submitClosestForm}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">その他</label>
+            <label class="flex items-center h-10 px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer">
+              <input
+                type="checkbox"
+                name="recommended"
+                value="1"
+                checked={initialFilters.isRecommended}
+                class="mr-2"
+                onChange={submitClosestForm}
+              />
+              <span class="text-sm">おすすめのみ</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <button
+            type="submit"
+            class="w-full px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
           >
-            クリア
-          </a>
-        )}
-      </div>
-    </form>
+            検索
+          </button>
+          {hasFilters && (
+            <a
+              href="/shops"
+              class="w-full text-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors flex items-center justify-center"
+            >
+              クリア
+            </a>
+          )}
+        </div>
+      </form>
+    </>
   )
 }
 
