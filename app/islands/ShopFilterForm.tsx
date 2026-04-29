@@ -27,11 +27,34 @@ type ChipProps = {
   checked: boolean
   label: string
   count?: number
+  onClick?: (e: Event) => void
 }
 
-const ChipRadio = ({ name, value, checked, label, count }: ChipProps) => (
+const submitClosestForm = (e: Event) => {
+  ;(e.target as HTMLElement).closest('form')?.submit()
+}
+
+const clearGenresAndSubmit = (e: Event) => {
+  const form = (e.target as HTMLElement).closest('form')
+  if (!form) return
+  form
+    .querySelectorAll<HTMLInputElement>('input[type="checkbox"][name="genre"]')
+    .forEach((el) => {
+      el.checked = false
+    })
+  form.submit()
+}
+
+const ChipRadio = ({ name, value, checked, label, count, onClick }: ChipProps) => (
   <label class="cursor-pointer">
-    <input type="radio" name={name} value={value} checked={checked} class="peer sr-only" />
+    <input
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      class="peer sr-only"
+      onClick={onClick}
+    />
     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-300 rounded-full bg-white text-gray-700 hover:border-gray-500 transition-colors peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
       {label}
       {count !== undefined && <span class="text-xs opacity-60">{count}</span>}
@@ -39,9 +62,16 @@ const ChipRadio = ({ name, value, checked, label, count }: ChipProps) => (
   </label>
 )
 
-const ChipCheckbox = ({ name, value, checked, label, count }: ChipProps) => (
+const ChipCheckbox = ({ name, value, checked, label, count, onClick }: ChipProps) => (
   <label class="cursor-pointer">
-    <input type="checkbox" name={name} value={value} checked={checked} class="peer sr-only" />
+    <input
+      type="checkbox"
+      name={name}
+      value={value}
+      checked={checked}
+      class="peer sr-only"
+      onClick={onClick}
+    />
     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-300 rounded-full bg-white text-gray-700 hover:border-gray-500 transition-colors peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
       {label}
       {count !== undefined && <span class="text-xs opacity-60">{count}</span>}
@@ -49,36 +79,6 @@ const ChipCheckbox = ({ name, value, checked, label, count }: ChipProps) => (
   </label>
 )
 
-export const ShopFilterForm = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
-  let hasGenreFilter = false
-  if (initialFilters.genre && initialFilters.genre.length > 0) hasGenreFilter = true
-  const hasFilters =
-    initialFilters.q || initialFilters.area || hasGenreFilter || initialFilters.isRecommended
-
-  return (
-    <div class="mb-6">
-      {/* トグル部分（モバイルのみ表示） - <details>タグで実装 */}
-      <details class="md:hidden mb-2" open={!!hasFilters}>
-        <summary class="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer list-none flex items-center justify-between">
-          <span>検索条件{hasFilters && '（設定中）'}</span>
-          <span class="details-marker">▼</span>
-        </summary>
-
-        {/* フォーム本体（モバイル時） */}
-        <div class="mt-2">
-          <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
-        </div>
-      </details>
-
-      {/* フォーム本体（デスクトップ時は常に表示） */}
-      <div class="hidden md:block">
-        <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
-      </div>
-    </div>
-  )
-}
-
-// フォーム内容を共通化
 const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
   const hasFilters =
     initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
@@ -86,7 +86,6 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
   return (
     <form method="get" action="/shops">
       <div class="space-y-4 mb-4">
-        {/* キーワード検索 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">キーワード</label>
           <input
@@ -98,11 +97,16 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
           />
         </div>
 
-        {/* エリア選択 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
           <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
-            <ChipRadio name="area" value="" checked={!initialFilters.area} label="すべて" />
+            <ChipRadio
+              name="area"
+              value=""
+              checked={!initialFilters.area}
+              label="すべて"
+              onClick={submitClosestForm}
+            />
             {areas.map((area) => (
               <ChipRadio
                 key={area.id}
@@ -111,16 +115,22 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
                 checked={area.id === initialFilters.area}
                 label={area.name}
                 count={area.count}
+                onClick={submitClosestForm}
               />
             ))}
           </div>
         </div>
 
-        {/* ジャンル選択 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
           <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
-            <ChipRadio name="genre" value="" checked={!initialFilters.genre} label="すべて" />
+            <ChipRadio
+              name="genre"
+              value=""
+              checked={!initialFilters.genre || initialFilters.genre.length === 0}
+              label="すべて"
+              onClick={clearGenresAndSubmit}
+            />
             {genres.map((genre) => (
               <ChipCheckbox
                 key={genre.id}
@@ -129,12 +139,12 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
                 checked={initialFilters.genre?.includes(genre.id) || false}
                 label={genre.name}
                 count={genre.count}
+                onClick={submitClosestForm}
               />
             ))}
           </div>
         </div>
 
-        {/* おすすめフラグ */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">その他</label>
           <label class="flex items-center h-10 px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer">
@@ -144,13 +154,13 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
               value="1"
               checked={initialFilters.isRecommended}
               class="mr-2"
+              onChange={submitClosestForm}
             />
             <span class="text-sm">おすすめのみ</span>
           </label>
         </div>
       </div>
 
-      {/* ボタン */}
       <div class="flex flex-col gap-2">
         <button
           type="submit"
@@ -168,5 +178,30 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
         )}
       </div>
     </form>
+  )
+}
+
+export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFilterFormProps) {
+  let hasGenreFilter = false
+  if (initialFilters.genre && initialFilters.genre.length > 0) hasGenreFilter = true
+  const hasFilters =
+    initialFilters.q || initialFilters.area || hasGenreFilter || initialFilters.isRecommended
+
+  return (
+    <div class="mb-6">
+      <details class="md:hidden mb-2" open={!!hasFilters}>
+        <summary class="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-100 cursor-pointer list-none flex items-center justify-between">
+          <span>検索条件{hasFilters && '（設定中）'}</span>
+          <span class="details-marker">▼</span>
+        </summary>
+        <div class="mt-2">
+          <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
+        </div>
+      </details>
+
+      <div class="hidden md:block">
+        <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
+      </div>
+    </div>
   )
 }

@@ -4,7 +4,7 @@ import { Container } from '../../components/Container'
 import { PageHeading } from '../../components/PageHeading'
 import { ShopListItem } from '../../components/ShopListItem'
 import type { Meta } from '../../types/meta'
-import { ShopFilterForm } from '../../components/ShopFilterForm'
+import ShopFilterForm from '../../islands/ShopFilterForm'
 import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
 import { Pagination } from '../../components/Pagination'
 import { config } from '../../siteSettings'
@@ -18,7 +18,7 @@ export default createRoute(async (c) => {
   // フィルタパラメータを取得
   const searchQuery = c.req.query('q') || ''
   const areaId = c.req.query('area') || ''
-  const genreIds = c.req.queries('genre') ?? []
+  const genreIds = (c.req.queries('genre') ?? []).filter((id) => id !== '')
   const isRecommended = c.req.query('recommended') === '1'
   const filterString = buildShopFilterCondition({
     area_id: areaId,
