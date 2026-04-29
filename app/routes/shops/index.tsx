@@ -39,8 +39,10 @@ export default createRoute(async (c) => {
   const allShops = await getAllShops({
     client,
     queries: {
+      q: searchQuery || undefined,
       depth: 1,
       fields: 'id,area,genre',
+      filters: filterString.length > 0 ? filterString : undefined,
     },
   })
 
