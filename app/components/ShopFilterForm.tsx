@@ -21,6 +21,24 @@ type ShopFilterFormProps = {
   }
 }
 
+type ChipRadioProps = {
+  name: string
+  value: string
+  checked: boolean
+  label: string
+  count?: number
+}
+
+const ChipRadio = ({ name, value, checked, label, count }: ChipRadioProps) => (
+  <label class="cursor-pointer">
+    <input type="radio" name={name} value={value} checked={checked} class="peer sr-only" />
+    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-300 rounded-full bg-white text-gray-700 hover:border-gray-500 transition-colors peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
+      {label}
+      {count !== undefined && <span class="text-xs opacity-60">{count}</span>}
+    </span>
+  </label>
+)
+
 export const ShopFilterForm = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
   const hasFilters =
     initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
@@ -54,7 +72,7 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
     initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
 
   return (
-    <form method="get" action="/shops" class="p-4 bg-gray-50 rounded-lg">
+    <form method="get" action="/shops">
       <div class="space-y-4 mb-4">
         {/* キーワード検索 */}
         <div>
@@ -71,33 +89,17 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
         {/* エリア選択 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
-          <div class="space-y-2 max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
-            <label class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
-              <input
-                type="radio"
-                name="area"
-                value=""
-                checked={!initialFilters.area}
-                class="mr-2"
-              />
-              <span class="text-sm">すべて</span>
-            </label>
+          <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+            <ChipRadio name="area" value="" checked={!initialFilters.area} label="すべて" />
             {areas.map((area) => (
-              <label
+              <ChipRadio
                 key={area.id}
-                class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded"
-              >
-                <input
-                  type="radio"
-                  name="area"
-                  value={area.id}
-                  checked={area.id === initialFilters.area}
-                  class="mr-2"
-                />
-                <span class="text-sm">
-                  {area.name} ({area.count})
-                </span>
-              </label>
+                name="area"
+                value={area.id}
+                checked={area.id === initialFilters.area}
+                label={area.name}
+                count={area.count}
+              />
             ))}
           </div>
         </div>
@@ -105,33 +107,17 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
         {/* ジャンル選択 */}
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
-          <div class="space-y-2 max-h-48 overflow-y-auto p-2 border border-gray-200 rounded-lg bg-white">
-            <label class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded">
-              <input
-                type="radio"
-                name="genre"
-                value=""
-                checked={!initialFilters.genre}
-                class="mr-2"
-              />
-              <span class="text-sm">すべて</span>
-            </label>
+          <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+            <ChipRadio name="genre" value="" checked={!initialFilters.genre} label="すべて" />
             {genres.map((genre) => (
-              <label
+              <ChipRadio
                 key={genre.id}
-                class="flex items-center cursor-pointer hover:bg-gray-50 p-1 rounded"
-              >
-                <input
-                  type="radio"
-                  name="genre"
-                  value={genre.id}
-                  checked={genre.id === initialFilters.genre}
-                  class="mr-2"
-                />
-                <span class="text-sm">
-                  {genre.name} ({genre.count})
-                </span>
-              </label>
+                name="genre"
+                value={genre.id}
+                checked={genre.id === initialFilters.genre}
+                label={genre.name}
+                count={genre.count}
+              />
             ))}
           </div>
         </div>
