@@ -8,33 +8,40 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter'
 
 import { defineConfig } from 'vite'
 
-export default defineConfig({
-  plugins: [
-    honox({
-      devServer: { adapter },
-      client: { input: ['/app/client.ts', '/app/style.css'] },
-    }),
-    tailwindcss(),
-    mdx({
-      jsxImportSource: 'hono/jsx',
-      remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
-    }),
-    build(),
-  ],
-  ssr: {
-    external: [
-      'microcms-js-sdk',
-      '@modelcontextprotocol/sdk',
-      'dayjs',
-      'microcms-rich-editor-handler',
-      'shiki',
-      'mimetext',
+export default defineConfig(({ command }) => {
+  const alias: Record<string, string> = {}
+  if (command === 'serve') {
+    alias['cloudflare:email'] = '/app/libs/cloudflare-email-stub.ts'
+  }
+  return {
+    plugins: [
+      honox({
+        devServer: { adapter },
+        client: { input: ['/app/client.ts', '/app/style.css'] },
+      }),
+      tailwindcss(),
+      mdx({
+        jsxImportSource: 'hono/jsx',
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+      }),
+      build(),
     ],
-    noExternal: ['async-retry'],
-  },
-  build: {
-    rollupOptions: {
-      external: ['shiki', 'cloudflare:email'],
+    resolve: { alias },
+    ssr: {
+      external: [
+        'microcms-js-sdk',
+        '@modelcontextprotocol/sdk',
+        'dayjs',
+        'microcms-rich-editor-handler',
+        'shiki',
+        'mimetext',
+      ],
+      noExternal: ['async-retry'],
     },
-  },
+    build: {
+      rollupOptions: {
+        external: ['shiki', 'cloudflare:email'],
+      },
+    },
+  }
 })
