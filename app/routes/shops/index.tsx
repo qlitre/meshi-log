@@ -18,11 +18,11 @@ export default createRoute(async (c) => {
   // フィルタパラメータを取得
   const searchQuery = c.req.query('q') || ''
   const areaId = c.req.query('area') || ''
-  const genreId = c.req.query('genre') || ''
+  const genreIds = c.req.queries('genre') ?? []
   const isRecommended = c.req.query('recommended') === '1'
   const filterString = buildShopFilterCondition({
     area_id: areaId,
-    genre_id: genreId,
+    genre_ids: genreIds,
     is_recommended: isRecommended,
   })
 
@@ -85,10 +85,15 @@ export default createRoute(async (c) => {
     ogpUrl: canonicalUrl,
   }
   const queryParams: Record<string, string> = {}
+  const genreParams: Record<string, string[]> = {}
   url.searchParams.forEach((value, key) => {
-    if (key !== 'page') {
-      queryParams[key] = value
+    if (key == 'page') return
+    if (key == 'genre') {
+      if (!genreParams[key]) genreParams[key] = []
+      genreParams[key].push(value)
+      return
     }
+    queryParams[key] = value
   })
 
   return c.render(
@@ -113,7 +118,7 @@ export default createRoute(async (c) => {
             initialFilters={{
               q: searchQuery,
               area: areaId,
-              genre: genreId,
+              genre: genreIds,
               isRecommended,
             }}
           />
@@ -123,7 +128,7 @@ export default createRoute(async (c) => {
         <main class="flex-1 min-w-0">
           {shops.contents.length === 0 ? (
             <p class="text-gray-500">
-              {searchQuery || areaId || genreId || isRecommended
+              {searchQuery || areaId || genreIds.length > 0 || isRecommended
                 ? '検索条件に一致するお店が見つかりませんでした'
                 : 'お店が登録されていません'}
             </p>

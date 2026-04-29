@@ -4,11 +4,22 @@ type Props = {
   currentPage: number
   basePath: string
   query?: Record<string, string>
+  genreParams?: Record<string, string[]>
 }
 
-export const Pagination = ({ totalCount, limit, currentPage = 1, basePath, query = {} }: Props) => {
+export const Pagination = ({
+  totalCount,
+  limit,
+  currentPage = 1,
+  basePath,
+  query = {},
+  genreParams = {},
+}: Props) => {
   const getPath = (p: number) => {
     const params = new URLSearchParams(query)
+    Object.entries(genreParams).forEach(([key, values]) => {
+      values.forEach((v) => params.append(key, v))
+    })
     if (p > 1) {
       params.set('page', String(p))
     } else {

@@ -16,12 +16,12 @@ type ShopFilterFormProps = {
   initialFilters: {
     q?: string
     area?: string
-    genre?: string
+    genre?: string[]
     isRecommended?: boolean
   }
 }
 
-type ChipRadioProps = {
+type ChipProps = {
   name: string
   value: string
   checked: boolean
@@ -29,7 +29,7 @@ type ChipRadioProps = {
   count?: number
 }
 
-const ChipRadio = ({ name, value, checked, label, count }: ChipRadioProps) => (
+const ChipRadio = ({ name, value, checked, label, count }: ChipProps) => (
   <label class="cursor-pointer">
     <input type="radio" name={name} value={value} checked={checked} class="peer sr-only" />
     <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-300 rounded-full bg-white text-gray-700 hover:border-gray-500 transition-colors peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
@@ -39,9 +39,21 @@ const ChipRadio = ({ name, value, checked, label, count }: ChipRadioProps) => (
   </label>
 )
 
+const ChipCheckbox = ({ name, value, checked, label, count }: ChipProps) => (
+  <label class="cursor-pointer">
+    <input type="checkbox" name={name} value={value} checked={checked} class="peer sr-only" />
+    <span class="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm border border-gray-300 rounded-full bg-white text-gray-700 hover:border-gray-500 transition-colors peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
+      {label}
+      {count !== undefined && <span class="text-xs opacity-60">{count}</span>}
+    </span>
+  </label>
+)
+
 export const ShopFilterForm = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
+  let hasGenreFilter = false
+  if (initialFilters.genre && initialFilters.genre.length > 0) hasGenreFilter = true
   const hasFilters =
-    initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
+    initialFilters.q || initialFilters.area || hasGenreFilter || initialFilters.isRecommended
 
   return (
     <div class="mb-6">
@@ -110,11 +122,11 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
           <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
             <ChipRadio name="genre" value="" checked={!initialFilters.genre} label="すべて" />
             {genres.map((genre) => (
-              <ChipRadio
+              <ChipCheckbox
                 key={genre.id}
                 name="genre"
                 value={genre.id}
-                checked={genre.id === initialFilters.genre}
+                checked={initialFilters.genre?.includes(genre.id) || false}
                 label={genre.name}
                 count={genre.count}
               />
