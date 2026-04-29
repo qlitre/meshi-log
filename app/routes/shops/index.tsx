@@ -34,6 +34,7 @@ export default createRoute(async (c) => {
     queries: {
       q: searchQuery || undefined,
       limit: limit,
+      orders: 'area_code',
       offset: offset,
       filters: filterString.length > 0 ? filterString : undefined,
     },

@@ -117,9 +117,7 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
 
   // 表示用の pref（URL の pref が空でも area から派生して取る）
   const displayedPref =
-    initialFilters.pref ||
-    areas.find((a) => a.id === initialFilters.area)?.code?.slice(0, 2) ||
-    ''
+    initialFilters.pref || areas.find((a) => a.id === initialFilters.area)?.code?.slice(0, 2) || ''
 
   const filteredAreas = displayedPref
     ? areas.filter((a) => a.code?.startsWith(displayedPref) ?? false)
