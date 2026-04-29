@@ -3,6 +3,7 @@ import { useState } from 'hono/jsx'
 type AreaWithCount = {
   id: string
   name: string
+  code: string
   count: number
 }
 
@@ -12,12 +13,20 @@ type GenreWithCount = {
   count: number
 }
 
+type PrefectureWithCount = {
+  code: string
+  name: string
+  count: number
+}
+
 type ShopFilterFormProps = {
   areas: AreaWithCount[]
   genres: GenreWithCount[]
+  prefectures: PrefectureWithCount[]
   initialFilters: {
     q?: string
     area?: string
+    pref?: string
     genre?: string[]
     isRecommended?: boolean
   }
@@ -75,18 +84,18 @@ const ChipCheckbox = ({ name, value, checked, label, count, onClick }: ChipProps
   </label>
 )
 
-const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => {
+const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const submitClosestForm = (e: Event) => {
-    setIsLoading(true) // ローディング開始
+    setIsLoading(true)
     ;(e.target as HTMLElement).closest('form')?.submit()
   }
 
   const clearGenresAndSubmit = (e: Event) => {
     const form = (e.target as HTMLElement).closest('form')
     if (!form) return
-    setIsLoading(true) // ローディング開始
+    setIsLoading(true)
     form
       .querySelectorAll<HTMLInputElement>('input[type="checkbox"][name="genre"]')
       .forEach((el) => {
@@ -94,8 +103,34 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
       })
     form.submit()
   }
+
+  // 都道府県を切り替えた際は area 選択をクリアして submit
+  const switchPrefAndSubmit = (e: Event) => {
+    const form = (e.target as HTMLElement).closest('form')
+    if (!form) return
+    setIsLoading(true)
+    form.querySelectorAll<HTMLInputElement>('input[type="radio"][name="area"]').forEach((el) => {
+      el.checked = el.value === ''
+    })
+    form.submit()
+  }
+
+  // 表示用の pref（URL の pref が空でも area から派生して取る）
+  const displayedPref =
+    initialFilters.pref ||
+    areas.find((a) => a.id === initialFilters.area)?.code?.slice(0, 2) ||
+    ''
+
+  const filteredAreas = displayedPref
+    ? areas.filter((a) => a.code?.startsWith(displayedPref) ?? false)
+    : []
+
   const hasFilters =
-    initialFilters.q || initialFilters.area || initialFilters.genre || initialFilters.isRecommended
+    initialFilters.q ||
+    initialFilters.area ||
+    initialFilters.pref ||
+    (initialFilters.genre && initialFilters.genre.length > 0) ||
+    initialFilters.isRecommended
 
   return (
     <>
@@ -114,28 +149,54 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
-            <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+            <label class="block text-sm font-medium text-gray-700 mb-2">都道府県</label>
+            <div class="flex flex-wrap gap-2">
               <ChipRadio
-                name="area"
+                name="pref"
                 value=""
-                checked={!initialFilters.area}
+                checked={!displayedPref}
                 label="すべて"
-                onClick={submitClosestForm}
+                onClick={switchPrefAndSubmit}
               />
-              {areas.map((area) => (
+              {prefectures.map((p) => (
                 <ChipRadio
-                  key={area.id}
-                  name="area"
-                  value={area.id}
-                  checked={area.id === initialFilters.area}
-                  label={area.name}
-                  count={area.count}
-                  onClick={submitClosestForm}
+                  key={p.code}
+                  name="pref"
+                  value={p.code}
+                  checked={p.code === displayedPref}
+                  label={p.name}
+                  count={p.count}
+                  onClick={switchPrefAndSubmit}
                 />
               ))}
             </div>
           </div>
+
+          {displayedPref && (
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">エリア</label>
+              <div class="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+                <ChipRadio
+                  name="area"
+                  value=""
+                  checked={!initialFilters.area}
+                  label="すべて"
+                  onClick={submitClosestForm}
+                />
+                {filteredAreas.map((area) => (
+                  <ChipRadio
+                    key={area.id}
+                    name="area"
+                    value={area.id}
+                    checked={area.id === initialFilters.area}
+                    label={area.name}
+                    count={area.count}
+                    onClick={submitClosestForm}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">ジャンル</label>
@@ -198,11 +259,20 @@ const FormContent = ({ areas, genres, initialFilters }: ShopFilterFormProps) => 
   )
 }
 
-export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFilterFormProps) {
+export default function ShopFilterForm({
+  areas,
+  genres,
+  prefectures,
+  initialFilters,
+}: ShopFilterFormProps) {
   let hasGenreFilter = false
   if (initialFilters.genre && initialFilters.genre.length > 0) hasGenreFilter = true
   const hasFilters =
-    initialFilters.q || initialFilters.area || hasGenreFilter || initialFilters.isRecommended
+    initialFilters.q ||
+    initialFilters.area ||
+    initialFilters.pref ||
+    hasGenreFilter ||
+    initialFilters.isRecommended
 
   return (
     <div class="mb-6">
@@ -212,12 +282,22 @@ export default function ShopFilterForm({ areas, genres, initialFilters }: ShopFi
           <span class="details-marker">▼</span>
         </summary>
         <div class="mt-2">
-          <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
+          <FormContent
+            areas={areas}
+            genres={genres}
+            prefectures={prefectures}
+            initialFilters={initialFilters}
+          />
         </div>
       </details>
 
       <div class="hidden md:block">
-        <FormContent areas={areas} genres={genres} initialFilters={initialFilters} />
+        <FormContent
+          areas={areas}
+          genres={genres}
+          prefectures={prefectures}
+          initialFilters={initialFilters}
+        />
       </div>
     </div>
   )

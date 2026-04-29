@@ -8,6 +8,7 @@ import ShopFilterForm from '../../islands/ShopFilterForm'
 import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
 import { Pagination } from '../../components/Pagination'
 import { config } from '../../siteSettings'
+import { getPrefectureCode, PREFECTURES } from '../../libs/prefecture'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient(c)
@@ -18,9 +19,11 @@ export default createRoute(async (c) => {
   // フィルタパラメータを取得
   const searchQuery = c.req.query('q') || ''
   const areaId = c.req.query('area') || ''
+  const prefCode = c.req.query('pref') || ''
   const genreIds = (c.req.queries('genre') ?? []).filter((id) => id !== '')
   const isRecommended = c.req.query('recommended') === '1'
   const filterString = buildShopFilterCondition({
+    pref_code: prefCode,
     area_id: areaId,
     genre_ids: genreIds,
     is_recommended: isRecommended,
@@ -41,14 +44,13 @@ export default createRoute(async (c) => {
     queries: {
       q: searchQuery || undefined,
       depth: 1,
-      fields: 'id,area,genre',
+      fields: 'id,area,area_code,genre',
       filters: filterString.length > 0 ? filterString : undefined,
     },
   })
-
-  const areaMap = new Map<string, { id: string; name: string; count: number }>()
+  const areaMap = new Map<string, { id: string; name: string; code: string; count: number }>()
   const genreMap = new Map<string, { id: string; name: string; count: number }>()
-
+  const prefMap = new Map<string, { code: string; name: string; count: number }>()
   for (const s of allShops) {
     for (const genre of s.genre) {
       const genreId = genre.id
@@ -62,17 +64,32 @@ export default createRoute(async (c) => {
     }
     const areaId = s.area.id
     const areaName = s.area.name
+    const areaCode = s.area_code
     const existing = areaMap.get(areaId)
     if (existing) {
       existing.count++
     } else {
-      areaMap.set(areaId, { id: areaId, name: areaName, count: 1 })
+      areaMap.set(areaId, { id: areaId, name: areaName, code: areaCode, count: 1 })
     }
   }
 
   // 配列に変換してソート
   const areasWithCount = Array.from(areaMap.values()).sort((a, b) => a.id.localeCompare(b.id))
   const genresWithCount = Array.from(genreMap.values()).sort((a, b) => a.id.localeCompare(b.id))
+  for (const a of areasWithCount) {
+    const pc = getPrefectureCode(a.code)
+    const name = PREFECTURES[pc]
+    if (!name) continue
+    const cur = prefMap.get(pc)
+    if (cur) {
+      cur.count += a.count
+    } else {
+      prefMap.set(pc, { code: pc, name, count: a.count })
+    }
+  }
+  const prefecturesWithCount = Array.from(prefMap.values()).sort((a, b) =>
+    a.code.localeCompare(b.code)
+  )
 
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/shops`
@@ -114,10 +131,12 @@ export default createRoute(async (c) => {
         <aside class="md:w-80 flex-shrink-0">
           <ShopFilterForm
             areas={areasWithCount}
+            prefectures={prefecturesWithCount}
             genres={genresWithCount}
             initialFilters={{
               q: searchQuery,
               area: areaId,
+              pref: prefCode,
               genre: genreIds,
               isRecommended,
             }}
@@ -128,7 +147,7 @@ export default createRoute(async (c) => {
         <main class="flex-1 min-w-0">
           {shops.contents.length === 0 ? (
             <p class="text-gray-500">
-              {searchQuery || areaId || genreIds.length > 0 || isRecommended
+              {searchQuery || areaId || prefCode || genreIds.length > 0 || isRecommended
                 ? '検索条件に一致するお店が見つかりませんでした'
                 : 'お店が登録されていません'}
             </p>
@@ -148,6 +167,7 @@ export default createRoute(async (c) => {
             currentPage={page}
             basePath="/shops"
             query={queryParams}
+            genreParams={genreParams}
           />
         </main>
       </div>
