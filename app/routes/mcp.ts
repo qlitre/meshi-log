@@ -271,14 +271,16 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       {
         title: 'Create Area',
         description:
-          'Create a new area in microCMS. `code` is the JIS municipality code (e.g. "13101" for Chiyoda-ku).',
+          'Create a new area in microCMS. `code` is the JIS municipality code (e.g. "13101" for Chiyoda-ku). `id` is the contentId, conventionally a romaji slug derived from the area name (e.g. "tokyo-to-machida-shi" for 東京都町田市, "tokyo-to-chiyoda-ku" for 東京都千代田区). Always specify `id` following this convention. IMPORTANT: Before calling this tool, you MUST look up the precise JIS municipality code via web search (search e.g. "東京都町田市 JIS 市区町村コード") — do NOT guess or infer the code from memory.',
         inputSchema: {
+          id: z.string().min(1),
           code: z.string().min(1),
           name: z.string().min(1),
         },
       },
-      async (params: { code: string; name: string }) => {
-        const result = await createArea({ client, body: params })
+      async (params: { id: string; code: string; name: string }) => {
+        const { id, ...body } = params
+        const result = await createArea({ client, contentId: id, body })
         return {
           content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         }
@@ -289,13 +291,16 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       'create_genre',
       {
         title: 'Create Genre',
-        description: 'Create a new genre in microCMS.',
+        description:
+          'Create a new genre in microCMS. Optionally specify `id` for a custom contentId; if omitted, microCMS auto-generates one.',
         inputSchema: {
+          id: z.string().optional(),
           name: z.string().min(1),
         },
       },
-      async (params: { name: string }) => {
-        const result = await createGenre({ client, body: params })
+      async (params: { id?: string; name: string }) => {
+        const { id, ...body } = params
+        const result = await createGenre({ client, contentId: id, body })
         return {
           content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         }
@@ -307,8 +312,9 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       {
         title: 'Create Shop',
         description:
-          'Create a new shop in microCMS. `area` is the area content ID, `genre` is an array of genre content IDs. `area_code` is the JIS municipality code.',
+          'Create a new shop in microCMS. `area` is the area content ID, `genre` is an array of genre content IDs. `area_code` is the JIS municipality code. Optionally specify `id` for a custom contentId (e.g. a URL-friendly slug); if omitted, microCMS auto-generates one. IMPORTANT: Before calling this tool, you MUST look up both the precise `address` and `latitude`/`longitude` via web search or the "Searching for place" tool — search for the actual shop name and verify the address and coordinates from the results. Do NOT guess, infer, or use approximate values.',
         inputSchema: {
+          id: z.string().optional(),
           name: z.string().min(1),
           address: z.string().min(1),
           latitude: z.number(),
@@ -317,12 +323,13 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
           area_code: z.string().min(1),
           genre: z.array(z.string().min(1)).min(1),
           memo: z.string(),
-          is_recommended: z.boolean(),
-          rating: z.number().min(0).max(5).optional(),
+          is_recommended: z.boolean().default(false),
+          rating: z.number().min(0).max(5).optional().default(4),
           nearest_station: z.string().optional(),
         },
       },
       async (params: {
+        id?: string
         name: string
         address: string
         latitude: number
@@ -335,7 +342,8 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
         rating?: number
         nearest_station?: string
       }) => {
-        const result = await createShop({ client, body: params })
+        const { id, ...body } = params
+        const result = await createShop({ client, contentId: id, body })
         return {
           content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         }
