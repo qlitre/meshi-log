@@ -10,11 +10,14 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\""
   },
   "private": true,
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "dependencies": {
     "@hono/mcp": "^0.2.5",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "dayjs": "^1.11.19",
-    "hono": "^4.12.14",
+    "hono": "^4.12.16",
     "hono-rate-limiter": "^0.5.3",
     "honox": "^0.1.55",
     "microcms-js-sdk": "^3.4.0",
