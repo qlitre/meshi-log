@@ -4,8 +4,8 @@ import {
   getMicroCMSSchema,
   getVisits,
   getVisitDetail,
-  getAreas,
-  getGenres,
+  getAllAreas,
+  getAllGenres,
   getShops,
   getShopDetail,
   createArea,
@@ -228,11 +228,10 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
     },
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
-        limit: 100,
         orders: 'code',
       }
       if (params?.q) queries.q = params.q
-      const result = await getAreas({ client, queries })
+      const result = await getAllAreas({ client, queries })
       return {
         content: [
           {
@@ -254,11 +253,10 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
     },
     async (params: { q?: string } | undefined) => {
       const queries: MicroCMSQueries = {
-        limit: 100,
         orders: 'name',
       }
       if (params?.q) queries.q = params.q
-      const result = await getGenres({ client, queries })
+      const result = await getAllGenres({ client, queries })
       return {
         content: [
           {
