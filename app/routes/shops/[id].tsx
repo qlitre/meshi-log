@@ -58,6 +58,23 @@ export default createRoute(async (c) => {
           <div>
             <p class="font-medium">住所</p>
             <p>{shop.address}</p>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(shop.address)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-block mt-1 text-sm text-blue-600 hover:text-blue-800 underline"
+            >
+              Googleマップで開く
+            </a>
+            <div class="mt-2">
+              <iframe
+                width="100%"
+                height="300"
+                style="border:0; border-radius: 0.5rem;"
+                loading="lazy"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(shop.address)}&output=embed`}
+              ></iframe>
+            </div>
           </div>
 
           {shop.memo && (
