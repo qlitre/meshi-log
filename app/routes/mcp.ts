@@ -69,7 +69,7 @@ export const getMcpServer = async (c: Context<Env>) => {
             page?: number
             q?: string
             area_id?: string
-            genre_id?: string
+            genre_ids?: string[]
             is_recommended?: boolean
           }
         | undefined
@@ -84,7 +84,7 @@ export const getMcpServer = async (c: Context<Env>) => {
 
       const filterString = buildShopFilterCondition({
         area_id: params?.area_id,
-        genre_id: params?.genre_id,
+        genre_ids: params?.genre_ids,
         is_recommended: params?.is_recommended,
       })
       if (filterString) queries.filters = filterString
