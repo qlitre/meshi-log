@@ -7,5 +7,6 @@
     "app/islands/**/*.{ts,tsx}"
   ],
   "project": ["app/**/*.{ts,tsx,mdx}"],
-  "ignoreDependencies": ["tailwindcss"]
+  "ignoreDependencies": ["tailwindcss", "cloudflare"],
+  "ignore": ["app/libs/cloudflare-email-stub.ts"]
 }
