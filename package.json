@@ -33,6 +33,6 @@
     "remark-mdx-frontmatter": "^5.2.0",
     "tailwindcss": "^4.2.4",
     "vite": "^8.0.3",
-    "wrangler": "^4.61.1"
+    "wrangler": "^4.87.0"
   }
 }
