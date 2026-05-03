@@ -1,4 +1,64 @@
 import { createRoute } from 'honox/factory'
+import { css, Style } from 'hono/css'
+
+const bodyClass = css`
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  max-width: 420px;
+  margin: 64px auto;
+  padding: 24px;
+  color: #222;
+`
+
+const headingClass = css`
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+`
+
+const infoClass = css`
+  background: #f5f5f5;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  dt {
+    font-weight: 600;
+    color: #555;
+  }
+  dd {
+    margin: 0 0 8px 0;
+    word-break: break-all;
+  }
+`
+
+const inputClass = css`
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+`
+
+const buttonClass = css`
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 1rem;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover {
+    background: #333;
+  }
+`
+
+const errorClass = css`
+  color: #c33;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+`
 
 const Page = ({
   clientName,
@@ -15,34 +75,29 @@ const Page = ({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="robots" content="noindex,nofollow" />
       <title>meshi-log MCP Authorize</title>
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 420px; margin: 64px auto; padding: 24px; color: #222; }
-            h1 { font-size: 1.25rem; margin-bottom: 1rem; }
-            .info { background: #f5f5f5; padding: 12px 16px; border-radius: 6px; font-size: 0.9rem; margin-bottom: 16px; }
-            .info dt { font-weight: 600; color: #555; }
-            .info dd { margin: 0 0 8px 0; word-break: break-all; }
-            input[type=password] { width: 100%; padding: 10px; font-size: 1rem; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-            button { width: 100%; padding: 12px; margin-top: 12px; font-size: 1rem; background: #111; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
-            button:hover { background: #333; }
-            .error { color: #c33; margin-bottom: 12px; font-size: 0.9rem; }
-          `,
-        }}
-      />
+      <Style />
     </head>
-    <body>
-      <h1>MCP Authorization</h1>
-      <dl class="info">
+    <body class={bodyClass}>
+      <h1 class={headingClass}>MCP Authorization</h1>
+      <dl class={infoClass}>
         <dt>Client</dt>
         <dd>{clientName}</dd>
         <dt>Scope</dt>
         <dd>{scope || '(none)'}</dd>
       </dl>
-      {error && <p class="error">{error}</p>}
+      {error && <p class={errorClass}>{error}</p>}
       <form method="post">
-        <input type="password" name="password" placeholder="Admin password" autofocus required />
-        <button type="submit">Authorize</button>
+        <input
+          type="password"
+          name="password"
+          placeholder="Admin password"
+          autofocus
+          required
+          class={inputClass}
+        />
+        <button type="submit" class={buttonClass}>
+          Authorize
+        </button>
       </form>
     </body>
   </html>
