@@ -132,6 +132,59 @@ export const getNextVisits = async ({ client, publishedAt }: ClientWithPublished
   })
 }
 
+// エリア新規作成
+export const createArea = async ({
+  client,
+  contentId,
+  body,
+}: {
+  client: MicroCMSClient
+  contentId?: string
+  body: { code: string; name: string }
+}) => {
+  return await client.create({ endpoint: 'area', contentId, content: body })
+}
+
+// ジャンル新規作成
+export const createGenre = async ({
+  client,
+  contentId,
+  body,
+}: {
+  client: MicroCMSClient
+  contentId?: string
+  body: { name: string }
+}) => {
+  return await client.create({endpoint: 'genre', contentId, content: body })
+}
+
+// 店舗新規作成
+export type CreateShopBody = {
+  name: string
+  address: string
+  latitude: number
+  longitude: number
+  area: string
+  area_code: string
+  genre: string[]
+  memo: string
+  is_recommended: boolean
+  rating?: number
+  nearest_station?: string
+}
+
+export const createShop = async ({
+  client,
+  contentId,
+  body,
+}: {
+  client: MicroCMSClient
+  contentId?: string
+  body: CreateShopBody
+}) => {
+  return await client.create({ endpoint: 'shop', contentId, content: body })
+}
+
 export const getMicroCMSSchema = async ({ serviceDomain, apiKey }: ClientConfig) => {
   const ret = []
   const endPoints = ['genre', 'area', 'shop', 'visits']

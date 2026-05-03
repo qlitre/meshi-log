@@ -40,7 +40,7 @@ export default defineConfig(({ command }) => {
     },
     build: {
       rollupOptions: {
-        external: ['shiki', 'cloudflare:email'],
+        external: ['shiki', 'cloudflare:email', 'cloudflare:workers'],
       },
     },
   }

@@ -140,6 +140,7 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
             <input
               type="text"
               name="q"
+              autocomplete="off"
               value={initialFilters.q || ''}
               placeholder="店名で検索..."
               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
