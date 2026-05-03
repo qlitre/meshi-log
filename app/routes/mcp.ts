@@ -8,6 +8,9 @@ import {
   getGenres,
   getShops,
   getShopDetail,
+  createArea,
+  createGenre,
+  createShop,
 } from '../libs/microcms'
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
@@ -22,7 +25,11 @@ import { buildShopFilterCondition } from '../utils/buildShopFilterCondition'
 
 const limit = config.serachPerPage
 
-export const getMcpServer = async (c: Context<Env>) => {
+type McpServerOptions = {
+  includeWriteTools?: boolean
+}
+
+export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = {}) => {
   const serviceDomain = c.env.SERVICE_DOMAIN
   const apiKey = c.env.API_KEY
   const client = getMicroCMSClient(c)
@@ -257,6 +264,85 @@ export const getMcpServer = async (c: Context<Env>) => {
       }
     }
   )
+
+  if (options.includeWriteTools) {
+    server.registerTool(
+      'create_area',
+      {
+        title: 'Create Area',
+        description:
+          'Create a new area in microCMS. `code` is the JIS municipality code (e.g. "13101" for Chiyoda-ku).',
+        inputSchema: {
+          code: z.string().min(1),
+          name: z.string().min(1),
+        },
+      },
+      async (params: { code: string; name: string }) => {
+        const result = await createArea({ client, body: params })
+        return {
+          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        }
+      }
+    )
+
+    server.registerTool(
+      'create_genre',
+      {
+        title: 'Create Genre',
+        description: 'Create a new genre in microCMS.',
+        inputSchema: {
+          name: z.string().min(1),
+        },
+      },
+      async (params: { name: string }) => {
+        const result = await createGenre({ client, body: params })
+        return {
+          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        }
+      }
+    )
+
+    server.registerTool(
+      'create_shop',
+      {
+        title: 'Create Shop',
+        description:
+          'Create a new shop in microCMS. `area` is the area content ID, `genre` is an array of genre content IDs. `area_code` is the JIS municipality code.',
+        inputSchema: {
+          name: z.string().min(1),
+          address: z.string().min(1),
+          latitude: z.number(),
+          longitude: z.number(),
+          area: z.string().min(1),
+          area_code: z.string().min(1),
+          genre: z.array(z.string().min(1)).min(1),
+          memo: z.string(),
+          is_recommended: z.boolean(),
+          rating: z.number().min(0).max(5).optional(),
+          nearest_station: z.string().optional(),
+        },
+      },
+      async (params: {
+        name: string
+        address: string
+        latitude: number
+        longitude: number
+        area: string
+        area_code: string
+        genre: string[]
+        memo: string
+        is_recommended: boolean
+        rating?: number
+        nearest_station?: string
+      }) => {
+        const result = await createShop({ client, body: params })
+        return {
+          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        }
+      }
+    )
+  }
+
   return server
 }
 

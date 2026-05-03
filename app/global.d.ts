@@ -1,4 +1,5 @@
 import type {} from 'hono'
+import type { OAuthHelpers } from '@cloudflare/workers-oauth-provider'
 import type { Meta } from './types/meta'
 
 interface Head {
@@ -16,6 +17,9 @@ declare module 'hono' {
       TURNSTILE_SECRET_KEY: string
       EMAIL: SendEmail
       NOTIFICATION_EMAIL: string
+      ADMIN_PASSWORD: string
+      OAUTH_KV: KVNamespace
+      OAUTH_PROVIDER: OAuthHelpers
     }
   }
   interface ContextRenderer {
