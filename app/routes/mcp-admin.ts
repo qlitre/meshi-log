@@ -2,7 +2,7 @@ import { Hono } from 'hono'
 import type { Env } from 'hono'
 import { HTTPException } from 'hono/http-exception'
 import { StreamableHTTPTransport } from '@hono/mcp'
-import { getMcpServer } from '../routes/mcp'
+import { getMcpServer } from './mcp'
 
 const adminApp = new Hono<Env>()
 

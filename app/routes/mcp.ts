@@ -107,6 +107,30 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       }
     }
   )
+  server.registerTool(
+    'get_shop_detail',
+    {
+      title: 'Get Shop Detail',
+      description: 'Get Shop Detail',
+      inputSchema: {
+        id: z.string().min(1),
+      },
+    },
+    async (params: { id: string } | undefined) => {
+      if (!params?.id) {
+        throw new Error('id is required')
+      }
+      const result = await getShopDetail({ client, contentId: params.id })
+      return {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      }
+    }
+  )
 
   server.registerTool(
     'get_visits',

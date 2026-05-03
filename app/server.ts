@@ -2,7 +2,7 @@ import { showRoutes } from 'hono/dev'
 import { createApp } from 'honox/server'
 import { OAuthProvider } from '@cloudflare/workers-oauth-provider'
 import mcpApp from './routes/mcp'
-import adminMcpApp from './libs/admin-mcp-app'
+import adminMcpApp from './routes/mcp-admin'
 
 const honoxApp = createApp()
 
