@@ -1,6 +1,3 @@
-import { createMimeMessage } from 'mimetext'
-import { EmailMessage } from 'cloudflare:email'
-
 type NotifyParams = {
   email: SendEmail
   notificationEmail: string
@@ -18,13 +15,11 @@ export const notifyNewComment = async ({
 }: NotifyParams) => {
   const senderAddress = 'noreply@meshi-log.info'
 
-  const msg = createMimeMessage()
-  msg.setSender({ name: '飯ログ', addr: senderAddress })
-  msg.setRecipient(notificationEmail)
-  msg.setSubject(`新しいコメント: ${author}`)
-  msg.addMessage({
-    contentType: 'text/plain',
-    data: [
+  await email.send({
+    to: notificationEmail,
+    from: senderAddress,
+    subject: '飯ログ - コメント通知',
+    text: [
       `訪問記録にコメントが投稿されました。`,
       ``,
       `投稿者: ${author}`,
@@ -33,7 +28,4 @@ export const notifyNewComment = async ({
       `確認: https://meshi-log.info/visits/${visitId}`,
     ].join('\n'),
   })
-
-  const message = new EmailMessage(senderAddress, notificationEmail, msg.asRaw())
-  await email.send(message)
 }
