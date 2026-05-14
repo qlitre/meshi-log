@@ -12,6 +12,7 @@ export default defineConfig(({ command }) => {
   const alias: Record<string, string> = {}
   if (command === 'serve') {
     alias['cloudflare:email'] = '/app/libs/cloudflare-email-stub.ts'
+    alias['cloudflare:workers'] = '/app/libs/cloudflare-workers-stub.ts'
   }
   return {
     plugins: [
@@ -35,6 +36,7 @@ export default defineConfig(({ command }) => {
         'microcms-rich-editor-handler',
         'shiki',
         'mimetext',
+        'cloudflare:workers',
       ],
       noExternal: ['async-retry'],
     },
