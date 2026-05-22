@@ -8,6 +8,7 @@ export default createRoute(async (c) => {
   const allVisits = await getAllVisits({ client: client, queries: { orders: '-visit_date' } })
   const urls = []
   for (const visit of allVisits) {
+    if (visit.shop.noindex) continue
     const jst = jstDatetime(visit.updatedAt).split('T')[0]
     urls.push(`
   <url>

@@ -29,6 +29,7 @@ export default createRoute(async (c) => {
     canonicalUrl: canonicalUrl,
     ogpType: 'website' as const,
     ogpUrl: canonicalUrl,
+    noindex: shop.noindex,
   }
 
   return c.render(
