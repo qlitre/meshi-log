@@ -6,4 +6,5 @@ export interface Meta {
   ogpUrl?: string
   ogpImage?: string
   ogpType?: 'website' | 'article'
+  noindex?: boolean
 }

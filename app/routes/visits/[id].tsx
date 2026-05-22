@@ -124,6 +124,7 @@ export default createRoute(async (c) => {
     ogpType: 'article' as const,
     ogpImage: visit.thumbnail?.url,
     ogpUrl: canonicalUrl,
+    noindex: visit.shop.noindex,
   }
 
   return c.render(
