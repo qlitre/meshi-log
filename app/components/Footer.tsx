@@ -30,10 +30,7 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a
-                  href="/privacy-policy"
-                  class="text-gray-300 hover:text-white transition-colors"
-                >
+                <a href="/privacy-policy" class="text-gray-300 hover:text-white transition-colors">
                   プライバシーポリシー
                 </a>
               </li>
