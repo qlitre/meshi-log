@@ -1,7 +1,7 @@
 import { createRoute } from 'honox/factory'
 import { config } from '../siteSettings'
 import { jstDatetime } from '../utils/jstDatetime'
-import { getMicroCMSClient, getAllVisits } from '../libs/microcms'
+import { getMicroCMSClient, getAllVisits, getAllShops } from '../libs/microcms'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient(c)
@@ -13,6 +13,17 @@ export default createRoute(async (c) => {
     urls.push(`
   <url>
     <loc>${config.siteurl}/visits/${visit.id}</loc>
+    <lastmod>${jst}</lastmod>
+    <priority>0.8</priority>
+  </url>`)
+  }
+  const allShops = await getAllShops({ client: client, queries: { orders: '-publishedAt' } })
+  for (const shop of allShops) {
+    if (shop.noindex) continue
+    const jst = jstDatetime(shop.publishedAt).split('T')[0]
+    urls.push(`
+    <url>
+    <loc>${config.siteurl}/shops/${shop.id}</loc>
     <lastmod>${jst}</lastmod>
     <priority>0.8</priority>
   </url>`)
