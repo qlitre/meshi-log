@@ -127,6 +127,9 @@ export default createRoute(async (c) => {
     noindex: visit.shop.noindex,
   }
 
+  let shareTitle = visit.title
+  if (!visit.shop.noindex) shareTitle += ` - ${visit.shop.name}`
+
   return c.render(
     <Container>
       {successMessage && <Alert message={successMessage} type="success" />}
@@ -146,7 +149,7 @@ export default createRoute(async (c) => {
 
         {/* シェアボタン */}
         <div class="mt-8 pt-6 border-t">
-          <ShareX url={canonicalUrl} title={`${visit.title} - ${visit.shop.name}`} />
+          <ShareX url={canonicalUrl} title={shareTitle} />
         </div>
       </article>
 
