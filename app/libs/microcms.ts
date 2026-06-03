@@ -1,7 +1,6 @@
 import { createClient, type MicroCMSQueries } from 'microcms-js-sdk'
 import type { Area, Genre, Shop, Visit } from '../types/microcms'
 import type { Context } from 'hono'
-import client from 'honox/vite/client'
 
 type MicroCMSClient = ReturnType<typeof createClient>
 
