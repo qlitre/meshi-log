@@ -174,7 +174,7 @@ export type CreateShopBody = {
   nearest_station?: string
 }
 
-// 店舗新規作成
+// 店舗更新
 export type UpdateShopBody = {
   name?: string
   address?: string
