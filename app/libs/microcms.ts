@@ -1,6 +1,7 @@
 import { createClient, type MicroCMSQueries } from 'microcms-js-sdk'
 import type { Area, Genre, Shop, Visit } from '../types/microcms'
 import type { Context } from 'hono'
+import client from 'honox/vite/client'
 
 type MicroCMSClient = ReturnType<typeof createClient>
 
@@ -173,6 +174,21 @@ export type CreateShopBody = {
   nearest_station?: string
 }
 
+// 店舗新規作成
+export type UpdateShopBody = {
+  name?: string
+  address?: string
+  latitude?: number
+  longitude?: number
+  area?: string
+  area_code?: string
+  genre?: string[]
+  memo?: string
+  is_recommended?: boolean
+  rating?: number
+  nearest_station?: string
+}
+
 export const createShop = async ({
   client,
   contentId,
@@ -183,6 +199,18 @@ export const createShop = async ({
   body: CreateShopBody
 }) => {
   return await client.create({ endpoint: 'shop', contentId, content: body, isDraft: true })
+}
+
+export const updateShop = async ({
+  client,
+  contentId,
+  body,
+}: {
+  client: MicroCMSClient
+  contentId: string
+  body: UpdateShopBody
+}) => {
+  return await client.update({ endpoint: 'shop', contentId, content: body, isDraft: true })
 }
 
 export const getMicroCMSSchema = async ({ serviceDomain, apiKey }: ClientConfig) => {

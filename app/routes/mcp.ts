@@ -11,6 +11,7 @@ import {
   createArea,
   createGenre,
   createShop,
+  updateShop,
 } from '../libs/microcms'
 import { getPopularPages } from '../libs/pageview'
 import { StreamableHTTPTransport } from '@hono/mcp'
@@ -366,6 +367,53 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       }) => {
         const { id, ...body } = params
         const result = await createShop({ client, contentId: id, body })
+        return {
+          content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+        }
+      }
+    )
+    server.registerTool(
+      'update_shop',
+      {
+        title: 'Update Shop',
+        description:
+          'Partially update an existing shop in microCMS. `id` is the contentId of the shop to update. Only provide the fields you want to change — omitted fields are left as-is. `area` is the area content ID, `genre` is an array of genre content IDs. If updating `address` or coordinates, you MUST look up the precise `address` and `latitude`/`longitude` via web search — do NOT guess or use approximate values.',
+        inputSchema: {
+          id: z.string(),
+          name: z.string().min(1).optional(),
+          address: z.string().min(1).optional(),
+          latitude: z.number().optional(),
+          longitude: z.number().optional(),
+          area: z.string().min(1).optional(),
+          area_code: z.string().min(1).optional(),
+          genre: z.array(z.string().min(1)).min(1).optional(),
+          memo: z.string().optional(),
+          is_recommended: z.boolean().optional(),
+          rating: z.number().min(0).max(5).optional(),
+          nearest_station: z.string().optional(),
+        },
+      },
+      async (params: {
+        id: string
+        name?: string
+        address?: string
+        latitude?: number
+        longitude?: number
+        area?: string
+        area_code?: string
+        genre?: string[]
+        memo?: string
+        is_recommended?: boolean
+        rating?: number
+        nearest_station?: string
+      }) => {
+        const { id, ...body } = params
+        if (Object.values(body).every((v) => v === undefined)) {
+          return {
+            content: [{ type: 'text', text: 'No fields to update were specified.' }],
+          }
+        }
+        const result = await updateShop({ client, contentId: id, body })
         return {
           content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         }
