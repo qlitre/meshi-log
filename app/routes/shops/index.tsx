@@ -37,6 +37,7 @@ export default createRoute(async (c) => {
       orders: 'area_code',
       offset: offset,
       filters: filterString.length > 0 ? filterString : undefined,
+      fields: 'id,name,is_recommended,nearest_station,memo,area.name,genre.name',
     },
   })
 
@@ -45,7 +46,7 @@ export default createRoute(async (c) => {
     queries: {
       q: searchQuery || undefined,
       depth: 1,
-      fields: 'id,area,area_code,genre',
+      fields: 'id,area_code,area.id,area.name,genre.id,genre.name',
       filters: filterString.length > 0 ? filterString : undefined,
     },
   })
