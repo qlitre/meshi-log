@@ -16,6 +16,8 @@ export default createRoute(async (c) => {
   const queries: MicroCMSQueries = {
     limit: limit,
     q: keyword,
+    depth: 2,
+    fields: 'id,title,thumbnail,visit_date,memo,shop.name,shop.area.name,shop.genre.name',
   }
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/`

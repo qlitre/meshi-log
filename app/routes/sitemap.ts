@@ -5,7 +5,10 @@ import { getMicroCMSClient, getAllVisits, getAllShops } from '../libs/microcms'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient(c)
-  const allVisits = await getAllVisits({ client: client, queries: { orders: '-visit_date' } })
+  const allVisits = await getAllVisits({
+    client: client,
+    queries: { orders: '-visit_date', fields: 'id,updatedAt,shop.noindex' },
+  })
   const urls = []
   for (const visit of allVisits) {
     if (visit.shop.noindex) continue
@@ -17,7 +20,10 @@ export default createRoute(async (c) => {
     <priority>0.8</priority>
   </url>`)
   }
-  const allShops = await getAllShops({ client: client, queries: { orders: '-publishedAt' } })
+  const allShops = await getAllShops({
+    client: client,
+    queries: { orders: '-publishedAt', fields: 'id,publishedAt,noindex' },
+  })
   for (const shop of allShops) {
     if (shop.noindex) continue
     const jst = jstDatetime(shop.publishedAt).split('T')[0]

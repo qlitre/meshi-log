@@ -16,7 +16,13 @@ export default createRoute(async (c) => {
   const offset = limit * (page - 1)
   const visits = await getVisits({
     client,
-    queries: { limit: limit, depth: 2, offset: offset, filters: `shop[equals]${id}` },
+    queries: {
+      limit: limit,
+      depth: 2,
+      offset: offset,
+      filters: `shop[equals]${id}`,
+      fields: 'id,title,thumbnail,visit_date,memo,shop.name,shop.area.name,shop.genre.name',
+    },
   })
   const visitsCount = visits.totalCount
 

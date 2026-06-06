@@ -2,6 +2,7 @@ import { jstDatetime } from '../utils/jstDatetime'
 import type { Visit } from '../types/microcms'
 import { stripHtmlTagsAndTruncate } from '../utils/stripHtmlTags'
 import { getShopGenreString } from '../utils/getShopGenreString'
+import { getMicrocmsImageUrl } from '../utils/microcmsImageUrl'
 
 type Props = {
   visit: Visit
@@ -13,7 +14,7 @@ export const VisitListCard = ({ visit }: Props) => {
       <a href={`/visits/${visit.id}`} class="flex flex-col md:flex-row gap-4 md:gap-6">
         <div class="flex-shrink-0 w-full md:w-48">
           <img
-            src={visit.thumbnail.url}
+            src={getMicrocmsImageUrl(visit.thumbnail.url, { w: 400, fm: 'webp', q: 80 })}
             alt={visit.title}
             width={visit.thumbnail.width}
             height={visit.thumbnail.height}
