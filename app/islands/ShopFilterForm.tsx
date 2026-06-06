@@ -258,12 +258,12 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
   )
 }
 
-export default function ShopFilterForm({
+export const ShopFilterForm = ({
   areas,
   genres,
   prefectures,
   initialFilters,
-}: ShopFilterFormProps) {
+}: ShopFilterFormProps) => {
   let hasGenreFilter = false
   if (initialFilters.genre && initialFilters.genre.length > 0) hasGenreFilter = true
   const hasFilters =
