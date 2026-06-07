@@ -17,7 +17,6 @@
       "binding": "DB",
       "database_name": "meshi-log-db",
       "database_id": "0dd6b9b2-c2c3-4b61-a769-9fc99086a112",
-      "remote": true,
     },
   ],
   "kv_namespaces": [
