@@ -5,7 +5,7 @@ import {
   getPrevVisits,
   getNextVisits,
 } from '../../libs/microcms'
-import { recordPageView } from '../../libs/pageview'
+import { seedPageViewMeta } from '../../libs/pageview'
 import { getCommentsByVisitId, createComment } from '../../libs/comment'
 import { verifyTurnstile } from '../../libs/turnstile'
 import { notifyNewComment } from '../../libs/notification'
@@ -22,6 +22,7 @@ import { CommentList } from '../../components/CommentList'
 import { getShopGenreString } from '../../utils/getShopGenreString'
 import { CommentForm } from '../../islands/CommentForm'
 import { Alert } from '../../islands/Alert'
+import { PageViewBeacon } from '../../islands/PageViewBeacon'
 import { getCookie, setCookie, deleteCookie } from 'hono/cookie'
 
 const authorCookieKey = 'meshi-log-author'
@@ -91,8 +92,9 @@ export default createRoute(async (c) => {
   ])
   const url = new URL(c.req.url)
   const canonicalUrl = `${url.protocol}//${url.host}/visits/${id}`
-  // 前回の名前を取得
-  const author = getCookie(c, authorCookieKey) || ''
+  // 共有エッジキャッシュで他人に名前が漏れるのを防ぐため、コメント投稿者名の
+  // サーバー差し込みは行わない（HTMLを全ユーザー共通にする）。
+  const author = ''
   const successMessage = getCookie(c, successAlertCookieKey)
   if (successMessage) deleteCookie(c, successAlertCookieKey, { path: '/' })
 
@@ -105,9 +107,9 @@ export default createRoute(async (c) => {
     errorMessage = '名前とコメントを正しく入力してください。'
   }
 
-  // ページビュー記録（レスポンスをブロックしない）
+  // 人気ページ用メタ情報をseed（カウントはクライアントビーコンが加算する）
   c.executionCtx.waitUntil(
-    recordPageView({
+    seedPageViewMeta({
       db: c.env.DB,
       pagePath: `/visits/${id}`,
       contentId: id,
@@ -168,6 +170,8 @@ export default createRoute(async (c) => {
       <AdjacentPosts nextVisits={nextVisits.contents} prevVisits={prevVisits.contents} />
       {/* 戻るリンク */}
       <LinkToTop />
+      {/* PV計測ビーコン（キャッシュ済みページでもブラウザで発火） */}
+      <PageViewBeacon id={id} />
     </Container>,
     { meta }
   )
