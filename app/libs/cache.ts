@@ -44,7 +44,10 @@ export const responseCache: MiddlewareHandler = async (c, next) => {
 
   const hit = await cache.match(key)
   if (hit) {
-    return hit
+    // キャッシュ済みResponseはimmutableなので複製してデバッグヘッダを付与
+    const res = new Response(hit.body, hit)
+    res.headers.set('X-Edge-Cache', 'HIT')
+    return res
   }
 
   await next()
@@ -53,11 +56,12 @@ export const responseCache: MiddlewareHandler = async (c, next) => {
   if (!res || res.status !== 200) return
   if (res.headers.has('Set-Cookie')) return
 
-  // 保存用クローンに Cache-Control を付与
+  // 保存用クローンに Cache-Control を付与（X-Edge-Cacheは保存しない）
   const toCache = res.clone()
   toCache.headers.set('Cache-Control', `public, max-age=${CACHE_MAX_AGE}`)
   // クライアント/エッジ双方が同じTTLでキャッシュできるよう元レスポンスにも付与
   c.res.headers.set('Cache-Control', `public, max-age=${CACHE_MAX_AGE}`)
+  c.res.headers.set('X-Edge-Cache', 'MISS')
 
   c.executionCtx.waitUntil(
     (async () => {
