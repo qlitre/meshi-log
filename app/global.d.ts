@@ -20,6 +20,9 @@ declare module 'hono' {
       ADMIN_PASSWORD: string
       OAUTH_KV: KVNamespace
       OAUTH_PROVIDER: OAuthHelpers
+      MICROCMS_WEBHOOK_SECRET: string
+      CF_ZONE_ID: string
+      CF_PURGE_TOKEN: string
     }
   }
   interface ContextRenderer {
