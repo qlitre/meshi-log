@@ -144,6 +144,12 @@ export default createRoute(async (c) => {
           <time>{jstDatetime(visit.visit_date, 'YYYY年M月D日')}</time>
           <span>{visit.shop.area.name}</span>
           <span>{getShopGenreString(visit.shop.genre)}</span>
+          <a
+            href={`/visits/${id}/md`}
+            class="ml-auto text-sm text-gray-400 hover:text-gray-600 underline underline-offset-2"
+          >
+            マークダウンで見る
+          </a>
         </div>
 
         {/* 本文 */}
