@@ -32,7 +32,7 @@ export default createRoute(async (c) => {
       limit: limit,
       offset: offset,
       depth: 2,
-      orders: '-publishedAt',
+      orders: '-createdAt',
       fields: 'id,title,thumbnail,visit_date,memo,shop.name,shop.area.name,shop.genre.name',
     },
   })
