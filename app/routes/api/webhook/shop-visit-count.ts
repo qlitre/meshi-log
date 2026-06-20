@@ -1,16 +1,12 @@
 import { createRoute } from 'honox/factory'
-import { purgeAllCache } from '../../../libs/cache-purge'
 import { verifyMicroCMSSignature } from '../../../libs/microcms-webhook'
+import { rebuildShopVisitCounts } from '../../../libs/shop-visit-counts'
 
-// microCMS の content 更新 Webhook を受けてエッジキャッシュをパージする。
-// 通知先: https://meshi-log.info/api/webhook/cache-purge
 export const POST = createRoute(async (c) => {
   const secret = c.env.MICROCMS_WEBHOOK_SECRET
-  const zoneId = c.env.CF_ZONE_ID
-  const token = c.env.CF_PURGE_TOKEN
 
   // 必須シークレット未設定（ローカル/プレビュー）では無効化
-  if (!secret || !zoneId || !token) {
+  if (!secret) {
     return c.body(null, 503)
   }
 
@@ -30,11 +26,7 @@ export const POST = createRoute(async (c) => {
     // ignore
   }
 
-  const result = await purgeAllCache({ zoneId, token })
-  if (!result.ok) {
-    console.error(`cache purge failed (api=${api}): ${result.status} ${result.body}`)
-    return c.json({ ok: false }, 502)
-  }
+  c.executionCtx.waitUntil(rebuildShopVisitCounts(c))
 
   return c.json({ ok: true, api })
 })
