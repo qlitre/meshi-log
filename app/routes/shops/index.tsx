@@ -9,6 +9,7 @@ import { buildShopFilterCondition } from '../../utils/buildShopFilterCondition'
 import { Pagination } from '../../components/Pagination'
 import { config } from '../../siteSettings'
 import { getPrefectureCode, PREFECTURES } from '../../libs/prefecture'
+import { getRepeatedVisitShopIds } from '../../libs/shop-visit-counts'
 
 export default createRoute(async (c) => {
   const client = getMicroCMSClient(c)
@@ -22,6 +23,8 @@ export default createRoute(async (c) => {
   const prefCode = c.req.query('pref') || ''
   const genreIds = (c.req.queries('genre') ?? []).filter((id) => id !== '')
   const isRecommended = c.req.query('recommended') === '1'
+  const repeatedVisits = c.req.query('repeated_visits') === 'true'
+
   const filterString = buildShopFilterCondition({
     pref_code: prefCode,
     area_id: areaId,
@@ -29,27 +32,55 @@ export default createRoute(async (c) => {
     is_recommended: isRecommended,
   })
 
-  const shops = await getShops({
-    client,
-    queries: {
-      q: searchQuery || undefined,
-      limit: limit,
-      orders: 'area_code',
-      offset: offset,
-      filters: filterString.length > 0 ? filterString : undefined,
-      fields: 'id,name,is_recommended,nearest_station,memo,area.name,genre.name',
-    },
-  })
+  const commonQueries = {
+    q: searchQuery || undefined,
+    orders: 'area_code' as const,
+    filters: filterString.length > 0 ? filterString : undefined,
+  }
 
-  const allShops = await getAllShops({
-    client,
-    queries: {
-      q: searchQuery || undefined,
-      depth: 1,
-      fields: 'id,area_code,area.id,area.name,genre.id,genre.name',
-      filters: filterString.length > 0 ? filterString : undefined,
-    },
-  })
+  let displayShops: Awaited<ReturnType<typeof getShops>>['contents']
+  let totalCount: number
+  let allShops: Awaited<ReturnType<typeof getAllShops>>
+
+  if (repeatedVisits) {
+    const repeatedShopIds = await getRepeatedVisitShopIds(c.env.DB)
+    const shopSet = new Set(repeatedShopIds)
+    const allShopsRaw = await getAllShops({
+      client,
+      queries: {
+        ...commonQueries,
+        depth: 1,
+        fields: 'id,name,is_recommended,nearest_station,memo,area_code,area.id,area.name,genre.id,genre.name',
+      },
+    })
+    allShops = allShopsRaw.filter((s) => shopSet.has(s.id))
+    totalCount = allShops.length
+    displayShops = allShops.slice(offset, offset + limit)
+  } else {
+    const [shops, fetchedAllShops] = await Promise.all([
+      getShops({
+        client,
+        queries: {
+          ...commonQueries,
+          limit,
+          offset,
+          fields: 'id,name,is_recommended,nearest_station,memo,area.name,genre.name',
+        },
+      }),
+      getAllShops({
+        client,
+        queries: {
+          ...commonQueries,
+          depth: 1,
+          fields: 'id,area_code,area.id,area.name,genre.id,genre.name',
+        },
+      }),
+    ])
+    displayShops = shops.contents
+    totalCount = shops.totalCount
+    allShops = fetchedAllShops
+  }
+
   const areaMap = new Map<string, { id: string; name: string; code: string; count: number }>()
   const genreMap = new Map<string, { id: string; name: string; count: number }>()
   const prefMap = new Map<string, { code: string; name: string; count: number }>()
@@ -141,30 +172,31 @@ export default createRoute(async (c) => {
               pref: prefCode,
               genre: genreIds,
               isRecommended,
+              repeatedVisits,
             }}
           />
         </aside>
 
         {/* 右メインエリア（リスト） */}
         <main class="flex-1 min-w-0">
-          {shops.contents.length === 0 ? (
+          {displayShops.length === 0 ? (
             <p class="text-gray-500">
-              {searchQuery || areaId || prefCode || genreIds.length > 0 || isRecommended
+              {searchQuery || areaId || prefCode || genreIds.length > 0 || isRecommended || repeatedVisits
                 ? '検索条件に一致するお店が見つかりませんでした'
                 : 'お店が登録されていません'}
             </p>
           ) : (
             <>
-              <p class="text-sm text-gray-600 mb-4">{shops.totalCount}件のお店が見つかりました</p>
+              <p class="text-sm text-gray-600 mb-4">{totalCount}件のお店が見つかりました</p>
               <div class="space-y-4">
-                {shops.contents.map((shop) => (
+                {displayShops.map((shop) => (
                   <ShopListItem shop={shop} key={shop.id} />
                 ))}
               </div>
             </>
           )}
           <Pagination
-            totalCount={shops.totalCount}
+            totalCount={totalCount}
             limit={config.shopPerPage}
             currentPage={page}
             basePath="/shops"

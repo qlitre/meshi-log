@@ -29,6 +29,7 @@ type ShopFilterFormProps = {
     pref?: string
     genre?: string[]
     isRecommended?: boolean
+    repeatedVisits?: boolean
   }
 }
 
@@ -128,7 +129,8 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
     initialFilters.area ||
     initialFilters.pref ||
     (initialFilters.genre && initialFilters.genre.length > 0) ||
-    initialFilters.isRecommended
+    initialFilters.isRecommended ||
+    initialFilters.repeatedVisits
 
   return (
     <>
@@ -221,7 +223,7 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
             </div>
           </div>
 
-          <div>
+          <div class="flex flex-col gap-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">その他</label>
             <label class="flex items-center h-10 px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer">
               <input
@@ -233,6 +235,17 @@ const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterF
                 onChange={submitClosestForm}
               />
               <span class="text-sm">おすすめのみ</span>
+            </label>
+            <label class="flex items-center h-10 px-3 py-2 border border-gray-300 rounded-lg bg-white cursor-pointer">
+              <input
+                type="checkbox"
+                name="repeated_visits"
+                value="true"
+                checked={initialFilters.repeatedVisits}
+                class="mr-2"
+                onChange={submitClosestForm}
+              />
+              <span class="text-sm">２回以上訪問した店</span>
             </label>
           </div>
         </div>
@@ -271,7 +284,8 @@ export const ShopFilterForm = ({
     initialFilters.area ||
     initialFilters.pref ||
     hasGenreFilter ||
-    initialFilters.isRecommended
+    initialFilters.isRecommended ||
+    initialFilters.repeatedVisits
 
   return (
     <div class="mb-6">

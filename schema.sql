@@ -36,3 +36,8 @@ CREATE TABLE comments (
 );
 
 CREATE INDEX idx_comments_visit_id ON comments(visit_id, created_at);
+
+CREATE TABLE shop_visit_counts (
+  shop_id TEXT PRIMARY KEY,
+  count   INTEGER NOT NULL DEFAULT 0
+);
