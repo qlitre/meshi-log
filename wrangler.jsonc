@@ -25,4 +25,8 @@
       "id": "7ec3029befa84fabb270604c30c9c346",
     },
   ],
+  "vars": {
+    "CF_ACCESS_TEAM_DOMAIN": "divine-hat-a280.cloudflareaccess.com",
+    "CF_ACCESS_AUDIENCE": "1ed3fbcd60be1ac4246dbd0a0e2ebe2ea54e85dd612cd50f295754d54af22931",
+  },
 }

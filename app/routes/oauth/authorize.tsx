@@ -1,140 +1,32 @@
 import { createRoute } from 'honox/factory'
-import { css, Style } from 'hono/css'
-
-const bodyClass = css`
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  max-width: 420px;
-  margin: 64px auto;
-  padding: 24px;
-  color: #222;
-`
-
-const headingClass = css`
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-`
-
-const infoClass = css`
-  background: #f5f5f5;
-  padding: 12px 16px;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  margin-bottom: 16px;
-  dt {
-    font-weight: 600;
-    color: #555;
-  }
-  dd {
-    margin: 0 0 8px 0;
-    word-break: break-all;
-  }
-`
-
-const inputClass = css`
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-sizing: border-box;
-`
-
-const buttonClass = css`
-  width: 100%;
-  padding: 12px;
-  margin-top: 12px;
-  font-size: 1rem;
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  &:hover {
-    background: #333;
-  }
-`
-
-const errorClass = css`
-  color: #c33;
-  margin-bottom: 12px;
-  font-size: 0.9rem;
-`
-
-const Page = ({
-  clientName,
-  scope,
-  error,
-}: {
-  clientName: string
-  scope: string
-  error?: string
-}) => (
-  <html lang="ja">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta name="robots" content="noindex,nofollow" />
-      <title>meshi-log MCP Authorize</title>
-      <Style />
-    </head>
-    <body class={bodyClass}>
-      <h1 class={headingClass}>MCP Authorization</h1>
-      <dl class={infoClass}>
-        <dt>Client</dt>
-        <dd>{clientName}</dd>
-        <dt>Scope</dt>
-        <dd>{scope || '(none)'}</dd>
-      </dl>
-      {error && <p class={errorClass}>{error}</p>}
-      <form method="post">
-        <input
-          type="password"
-          name="password"
-          placeholder="Admin password"
-          autofocus
-          required
-          class={inputClass}
-        />
-        <button type="submit" class={buttonClass}>
-          Authorize
-        </button>
-      </form>
-    </body>
-  </html>
-)
+import { verifyWithJwks } from 'hono/jwt'
 
 export const GET = createRoute(async (c) => {
-  const oauthReqInfo = await c.env.OAUTH_PROVIDER.parseAuthRequest(c.req.raw)
-  const client = await c.env.OAUTH_PROVIDER.lookupClient(oauthReqInfo.clientId)
-  const clientName = client?.clientName ?? oauthReqInfo.clientId
-  const scope = oauthReqInfo.scope.join(' ')
-  return c.html(<Page clientName={clientName} scope={scope} />)
-})
+  const token = c.req.header('Cf-Access-Jwt-Assertion')
+  if (!token) return c.text('Unauthorized', 401)
 
-export const POST = createRoute(async (c) => {
-  const oauthReqInfo = await c.env.OAUTH_PROVIDER.parseAuthRequest(c.req.raw)
-  const formData = await c.req.formData()
-  const password = formData.get('password')
-
-  if (typeof password !== 'string' || password !== c.env.ADMIN_PASSWORD) {
-    const client = await c.env.OAUTH_PROVIDER.lookupClient(oauthReqInfo.clientId)
-    const clientName = client?.clientName ?? oauthReqInfo.clientId
-    return c.html(
-      <Page
-        clientName={clientName}
-        scope={oauthReqInfo.scope.join(' ')}
-        error="パスワードが正しくありません"
-      />,
-      401
+  let email: string
+  try {
+    const payload = await verifyWithJwks(
+      token,
+      {
+        jwks_uri: `https://${c.env.CF_ACCESS_TEAM_DOMAIN}/cdn-cgi/access/certs`,
+        allowedAlgorithms: ['RS256'],
+      },
+      { cf: { cacheEverything: true, cacheTtl: 3600 } }
     )
+    email = payload.email as string
+  } catch {
+    return c.text('Unauthorized', 401)
   }
 
+  const oauthReqInfo = await c.env.OAUTH_PROVIDER.parseAuthRequest(c.req.raw)
   const { redirectTo } = await c.env.OAUTH_PROVIDER.completeAuthorization({
     request: oauthReqInfo,
-    userId: 'admin',
+    userId: email,
     scope: oauthReqInfo.scope,
-    metadata: {},
-    props: {},
+    metadata: { email },
+    props: { email },
   })
   return c.redirect(redirectTo)
 })

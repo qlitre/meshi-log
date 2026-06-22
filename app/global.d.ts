@@ -17,7 +17,8 @@ declare module 'hono' {
       TURNSTILE_SECRET_KEY: string
       EMAIL: SendEmail
       NOTIFICATION_EMAIL: string
-      ADMIN_PASSWORD: string
+      CF_ACCESS_TEAM_DOMAIN: string
+      CF_ACCESS_AUDIENCE: string
       OAUTH_KV: KVNamespace
       OAUTH_PROVIDER: OAuthHelpers
       MICROCMS_WEBHOOK_SECRET: string
