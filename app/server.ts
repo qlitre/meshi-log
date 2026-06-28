@@ -18,6 +18,7 @@ export default new OAuthProvider({
   tokenEndpoint: '/oauth/token',
   clientRegistrationEndpoint: '/oauth/register',
   scopesSupported: ['mcp:write'],
-  accessTokenTTL: 3600,
-  refreshTokenTTL: 30 * 24 * 3600,
+  // TODO: 7/23以降に accessTokenTTL: 3600, refreshTokenTTL: 30 * 24 * 3600 に戻す
+  accessTokenTTL: 900,
+  refreshTokenTTL: 0,
 })
