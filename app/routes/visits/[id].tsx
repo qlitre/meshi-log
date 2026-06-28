@@ -84,10 +84,10 @@ export default createRoute(async (c) => {
   const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
 
   const description = stripHtmlTagsAndTruncate(visit.memo, 100)
-  const publishedAt = visit.publishedAt || ''
+  const createdAt = visit.createdAt
   const [nextVisits, prevVisits, comments] = await Promise.all([
-    getNextVisits({ client, publishedAt }),
-    getPrevVisits({ client, publishedAt }),
+    getNextVisits({ client, createdAt }),
+    getPrevVisits({ client, createdAt }),
     getCommentsByVisitId(c.env.DB, id),
   ])
   const url = new URL(c.req.url)
