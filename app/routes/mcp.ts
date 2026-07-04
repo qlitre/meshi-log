@@ -23,6 +23,7 @@ import { HTTPException } from 'hono/http-exception'
 import { Hono } from 'hono'
 import type { Env } from 'hono'
 import { buildShopFilterCondition } from '../utils/buildShopFilterCondition'
+import { jstDatetime } from '../utils/jstDatetime'
 
 const limit = config.serachPerPage
 
@@ -184,6 +185,8 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
         return { content: [{ type: 'text', text: JSON.stringify({ contents: [] }, null, 2) }] }
       }
       const result = await getVisitDetail({ client, contentId: visits.contents[0].id })
+      result.publishedAt = jstDatetime(result.publishedAt)
+      result.visit_date = jstDatetime(result.visit_date)
       return {
         content: [
           {
@@ -208,6 +211,8 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
         throw new Error('id is required')
       }
       const result = await getVisitDetail({ client, contentId: params.id })
+      result.publishedAt = jstDatetime(result.publishedAt)
+      result.visit_date = jstDatetime(result.visit_date)
       return {
         content: [
           {
