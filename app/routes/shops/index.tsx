@@ -50,7 +50,8 @@ export default createRoute(async (c) => {
       queries: {
         ...commonQueries,
         depth: 1,
-        fields: 'id,name,is_recommended,nearest_station,memo,area_code,area.id,area.name,genre.id,genre.name',
+        fields:
+          'id,name,is_recommended,nearest_station,memo,area_code,area.id,area.name,genre.id,genre.name',
       },
     })
     allShops = allShopsRaw.filter((s) => shopSet.has(s.id))
@@ -181,7 +182,12 @@ export default createRoute(async (c) => {
         <main class="flex-1 min-w-0">
           {displayShops.length === 0 ? (
             <p class="text-gray-500">
-              {searchQuery || areaId || prefCode || genreIds.length > 0 || isRecommended || repeatedVisits
+              {searchQuery ||
+              areaId ||
+              prefCode ||
+              genreIds.length > 0 ||
+              isRecommended ||
+              repeatedVisits
                 ? '検索条件に一致するお店が見つかりませんでした'
                 : 'お店が登録されていません'}
             </p>

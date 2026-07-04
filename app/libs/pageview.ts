@@ -60,7 +60,15 @@ export const seedPageViewMeta = async ({
          shop_name = excluded.shop_name,
          updated_at = excluded.updated_at`
     )
-    .bind(pagePath, contentId, pageType, visit.title, visit.thumbnail?.url ?? '', visit.shop?.name ?? '', now)
+    .bind(
+      pagePath,
+      contentId,
+      pageType,
+      visit.title,
+      visit.thumbnail?.url ?? '',
+      visit.shop?.name ?? '',
+      now
+    )
     .run()
 }
 
