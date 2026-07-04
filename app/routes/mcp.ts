@@ -186,7 +186,6 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       }
       const result = await getVisitDetail({ client, contentId: visits.contents[0].id })
       result.publishedAt = jstDatetime(result.publishedAt)
-      result.visit_date = jstDatetime(result.visit_date)
       return {
         content: [
           {
@@ -212,7 +211,6 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       }
       const result = await getVisitDetail({ client, contentId: params.id })
       result.publishedAt = jstDatetime(result.publishedAt)
-      result.visit_date = jstDatetime(result.visit_date)
       return {
         content: [
           {
