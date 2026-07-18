@@ -23,20 +23,25 @@ const oauthProvider = new OAuthProvider({
   refreshTokenTTL: 0,
 })
 
-const PROTECTED_RESOURCE_PREFIX = '/.well-known/oauth-protected-resource'
+// OAuth(admin MCP)はこのホストだけで提供する。localhostは開発時に全機能を使うため含める
+const OAUTH_HOSTS = ['admin.meshi-log.info', 'localhost', '127.0.0.1']
 
 export default {
   fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
-    // OAuthProviderは任意のパスに対してprotected-resourceメタデータを200で返すため、
-    // 認証不要の /mcp までOAuth保護されたリソースだとクライアントに誤認させてしまう。
-    // OAuth必須なのは /mcp/admin だけなので、それ以外へのメタデータ要求は404にする
-    const { pathname } = new URL(request.url)
+    const { hostname, pathname } = new URL(request.url)
+    if (OAUTH_HOSTS.includes(hostname)) {
+      return oauthProvider.fetch(request, env, ctx)
+    }
+    // 公開ホストにはOAuthの痕跡を一切出さない。
+    // ディスカバリ優先のMCPクライアント(Claudeコネクタ等)はメタデータを見つけると
+    // 認証必須と誤認し、認証なしの /mcp に接続できなくなるため
     if (
-      pathname.startsWith(PROTECTED_RESOURCE_PREFIX) &&
-      pathname !== `${PROTECTED_RESOURCE_PREFIX}/mcp/admin`
+      pathname.startsWith('/.well-known/oauth-') ||
+      pathname.startsWith('/oauth/') ||
+      pathname.startsWith('/mcp/admin')
     ) {
       return new Response(null, { status: 404 })
     }
-    return oauthProvider.fetch(request, env, ctx)
+    return honoxApp.fetch(request, env, ctx)
   },
 }

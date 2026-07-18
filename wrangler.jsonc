@@ -7,6 +7,10 @@
   "assets": {
     "directory": "./dist",
   },
+  "routes": [
+    { "pattern": "meshi-log.info", "custom_domain": true },
+    { "pattern": "admin.meshi-log.info", "custom_domain": true },
+  ],
   "send_email": [
     {
       "name": "EMAIL",
