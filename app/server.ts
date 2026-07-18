@@ -10,7 +10,7 @@ honoxApp.route('/mcp', mcpApp)
 
 showRoutes(honoxApp)
 
-export default new OAuthProvider({
+const oauthProvider = new OAuthProvider({
   apiRoute: '/mcp/admin',
   apiHandler: adminMcpApp,
   defaultHandler: honoxApp,
@@ -22,3 +22,21 @@ export default new OAuthProvider({
   accessTokenTTL: 900,
   refreshTokenTTL: 0,
 })
+
+const PROTECTED_RESOURCE_PREFIX = '/.well-known/oauth-protected-resource'
+
+export default {
+  fetch(request: Request, env: Cloudflare.Env, ctx: ExecutionContext) {
+    // OAuthProviderは任意のパスに対してprotected-resourceメタデータを200で返すため、
+    // 認証不要の /mcp までOAuth保護されたリソースだとクライアントに誤認させてしまう。
+    // OAuth必須なのは /mcp/admin だけなので、それ以外へのメタデータ要求は404にする
+    const { pathname } = new URL(request.url)
+    if (
+      pathname.startsWith(PROTECTED_RESOURCE_PREFIX) &&
+      pathname !== `${PROTECTED_RESOURCE_PREFIX}/mcp/admin`
+    ) {
+      return new Response(null, { status: 404 })
+    }
+    return oauthProvider.fetch(request, env, ctx)
+  },
+}
