@@ -18,9 +18,8 @@ const oauthProvider = new OAuthProvider({
   tokenEndpoint: '/oauth/token',
   clientRegistrationEndpoint: '/oauth/register',
   scopesSupported: ['mcp:write'],
-  // TODO: 7/23以降に accessTokenTTL: 3600, refreshTokenTTL: 30 * 24 * 3600 に戻す
-  accessTokenTTL: 900,
-  refreshTokenTTL: 0,
+  accessTokenTTL: 3600,
+  refreshTokenTTL: 30 * 24 * 3600,
 })
 
 // OAuth(admin MCP)はこのホストだけで提供する。localhostは開発時に全機能を使うため含める
