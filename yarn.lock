@@ -147,10 +147,10 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/workers-oauth-provider/-/workers-oauth-provider-0.8.1.tgz#70dcd8bbee0af8e0784703e6fc4a73b6b8af5b93"
   integrity sha512-zB4In0X1O5Vhc+Eb1s3ZP8wiqxLt2Hg1cqkLjZE2qQW1LNc4cOs1YEqYqtIKqG91yEBgpFIMBNYiafHk3OWj4Q==
 
-"@cloudflare/workers-types@^4.20260630.1":
-  version "4.20260630.1"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-4.20260630.1.tgz#1fa0fa9e52fb8596c7caaa5da88f7b044e6ff12b"
-  integrity sha512-yl+c9vwvko9UZ0frmtsHuwOh3BRHvNjLrfelAp5Akpqe1+Ho1UWekr3nmjJ1D64CH0Yb0K0oRMV4i7npOFzsog==
+"@cloudflare/workers-types@^5.20260728.1":
+  version "5.20260728.1"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-types/-/workers-types-5.20260728.1.tgz#fcc67069960c281fddb4f669f3c3b7e84bd42fb4"
+  integrity sha512-rZqmesLEH40Xt67PpQSj+iJqwkYBzVr7U/UOa5twkToMsxO5pYsPw2QAaTKDdiCSiki9fWAgsWTj9OmFnbwLRQ==
 
 "@cspotcode/source-map-support@0.8.1":
   version "0.8.1"
