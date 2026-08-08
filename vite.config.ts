@@ -31,7 +31,7 @@ export default defineConfig(({ command }) => {
     ssr: {
       external: [
         'microcms-js-sdk',
-        '@modelcontextprotocol/sdk',
+        '@modelcontextprotocol/server',
         'dayjs',
         'microcms-rich-editor-handler',
         'shiki',
