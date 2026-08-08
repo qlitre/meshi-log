@@ -17,7 +17,7 @@
     "@cloudflare/workers-oauth-provider": "^0.8.2",
     "@hono/mcp": "^0.3.1",
     "@modelcontextprotocol/sdk": "^1.29.0",
-    "hono": "^4.12.27",
+    "hono": "^4.13.1",
     "hono-rate-limiter": "^0.5.3",
     "honox": "^0.1.60",
     "microcms-js-sdk": "^3.4.0",
