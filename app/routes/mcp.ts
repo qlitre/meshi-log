@@ -298,7 +298,7 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       {
         title: 'Create Area',
         description:
-          'Create a new area in microCMS. `code` is the JIS municipality code (e.g. "13101" for Chiyoda-ku). `id` is the contentId, conventionally a romaji slug derived from the area name (e.g. "tokyo-to-machida-shi" for 東京都町田市, "tokyo-to-chiyoda-ku" for 東京都千代田区). Always specify `id` following this convention. IMPORTANT: Before calling this tool, you MUST look up the precise JIS municipality code via web search (search e.g. "東京都町田市 JIS 市区町村コード") — do NOT guess or infer the code from memory.',
+          'Create a new area in microCMS. `code` is the JIS municipality code (e.g. "13101" for Chiyoda-ku). `id` is required, conventionally a romaji slug derived from the area name (e.g. "tokyo-to-machida-shi" for 東京都町田市, "tokyo-to-chiyoda-ku" for 東京都千代田区). IMPORTANT: Before calling this tool, you MUST look up the precise JIS municipality code via web search (search e.g. "東京都町田市 JIS 市区町村コード") — do NOT guess or infer the code from memory.',
         inputSchema: z.object({
           id: z.string().min(1),
           code: z.string().min(1),
@@ -319,13 +319,13 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       {
         title: 'Create Genre',
         description:
-          'Create a new genre in microCMS. Optionally specify `id` for a custom contentId; if omitted, microCMS auto-generates one.',
+          'Create a new genre in microCMS. `id` is required — specify a URL-friendly romaji slug derived from the genre name.',
         inputSchema: z.object({
-          id: z.string().optional(),
+          id: z.string().min(1),
           name: z.string().min(1),
         }),
       },
-      async (params: { id?: string; name: string }) => {
+      async (params: { id: string; name: string }) => {
         const { id, ...body } = params
         const result = await createGenre({ client, contentId: id, body })
         return {
@@ -339,9 +339,9 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
       {
         title: 'Create Shop',
         description:
-          'Create a new shop in microCMS. `area` is the area content ID, `genre` is an array of genre content IDs. `area_code` is the JIS municipality code. IMPORTANT: Before calling this tool, you MUST look up both the precise `address` and `latitude`/`longitude` via web search or the "Searching for place" tool — search for the actual shop name and verify the address and coordinates from the results. Do NOT guess, infer, or use approximate values. `id` rule: derive a URL-friendly romaji slug from the official shop name found via web search (NOT a transliteration of whatever the user typed — verify the official name and its standard romanization through search results). By default use `{shop_name_slug}` only. Append the area name ONLY when the same shop name has multiple branches across different locations (chain stores, etc.) and disambiguation is required; in that case use the format `{shop_name_slug}-{area_name_slug}` (e.g. `ichiran-shibuya`, `ichiran-shinjuku`). For a single-location shop, do NOT append the area name. Always specify `id` following this convention — do NOT omit it and let microCMS auto-generate one.',
+          'Create a new shop in microCMS. `area` is the area content ID, `genre` is an array of genre content IDs. `area_code` is the JIS municipality code. IMPORTANT: Before calling this tool, you MUST look up both the precise `address` and `latitude`/`longitude` via web search or the "Searching for place" tool — search for the actual shop name and verify the address and coordinates from the results. Do NOT guess, infer, or use approximate values. `id` is required. Derive a URL-friendly romaji slug from the official shop name found via web search (NOT a transliteration of whatever the user typed — verify the official name and its standard romanization through search results). By default use `{shop_name_slug}` only. Append the area name ONLY when the same shop name has multiple branches across different locations (chain stores, etc.) and disambiguation is required; in that case use the format `{shop_name_slug}-{area_name_slug}` (e.g. `ichiran-shibuya`, `ichiran-shinjuku`). For a single-location shop, do NOT append the area name.',
         inputSchema: z.object({
-          id: z.string().optional(),
+          id: z.string().min(1),
           name: z.string().min(1),
           address: z.string().min(1),
           latitude: z.number(),
@@ -356,7 +356,7 @@ export const getMcpServer = async (c: Context<Env>, options: McpServerOptions = 
         }),
       },
       async (params: {
-        id?: string
+        id: string
         name: string
         address: string
         latitude: number

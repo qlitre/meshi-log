@@ -145,7 +145,7 @@ export const createArea = async ({
   body,
 }: {
   client: MicroCMSClient
-  contentId?: string
+  contentId: string
   body: { code: string; name: string }
 }) => {
   return await client.create({ endpoint: 'area', contentId, content: body })
@@ -158,7 +158,7 @@ export const createGenre = async ({
   body,
 }: {
   client: MicroCMSClient
-  contentId?: string
+  contentId: string
   body: { name: string }
 }) => {
   return await client.create({ endpoint: 'genre', contentId, content: body })
@@ -200,7 +200,7 @@ export const createShop = async ({
   body,
 }: {
   client: MicroCMSClient
-  contentId?: string
+  contentId: string
   body: CreateShopBody
 }) => {
   return await client.create({ endpoint: 'shop', contentId, content: body, isDraft: true })
