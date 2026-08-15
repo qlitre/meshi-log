@@ -2,9 +2,10 @@ import type { Shop } from '../types/microcms'
 
 type Props = {
   shop: Shop
+  shopVisitCount: number
 }
 
-export const ShopInformation = ({ shop }: Props) => {
+export const ShopInformation = ({ shop, shopVisitCount }: Props) => {
   return (
     <div class="bg-gray-50 rounded-lg p-4 max-w-[860px] mx-auto">
       <h2 class="text-xl font-bold mb-3">店舗情報</h2>
@@ -31,14 +32,16 @@ export const ShopInformation = ({ shop }: Props) => {
             Googleマップで開く
           </a>
         </div>
-        <div class="pt-3">
-          <a
-            href={`/shops/${shop.id}`}
-            class="inline-block px-3 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            この店舗の他の訪問記録を見る
-          </a>
-        </div>
+        {shopVisitCount > 1 && (
+          <div class="pt-3">
+            <a
+              href={`/shops/${shop.id}`}
+              class="inline-block px-3 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              この店舗の他の訪問記録を見る
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )

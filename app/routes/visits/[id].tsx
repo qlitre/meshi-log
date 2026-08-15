@@ -9,6 +9,7 @@ import { seedPageViewMeta } from '../../libs/pageview'
 import { getCommentsByVisitId, createComment } from '../../libs/comment'
 import { verifyTurnstile } from '../../libs/turnstile'
 import { notifyNewComment } from '../../libs/notification'
+import { getShopVisitCount } from '../../libs/shop-visit-counts'
 import type { Meta } from '../../types/meta'
 import { jstDatetime } from '../../utils/jstDatetime'
 import { stripHtmlTagsAndTruncate } from '../../utils/stripHtmlTags'
@@ -132,6 +133,8 @@ export default createRoute(async (c) => {
   let shareTitle = visit.title
   if (!visit.shop.noindex) shareTitle += ` - ${visit.shop.name}`
 
+  const shopVisitCount = await getShopVisitCount(c.env.DB, visit.shop.id)
+
   return c.render(
     <Container>
       {successMessage && <Alert message={successMessage} type="success" />}
@@ -162,7 +165,7 @@ export default createRoute(async (c) => {
       </article>
 
       {/* 店舗情報 */}
-      <ShopInformation shop={visit.shop} />
+      <ShopInformation shop={visit.shop} shopVisitCount={shopVisitCount} />
 
       {/* コメント */}
       <CommentList comments={comments} />

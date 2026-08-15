@@ -29,3 +29,11 @@ export const getRepeatedVisitShopIds = async (db: D1Database): Promise<string[]>
     .all<{ shop_id: string }>()
   return rows.results.map((r) => r.shop_id)
 }
+
+export const getShopVisitCount = async (db: D1Database, shopId: string): Promise<number> => {
+  const row = await db
+    .prepare('SELECT count FROM shop_visit_counts WHERE shop_id = ?')
+    .bind(shopId)
+    .first<{ count: number }>()
+  return row?.count ?? 0
+}
