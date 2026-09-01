@@ -413,6 +413,14 @@
     "@hono/node-server" "^1.19.11"
     minimatch "^9.0.3"
 
+"@hono/vite-dev-server@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/@hono/vite-dev-server/-/vite-dev-server-0.26.1.tgz#714678e292a915c12a076506a99870ec659e09a7"
+  integrity sha512-OlcWoXjNogKiJhVwV/ftMK87UcsJmIBfmImSdI4e8to/ZdwNHrW9ddKw2OGHjXI5/uS2RaZr+2y+l8T9VFbCmw==
+  dependencies:
+    "@hono/node-server" "^1.19.11"
+    minimatch "^9.0.3"
+
 "@img/colour@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@img/colour/-/colour-1.0.0.tgz#d2fabb223455a793bf3bf9c70de3d28526aa8311"
