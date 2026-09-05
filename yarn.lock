@@ -1810,15 +1810,15 @@ hast-util-whitespace@^3.0.0:
   dependencies:
     "@types/hast" "^3.0.0"
 
-hono@^4.13.1:
-  version "4.13.1"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-4.13.1.tgz#d4a606b792954d07a6215d12c01b7cf59da03cbc"
-  integrity sha512-kdJoFVv2xmayw6cY09H7AbMJMt8Jn5jdlEdXsP7AGBdF2DIptVlKlOLKXP41yPip4/a3yQPv9gVcJYI8YY04dw==
+hono@^4.13.7:
+  version "4.13.7"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-4.13.7.tgz#80fdab8326f03d02f049117fd968101933493600"
+  integrity sha512-c8/gF9ac8Y78/agExVocyLevgR+JlpNB444Py0FSX8pJoPdYUfUzRcXtYEYGwt6l19qIlVZPN5Mfsw9jFShmQQ==
 
-honox@^0.1.60:
-  version "0.1.60"
-  resolved "https://registry.yarnpkg.com/honox/-/honox-0.1.60.tgz#3924c6331f087b039d21e5c91ef3047b4723f8f9"
-  integrity sha512-WeYf6S2UE8XYtLrSdI60edWyVkdrODgbNAapQgDnq377zv5vQ3psDwsEpzDHXMiT2J27/mMqqrESlubLFv5Bfw==
+honox@^0.1.61:
+  version "0.1.61"
+  resolved "https://registry.yarnpkg.com/honox/-/honox-0.1.61.tgz#4db3f9d663cac0ab155483325fbb5d7df26eaed8"
+  integrity sha512-HMvVTyAIJYIWjHUvdowQvnMVA3I1HKeKD71TVCAKiTdUI+xU7cYRryMK+ASmnRb7lFV6Yak4/d1VqXjJnEYSvg==
   dependencies:
     "@babel/generator" "7.29.1"
     "@babel/parser" "7.29.3"
