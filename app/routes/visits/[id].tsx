@@ -4,6 +4,7 @@ import {
   getVisitDetail,
   getPrevVisits,
   getNextVisits,
+  nullIfNotFound,
 } from '../../libs/microcms'
 import { seedPageViewMeta } from '../../libs/pageview'
 import { getCommentsByVisitId, createComment } from '../../libs/comment'
@@ -82,7 +83,11 @@ export const POST = createRoute(async (c) => {
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
   const client = getMicroCMSClient(c)
-  const visit = await getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
+  const visit = await nullIfNotFound(
+    getVisitDetail({ client, contentId: id, queries: { depth: 2 } })
+  )
+  // slug変更・削除後の旧URLは 500 ではなく 404 を返す
+  if (!visit) return c.notFound()
 
   const description = stripHtmlTagsAndTruncate(visit.memo, 100)
   const createdAt = visit.createdAt
