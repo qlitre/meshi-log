@@ -23,30 +23,6 @@ export const AllShopsMap = ({ shops }: Props) => {
     )
   }
 
-  // 全店舗の中心点を計算
-  const avgLat =
-    shopsWithCoords.reduce((sum, shop) => sum + (shop.latitude || 0), 0) / shopsWithCoords.length
-  const avgLng =
-    shopsWithCoords.reduce((sum, shop) => sum + (shop.longitude || 0), 0) / shopsWithCoords.length
-
-  // 全店舗が収まる範囲を計算
-  const lats = shopsWithCoords.map((shop) => shop.latitude || 0)
-  const lngs = shopsWithCoords.map((shop) => shop.longitude || 0)
-  const minLat = Math.min(...lats)
-  const maxLat = Math.max(...lats)
-  const minLng = Math.min(...lngs)
-  const maxLng = Math.max(...lngs)
-
-  // bbox を少し広めに設定
-  const padding = 0.01
-  const bbox = `${minLng - padding},${minLat - padding},${maxLng + padding},${maxLat + padding}`
-
-  // OpenStreetMap の embed URL を構築
-  // 複数マーカーを表示するために、各店舗のマーカーをクエリパラメータに追加
-  const markers = shopsWithCoords
-    .map((shop) => `pin-s+ff0000(${shop.longitude},${shop.latitude})`)
-    .join(',')
-
   // Leaflet を使った独自マップ実装
   return (
     <div class="space-y-4">
@@ -60,14 +36,24 @@ export const AllShopsMap = ({ shops }: Props) => {
 
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+      />
+      <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"
+      />
       <script>
         {raw(`
           (function() {
             const mapEl = document.getElementById('map');
             const shops = JSON.parse(mapEl.dataset.shops);
             
-            // 地図の初期化
-            const map = L.map('map').setView([${avgLat}, ${avgLng}], 10);
+            // 地図の初期化（全マーカーが収まる範囲に合わせる）
+            const bounds = L.latLngBounds(shops.map(shop => [shop.latitude, shop.longitude]));
+            const map = L.map('map').fitBounds(bounds, { padding: [50, 50] });
             
             // OpenStreetMap タイルレイヤーを追加
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -95,10 +81,18 @@ export const AllShopsMap = ({ shops }: Props) => {
               shadowSize: [41, 41]
             });
 
+            // 近接マーカーをまとめるクラスタグループ
+            // 実際に重なる距離だけまとめ、最大ズームでも重なる場合はクリックで放射状に展開する
+            const clusterGroup = L.markerClusterGroup({
+              maxClusterRadius: 45,
+              spiderfyOnMaxZoom: true,
+              showCoverageOnHover: false
+            });
+
             // 各店舗にマーカーを追加
             shops.forEach(shop => {
               const icon = shop.is_recommended ? recommendedIcon : defaultIcon;
-              const marker = L.marker([shop.latitude, shop.longitude], { icon }).addTo(map);
+              const marker = L.marker([shop.latitude, shop.longitude], { icon });
               marker.bindPopup(\`
                 <div style="min-width: 200px;">
                   <h3 style="font-weight: bold; margin-bottom: 8px;">
@@ -114,13 +108,10 @@ export const AllShopsMap = ({ shops }: Props) => {
                   </p>
                 </div>
               \`);
+              clusterGroup.addLayer(marker);
             });
-            
-            // 全マーカーが収まるように調整
-            if (shops.length > 0) {
-              const bounds = L.latLngBounds(shops.map(shop => [shop.latitude, shop.longitude]));
-              map.fitBounds(bounds, { padding: [50, 50] });
-            }
+
+            map.addLayer(clusterGroup);
           })();
         `)}
       </script>
