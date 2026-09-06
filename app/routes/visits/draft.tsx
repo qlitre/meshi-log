@@ -6,6 +6,7 @@ import { ArticleDetail } from '../../components/ArticleDetail'
 import { Container } from '../../components/Container'
 import { ShopInformation } from '../../components/ShopInformation'
 import { getShopGenreString } from '../../utils/getShopGenreString'
+import { getShopVisitCount } from '../../libs/shop-visit-counts'
 
 export default createRoute(async (c) => {
   const id = c.req.query('id') || ''
@@ -19,6 +20,8 @@ export default createRoute(async (c) => {
   const meta: Meta = {
     title: `${visit.title} - ${visit.shop.name} - 飯ログ(下書き)`,
   }
+
+  const shopVisitCount = await getShopVisitCount(c.env.DB, visit.shop.id)
 
   return c.render(
     <Container>
@@ -37,7 +40,7 @@ export default createRoute(async (c) => {
       </article>
 
       {/* 店舗情報 */}
-      <ShopInformation shop={visit.shop} />
+      <ShopInformation shop={visit.shop} shopVisitCount={shopVisitCount} />
     </Container>,
     { meta }
   )
