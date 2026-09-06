@@ -1,5 +1,5 @@
 import { createRoute } from 'honox/factory'
-import { getMicroCMSClient, getShopDetail, getVisits } from '../../libs/microcms'
+import { getMicroCMSClient, getShopDetail, getVisits, nullIfNotFound } from '../../libs/microcms'
 import { Container } from '../../components/Container'
 import { VisitListCard } from '../../components/VisitListCard'
 import { config } from '../../siteSettings'
@@ -10,7 +10,9 @@ import { getShopGenreString } from '../../utils/getShopGenreString'
 export default createRoute(async (c) => {
   const id = c.req.param('id') || ''
   const client = getMicroCMSClient(c)
-  const shop = await getShopDetail({ client, contentId: id })
+  const shop = await nullIfNotFound(getShopDetail({ client, contentId: id }))
+  // slug変更・削除後の旧URLは 500 ではなく 404 を返す
+  if (!shop) return c.notFound()
   const page = Number(c.req.query('page') || 1)
   const limit = config.visitWithShopPerPage
   const offset = limit * (page - 1)

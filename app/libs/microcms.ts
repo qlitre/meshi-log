@@ -106,6 +106,28 @@ export const getAllVisits = async ({ client, queries }: ClientWithQueries) => {
 }
 
 // 訪問記録詳細取得
+/**
+ * microCMSの404かどうかを判定する。
+ * microcms-js-sdk は 404 でも専用の例外型を持たず
+ * `fetch API response status: 404` というメッセージの Error を throw するため、
+ * メッセージで判別するしかない。
+ */
+const isNotFoundError = (e: unknown): boolean =>
+  e instanceof Error && e.message.includes('fetch API response status: 404')
+
+/**
+ * コンテンツが存在しない場合に throw ではなく null を返す。
+ * slug変更・コンテンツ削除後の旧URLを 500 ではなく 404 として扱うために使う。
+ */
+export const nullIfNotFound = async <T>(promise: Promise<T>): Promise<T | null> => {
+  try {
+    return await promise
+  } catch (e) {
+    if (isNotFoundError(e)) return null
+    throw e
+  }
+}
+
 export const getVisitDetail = async ({ client, contentId, queries }: ClientWithContentId) => {
   return await client.getListDetail<Visit>({
     endpoint: 'visits',
