@@ -20,6 +20,8 @@ const oauthProvider = new OAuthProvider({
   scopesSupported: ['mcp:write'],
   accessTokenTTL: 3600,
   refreshTokenTTL: 30 * 24 * 3600,
+  // v1.0での破壊的変更: resourceMetadata.resourceが必須になった(未指定だとトークンの監査対象リソースが暗黙的に決まらずエラーになる)
+  resourceMetadata: { resource: 'https://admin.meshi-log.info/mcp/admin' },
 })
 
 // OAuth(admin MCP)はこのホストだけで提供する。localhostは開発時に全機能を使うため含める
