@@ -152,10 +152,10 @@
   resolved "https://registry.yarnpkg.com/@cloudflare/workerd-windows-64/-/workerd-windows-64-1.20260926.1.tgz#2b1c060c072ec93c84ba9d3fe39d42b89a336bf5"
   integrity sha512-ehdL3ataKdEmlnW9oom6OZUR8n3XsTL/zl8+KGREpLi5sMSW0mek0PrF4wK9SX51f3Alnlu8tF8eKBg+mc3xFw==
 
-"@cloudflare/workers-oauth-provider@^0.8.2":
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/@cloudflare/workers-oauth-provider/-/workers-oauth-provider-0.8.2.tgz#546d9ea96f392c458b45c1062fd20c46188837bd"
-  integrity sha512-Pho5qWDl4qj1STI5QYMQfPmJBBkxyrFpXyDl9BrtYOfWHxThabEzdi9p3ezS2cUkbjA0E6L5ki/kq2pcbRUtlg==
+"@cloudflare/workers-oauth-provider@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@cloudflare/workers-oauth-provider/-/workers-oauth-provider-1.2.0.tgz#03a07e1a1f968598985477397af847445233f064"
+  integrity sha512-geQfLHOWgeDmYb2YYEuTFvmeP8g/2uIXgNEag9K7fUY1baTIRW8aNpNUUMziWr97wQi2Ez5/59ukgHT2n9a4mg==
 
 "@cloudflare/workers-types@^5.20260927.1":
   version "5.20260927.1"
