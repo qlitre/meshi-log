@@ -1,4 +1,4 @@
-import { useState } from 'hono/jsx'
+import { useEffect, useState } from 'hono/jsx'
 
 type AreaWithCount = {
   id: string
@@ -87,6 +87,15 @@ const ChipCheckbox = ({ name, value, checked, label, count, onClick }: ChipProps
 
 const FormContent = ({ areas, genres, prefectures, initialFilters }: ShopFilterFormProps) => {
   const [isLoading, setIsLoading] = useState(false)
+
+  // ブラウザバックで bfcache から復元されると isLoading=true のまま戻るため解除する
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) setIsLoading(false)
+    }
+    window.addEventListener('pageshow', onPageShow)
+    return () => window.removeEventListener('pageshow', onPageShow)
+  }, [])
 
   const submitClosestForm = (e: Event) => {
     setIsLoading(true)
